@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="preconfigured_attribute_option_list_view" model="ir.ui.view">
+        <field name="name">preconfigured.attribute.option.list.view</field>
+        <field name="model">preconfigured.attribute.option</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="preconfigured_attribute_option_form_view" model="ir.ui.view">
+        <field name="name">preconfigured.attribute.option.form.view</field>
+        <field name="model">preconfigured.attribute.option</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="option_image_attachment_ids" widget="many2many_binary"/>
+                        <field name="preconfigured_option_line_ids" widget="one2many" nolabel="1">
+                            <list create="0" delete="0" editable="bottom">
+                                <!-- <field name="sub_attribute_line_id" column_invisible="1"/> -->
+                                <field name="product_template_attribute_value_id" readonly="1" force_save="1"/>
+                                <!-- <field name="material_allocation" readonly="1" force_save="1"/> -->
+                                <field name="material_allocation_id" readonly="1" force_save="1" options="{'no_open':1}"/>
+                                <field name="sub_attribute_id" readonly="1" force_save="1" options="{'no_open':1}"/>
+                                <field name="sub_attribute_value_ids" widget="many2many_tags"
+                                       domain="[('sub_attribute_id','=', sub_attribute_id)]"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_purchase_order_form_inherit_parent_child" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.parent.child</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag']" position="after">
+                <field name="child_purchase_order_ids" widget="many2many_tags" invisible="1"/>
+                <field name="parent_po_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" type="object"
+                        name="action_show_child_purchase_orders"
+                        icon="fa-list"
+                        invisible="tag != 'parent' or child_pos_count == 0">
+                    <field string="Child POs" name="child_pos_count" widget="statinfo"/>
+                </button>
+                <button class="oe_stat_button" type="object"
+                        name="action_show_parent_purchase_order"
+                        icon="fa-arrow-up"
+                        invisible="tag != 'child' or parent_po_count == 0">
+                    <field string="Parent PO" name="parent_po_count" widget="statinfo"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//field[@name='fiscal_position_id']" position="after">
+                <field name="deal_project_name"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_tree_ext1" model="ir.ui.view">
+        <field name="name">purchase.order.tree.ext1</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_ref']" position="before">
+                <field name="burgtec_purchase_reference"/>
+            </xpath>
+
+            <xpath expr="//field[@name='origin']" position="before">
+                <field name="sale_quote_reference"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quotation_type_customization_purchase_purchase_order_kpis_tree" model="ir.ui.view">
+        <field name="name">quotation.type.customization.purchase.purchase.order.kpis.tree</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='button_cancel']" position="attributes">
+                <attribute name="groups">quotation_type_customization.group_super_admin</attribute>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="before">
+                <field name="sale_quote_reference"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quotation_type_customization_purchase_order_view_tree" model="ir.ui.view">
+        <field name="name">quotation.type.customization.purchase.order.view.tree</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='button_cancel']" position="attributes">
+                <attribute name="groups">quotation_type_customization.group_super_admin</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

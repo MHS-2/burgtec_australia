@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_delivery_cost_group_code_list_view" model="ir.ui.view">
+        <field name="name">product.delivery.cost.group.code.list.view</field>
+        <field name="model">product.delivery.cost.group.code</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="delivery_code" width="200"/>
+                <field name="description" width="200"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="cbm_flatpacked" width="200"/>
+                <field name="cbm_assembled" width="200"/>
+                <field name="delivery_code_cost" width="200" string="Zone 1 Delivery Cost"/>
+                <field name="installation_cost" width="200" string="Zone 1 Installation Cost"/>
+                <field name="zone1_website_minimum" width="200"/>
+                <field name="zone1_website_sale_price" width="200"/>
+                <field name="zone2_delivery_cost" width="200" string="Zone 2 Delivery Cost"/>
+                <field name="zone2_installation_cost" width="200" string="Zone 2 Installation Cost"/>
+                <field name="zone2_website_minimum" width="200"/>
+                <field name="zone2_website_sale_price" width="200"/>
+                <field name="zone3_delivery_cost" width="200" string="Zone 3 Delivery Cost"/>
+                <field name="zone3_installation_cost" width="200" string="Zone 3 Installation Cost"/>
+                <field name="zone3_website_minimum" width="200"/>
+                <field name="zone3_website_sale_price" width="200"/>
+            </list>
+        </field>
+
+    </record>    
+    
+    <record id="product_delivery_cost_group_code_form_view" model="ir.ui.view">
+        <field name="name">product.delivery.cost.group.code.form.view</field>
+        <field name="model">product.delivery.cost.group.code</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="General Details">
+                        <field name="delivery_code" required="1"/>
+                        <field name="description" placeholder="Delivery Code Description"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="cbm_flatpacked"/>
+                        <field name="cbm_assembled"/>
+                    </group>
+                    <group string="Zone 1 [EASTCOAST METRO (BNE, SYD, CBR, MEL)]">
+                         <field name="delivery_code_cost" string="Delivery Cost"/>
+                         <field name="installation_cost" string="Installation Cost"/>
+                         <field name="zone1_website_minimum" string="Website Minimum"/>
+                         <field name="zone1_website_sale_price" string="Website Sale Price"/>
+                    </group>
+                    <group string="Zone 2 [SYD]">
+                         <field name="zone2_delivery_cost" string="Delivery Cost"/>
+                         <field name="zone2_installation_cost" string="Installation Cost"/>
+                         <field name="zone2_website_minimum" string="Website Minimum"/>
+                         <field name="zone2_website_sale_price" string="Website Sale Price"/>
+                    </group>
+                    <group string="Zone 3 [BNE/MEL]">
+                         <field name="zone3_delivery_cost" string="Delivery Cost"/>
+                         <field name="zone3_installation_cost" string="Installation Cost"/>
+                         <field name="zone3_website_minimum" string="Website Minimum"/>
+                         <field name="zone3_website_sale_price" string="Website Sale Price"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_delivery_cost_group_code" model="ir.actions.act_window">
+        <field name="name">Delivery Codes</field>
+        <field name="res_model">product.delivery.cost.group.code</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_product_delivery_cost_group_code"
+        name="Product Delivery Codes"
+        action="action_product_delivery_cost_group_code"
+        parent="sale.prod_config_main"
+        sequence="100"/>
+
+</odoo>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View warehouse.dispatching View List -->
+    <record id="view_warehouse_dispatching_list" model="ir.ui.view">
+        <field name="name">view.warehouse.dispatching.list</field>
+        <field name="model">warehouse.dispatching</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="name"/>
+                <field name="warehouse_receiving_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- View warehouse.dispatching form -->
+    <record id="view_warehouse_dispatching_form" model="ir.ui.view">
+        <field name="name">view.warehouse.dispatching.form</field>
+        <field name="model">warehouse.dispatching</field>
+        <field name="arch" type="xml">
+            <form create="0" string="Warehouse Dispatching">
+                <sheet>
+                    <!-- Smart buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_receiving"
+                                type="object"
+                                string="Warehouse Receving"
+                                class="oe_stat_button"
+                                icon="fa-check-circle-o"
+                                invisible="not warehouse_receiving_id"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" string="Reference" class="fw-bold"/>
+                        <h1>
+                            <field name="name" placeholder="Reference" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <widget name="live_warehouse_dispatching"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View warehouse.dispatching search -->
+    <record id="view_warehouse_dispatching_search" model="ir.ui.view">
+        <field name="name">view.warehouse.dispatching.search</field>
+        <field name="model">warehouse.dispatching</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="1" string="Group By">
+                    <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action warehouse.dispatching -->
+    <record id="action_warehouse_dispatching" model="ir.actions.act_window">
+        <field name="name">Warehouse Dispatching</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">warehouse.dispatching</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no examples click here to add new Warehouse Dispatching.
+            </p>
+        </field>
+    </record>
+
+    <!-- Sub Menu item -->
+    <menuitem name="Dispatching" id="warehouse_dispatching_basic_menu_action_window" parent="burgtec_warehouse.warehouse_operations_main_menu_top" action="action_warehouse_dispatching"/>
+
+</odoo>

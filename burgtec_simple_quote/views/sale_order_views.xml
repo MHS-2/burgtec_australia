@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="complex_quote_sale_ordr_list_create_flase" model="ir.ui.view">
+        <field name="name">complex.quote.sale.order.list.create.false</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="simple_quote_view_sale_order_list" model="ir.ui.view">
+        <field name="name">simple.quote.view.sale.order.list</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <list delete="0">
+                <field name="burgtec_quote_reference" width="300px"/>
+                <field name="partner_id" width="200px"/>
+                <field name="project_name" width="300px"/>
+                <field name="user_id"/>
+                <field name="date_order" width="250px"/>
+                <field name="validity_date"/>
+                <field name="state"
+                       decoration-success="state == 'sale'"
+                       decoration-info="state == 'draft'"
+                       decoration-primary="state == 'sent'"
+                       widget="badge"/>
+                <button name="sale_custom_report.action_burgtec_sale_quote_v2" type="action"
+                        string="Download Burgtec PDF"
+                        icon="fa-file-pdf-o" class="btn-danger"
+                        invisible="not order_line or product_sale_type == 'dpg'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- OG Form View -->
+    <record id="simple_quote_view_sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">simple.quote.view.sale.order.form_inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='pricelist_id']" position="before">
+                <field name="nz_pricelist_ids" invisible="1"/>
+                <field name="series_sequence_id" invisible="1"/>
+            </xpath>
+
+            <!-- <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                <attribute name="domain">[('pricelist_type','=',product_sale_type)]</attribute>
+                <attribute name="invisible">nz_pricelist_ids</attribute>
+            </xpath> -->
+
+            <xpath expr="//field[@name='pricelist_id']" position="replace">
+                <field name="pricelist_id" options="{'no_create':1,'no_open':1}"
+                       domain="[('pricelist_type','=',product_sale_type)]" invisible="nz_pricelist_ids"/>
+                <field name="pricelist_id" options="{'no_create':1,'no_open':1}" domain="[('id','in',nz_pricelist_ids)]"
+                       invisible="not nz_pricelist_ids"/>
+            </xpath>
+
+
+            <!-- <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                <attribute name="readonly" separator="or" add="opportunity_id"/>
+            </xpath> -->
+
+            <!-- <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="readonly" separator="or" add="opportunity_id"/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                <attribute name="readonly" separator="or" add="opportunity_id"/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                <attribute name="readonly" separator="or" add="opportunity_id"/>
+            </xpath> -->
+            <xpath expr="//page[@name='order_lines']" position="before">
+                <page name="custom_general_page" string="General Page">
+                    <notebook name="custom_notebook">
+
+                    </notebook>
+                </page>
+            </xpath>
+            <xpath expr="//notebook[@name='custom_notebook']" position="inside">
+                <page name="order_lines" position="move"/>
+                <page name="products_area_wise" position="move"/>
+                <page name="filter_order_lines" position="move"/>
+                <page name="optional_products" position="move"/>
+                <page name="pdf_quote_builder" position="move"/>
+                <page name="down_payment_order_lines" position="move"/>
+                <page name="other_information" position="move"/>
+                <page name="bom_totals" position="move"/>
+                <page name="report_config" position="move"/>
+                <page name="defected_lines_summary" position="move"/>
+                <page name="customer_signature" position="move"/>
+            </xpath>
+
+            <xpath expr="//page[@name='custom_general_page']" position="after">
+                <page name="customer_service" string="Customer Service"></page>
+                <page name="technical" string="Technical"></page>
+                <page name="delivery_and_install" string="Delivery &amp; Install"></page>
+                <page name="purchasing" string="Purchasing"></page>
+            </xpath>
+        </field>
+
+    </record>
+
+
+    <!-- Form View -->
+    <record id="simple_quote_view_sale_order_form" model="ir.ui.view">
+        <field name="name">simple.quote.view.sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="sale_custom_report.action_burgtec_sale_quote_v2" type="action"
+                            string="Download Burgtec PDF"
+                            icon="fa-file-pdf-o" class="btn-danger" invisible="not order_line"/>
+                </header>
+                <sheet>
+                    <group class="border">
+                        <group name="simple_group_1" string="Details">
+                            <field name="burgtec_quote_reference"/>
+                            <field name="date_order" readonly="1"/>
+                            <field name="validity_date" readonly="1"/>
+                            <field name="user_id" options="{'no_open':1}" readonly="1"/>
+                            <field name="company_id" options="{'no_open':1}" readonly="1"/>
+                        </group>
+                        <group name="simple_group_2" string="Customer &amp; Configuration">
+                            <field name="partner_id" options="{'no_open':1}" readonly="1"/>
+                            <field name="partner_shipping_id" options="{'no_open':1}" readonly="1"/>
+                            <field name="zone_type" readonly="1"/>
+                            <field name="pricelist_id" options="{'no_open':1}" readonly="1"/>
+                            <field name="payment_term_id" options="{'no_open':1}" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="simple_order_lines" string="Order Lines">
+                            <field name="order_line" widget="section_and_note_one2many" readonly="1">
+                                <list string="Simple Sales Order Lines" class="no_reorder" editable="bottom" limit="200"
+                                      decoration-danger="display_type == 'line_section'"
+                                      decoration-info="display_type == 'line_note'">
+                                    <field name="product_id" options="{'no_open':1}" width="600px"/>
+                                    <field name="name" width="245px"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="product_uom" options="{'no_open':1}" width="150px"/>
+                                    <field name="price_unit"/>
+                                    <field name="price_subtotal"/>
+                                    <field name="tax_id" widget="many2many_tags"/>
+                                    <field name="price_tax"/>
+                                    <field name="price_total"/>
+                                </list>
+                            </field>
+                            <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                <group colspan="4" class="order-1 order-lg-0">
+                                    <field colspan="2" name="note" nolabel="1" placeholder="Terms and conditions..."
+                                           readonly="1"/>
+                                </group>
+                                <group class="oe_subtotal_footer d-flex order-0 order-lg-1 flex-column gap-0 gap-sm-3"
+                                       colspan="2" name="sale_total">
+                                    <field name="tax_totals" widget="account-tax-totals-field" nolabel="1"
+                                           readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <div class="alert alert-info" role="alert">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        This is a custom read-only summary view for completed simple quotes.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="simple_quote_view_sale_order_form_new" model="ir.ui.view">
+        <field name="name">simple.quote.view.sale.order.form.new</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="sale_custom_report.action_burgtec_sale_quote_v2" type="action"
+                            string="Download Burgtec PDF"
+                            icon="fa-file-pdf-o" class="btn-danger"
+                            invisible="not order_line or product_sale_type == 'dpg'"/>
+                </header>
+                <sheet>
+                    <!-- Smart buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_opportunity"
+                                type="object"
+                                string="Deal"
+                                class="oe_stat_button"
+                                icon="fa-handshake-o"
+                                invisible="not opportunity_id"/>
+                        <!--                        <button name="action_original_sales_view"-->
+                        <!--                            type="object"-->
+                        <!--                            string="Original Sales Quote"-->
+                        <!--                            class="oe_stat_button"-->
+                        <!--                            icon="fa-share-square-o"-->
+                        <!--                            invisible="not id"/>  -->
+                    </div>
+                    <div class="d-flex">
+                        <h1 class="p-2">
+                            <field name="burgtec_quote_reference" placeholder="Burgtec Quote Reference"/>
+                        </h1>
+                        <div class="ml-auto p-2" invisible="not is_frozen_due_to_project_creation">
+                            <i class="fa fa-lock fa-3x text-info" title="Quote Locked"
+                               aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <group>
+                        <group name="deal_details" string="Deal Details">
+                            <field name="partner_id" options="{'no_create':1,'no_open':1}" required="1"
+                                   readonly="opportunity_id"/>
+                            <field name="series_sequence_id" options="{'no_create':1,'no_open':1,'limit':9}"
+                                   required="1"
+                                   readonly="opportunity_id"/>
+                            <field name="project_name" required="1" readonly="opportunity_id"/>
+                            <field name="location" required="1" readonly="opportunity_id"/>
+                        </group>
+                        <group name="quote_details" string="Quote Details">
+                            <field name="product_sale_type" invisible="1"/>
+                            <field name="is_pricelist_group" invisible="1"/>
+                            <field name="zone_type" readonly="is_frozen_due_to_project_creation"/>
+                            <field name="nz_pricelist_ids" invisible="1"/>
+                            <field name="series_sequence_id" invisible="1"/>
+                            <field name="pricelist_id"
+                                   options="{'no_create': 1, 'no_open': 1}"
+                                   domain="[('id', 'in', nz_pricelist_ids)]"
+                                   invisible="series_sequence_id != 1"
+                                   readonly="opportunity_id"/>
+                            <field name="pricelist_id" options="{'no_create':1,'no_open':1}"
+                                   domain="[('pricelist_type','=',product_sale_type)]"
+                                   invisible="not is_pricelist_group or series_sequence == 1"
+                                   readonly="opportunity_id"/>
+                            <field name="pricelist_id" options="{'no_create':1,'no_open':1}" readonly="1"
+                                   force_save="1" domain="[('pricelist_type','=',product_sale_type)]"
+                                   invisible="is_pricelist_group or series_sequence == 1"/>
+                            <field name="payment_term_id" readonly="is_frozen_due_to_project_creation"
+                                   placeholder="Payment Terms"/>
+                            <field name="date_order" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="simple_order_line" string="Order Lines">
+                            <field name="order_line"
+                                   widget="sol_o2m"
+                                   mode="list,kanban"
+                                   readonly="state == 'cancel' or locked or is_frozen_due_to_project_creation"
+                                   invisible="not order_line">
+                                <list string="Sales Order Lines" editable="bottom" limit="99999"
+                                      decoration-warning="(state in ['draft', 'sent'] and is_product_archived) or ((recompute_delivery_price and is_delivery))"
+                                      decoration-danger="display_type == 'line_section'"
+                                      decoration-info="display_type == 'line_note'" class="no_reorder" create="0">
+
+                                    <field name="sequence" column_invisible="1"/>
+                                    <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
+                                    <field name="display_type" column_invisible="True"/>
+                                    <field name="product_type" column_invisible="True"/>
+                                    <field
+                                            name="product_id"
+                                            string="Product Variant"
+                                            required="not display_type"
+                                            force_save="1"
+                                            widget="sol_product_many2one"
+                                            context="{
+                                                'partner_id': parent.partner_id,
+                                                'quantity': product_uom_qty,
+                                                'pricelist': parent.pricelist_id,
+                                                'uom':product_uom,
+                                                'company_id': parent.company_id,
+                                                'default_lst_price': price_unit,
+                                                'default_uom_id': product_uom,
+                                            }"
+                                            options="{
+                                                'no_open': True,
+                                            }"
+                                            domain="[('sale_ok', '=', True),('product_bom_type','!=','components')]"
+                                            width="600px;"
+                                    />
+                                    <field name="product_template_id"
+                                           string="Product"
+                                           required="not display_type"
+                                           widget="sol_product_many2one"
+                                           context="{
+                                            'partner_id': parent.partner_id,
+                                            'quantity': product_uom_qty,
+                                            'pricelist': parent.pricelist_id,
+                                            'uom':product_uom,
+                                            'company_id': parent.company_id,
+                                            'default_list_price': price_unit,
+                                            'default_uom_id': product_uom,
+                                        }"
+                                           options="{
+                                            'no_open': True,
+                                        }"
+                                           column_invisible="1"
+                                           domain="[('sale_ok', '=', True),('product_bom_type','!=','components')]"
+                                           placeholder="Type to find a product..."/>
+                                    <field name="product_template_attribute_value_ids" column_invisible="1"/>
+                                    <field name="product_no_variant_attribute_value_ids" column_invisible="1"/>
+                                    <field name="line_group_id_value" column_invisible="1"/>
+                                    <field name="line_section_id_value" column_invisible="1"/>
+                                    <field name="name" widget="sol_text" optional="show"/>
+                                    <field name="image_128" widget="image" class="oe_avatar" string="Image"
+                                           readonly="parent.state == 'sale'"
+                                           invisible="display_type in ('line_section','line_note')"/>
+                                    <field
+                                            name="product_uom_qty"
+                                            decoration-info="(not display_type)" decoration-bf="(not display_type)"
+                                            context="{
+                                                'partner_id': parent.partner_id,
+                                                'quantity': product_uom_qty,
+                                                'pricelist': parent.pricelist_id,
+                                                'uom': product_uom,
+                                                'company_id': parent.company_id
+                                            }"
+                                    />
+                                    <field
+                                            name="product_uom"
+                                            force_save="1"
+                                            string="UoM"
+                                            readonly="1"
+                                            required="not display_type"
+                                            context="{'company_id': parent.company_id}"
+                                            options='{"no_open": True}'
+                                            width="60px"
+                                    />
+
+                                    <field
+                                            name="price_unit"
+                                            readonly="1"/>
+                                    <field name="technical_price_unit" column_invisible="1"/>
+                                    <field
+                                            name="tax_id"
+                                            widget="many2many_tags"
+                                            options="{'no_create': True}"
+                                            domain="[('type_tax_use', '=', 'sale'), ('company_id', 'parent_of', parent.company_id), ('country_id', '=', parent.tax_country_id)]"
+                                            context="{'active_test': True}"
+                                            optional="hide"
+                                    />
+                                    <field name="price_subtotal"
+                                           string="Subtotal"/>
+                                    <field name="price_total"
+                                           string="Amount"/>
+
+
+                                    <button string="Add Code" name="action_show_wizard_to_add_code" type="object"
+                                            class="btn-link" invisible="display_type != 'line_section'"/>
+                                    <button string="Add Product" name="action_show_wizard_to_add_product" type="object"
+                                            class="btn-link" invisible="display_type != 'line_note'"/>
+
+
+                                </list>
+
+
+                            </field>
+                            <div class="alert alert-warning d-inline-flex me-1" role="alert" invisible="order_line">
+                                <i class="fa fa-arrow-circle-right fw-bold" aria-hidden="true">
+                                    Add group using the button on the right.
+                                </i>
+                            </div>
+                            <button name="action_show_wizard_to_add_group" type="object" class="btn-danger"
+                                    string="Add Group"/>
+                            <group name="note_group" col="6" class="mt-2 mt-md-0" invisible="not order_line">
+                                <group colspan="4" class="order-1 order-lg-0">
+                                    <field colspan="2" name="note" nolabel="1" placeholder="Terms and conditions..."/>
+                                </group>
+                                <group class="oe_subtotal_footer d-flex order-0 order-lg-1 flex-column gap-0 gap-sm-3"
+                                       colspan="2" name="sale_total">
+                                    <field name="tax_totals" widget="account-tax-totals-field" nolabel="1"
+                                           readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+
+
+                </sheet>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="simple_quote_view_sale_order_search_new" model="ir.ui.view">
+        <field name="name">simple.quote.view.sale.order.search.new</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="burgtec_quote_reference"/>
+                <field name="project_name"/>
+                <field name="partner_id"/>
+                <field name="location"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_simple_quote_view" model="ir.actions.act_window">
+        <field name="name">Simple Quotes</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_simple_quote', '=', True),('quote_type','=','sales_quote')]</field>
+        <field name="context">{'simple_quote':1}</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('simple_quote_view_sale_order_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('simple_quote_view_sale_order_form_new')})]"/>
+        <field name="search_view_id" ref="simple_quote_view_sale_order_search_new"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Simple Quote from the Wizard.
+            </p>
+            <p>
+                A simple quote wizard lets you create sales order with minimum required fields.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_simple_quote_root"
+              name="Simple Quotes"
+              web_icon="burgtec_simple_quote,static/description/icon.png"
+              sequence="5"/>
+
+    <menuitem id="menu_simple_quotes"
+              name="All Simple Quotes"
+              action="action_simple_quote_view"
+              parent="burgtec_simple_quote.menu_simple_quote_root"
+              sequence="20"/>
+
+
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="quotation_type_customization.account_move_ext" model="ir.ui.view">
+        <field name="name">account.move.ext</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//div[hasclass('oe_title')]//h1" position="replace">
+                <h1>
+                    <field name="burgtec_invoice_reference" invisible="burgtec_bill_reference" readonly="1"/>
+                    <field name="burgtec_bill_reference_computed" invisible="burgtec_invoice_reference" readonly="1"/>
+                    <span invisible="burgtec_invoice_reference or burgtec_bill_reference_computed">Draft</span>
+                </h1>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="quotation_type_customization.view_out_invoice_tree_ext" model="ir.ui.view">
+        <field name="name">quotation_type_customization.view.out.invoice.tree.ext</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="burgtec_invoice_reference"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

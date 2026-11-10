@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="action_create_company_or_contact_in_hubspot_for_existing_contacts_in_odoo"
+                model="ir.actions.server">
+            <field name="name">Export Existing Companies To HubSpot</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                records._export_existing_companies_to_hubspot()
+            </field>
+        </record>
+
+
+        <record id="action_create_contacts_in_hubspot_for_existing_contacts_in_odoo" model="ir.actions.server">
+            <field name="name">Export Existing Contacts To HubSpot</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                records._export_existing_contact_to_hubspot()
+            </field>
+        </record>
+
+    </data>
+</odoo>

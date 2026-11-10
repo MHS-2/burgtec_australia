@@ -1,0 +1,423 @@
+<odoo>
+    <data>
+        <!-- Sales Order list view definition -->
+
+        <record model="ir.ui.view" id="burgtec_list_views.sales_order_list">
+            <field name="name">burgtec.list.views.sales.order.list</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//list" position="replace">
+                    <list class="o_sale_order" string="Sales Orders" sample="1" decoration-muted="state == 'cancel'">
+                        <field name="message_needaction" column_invisible="True"/>
+                        <field name="currency_id" column_invisible="True"/>
+                        <button type="object" name="open_record_in_new_window" class="btn btn-link"
+                                icon="fa-external-link" title="Open Sale Order in New Tab"/>
+                        <field name="burgtec_quote_reference" readonly="1" decoration-bf="1" width="600px"/>
+                        <field name="project_name" width="500px"/>
+                        <field name="quote_type" widget="badge" width="500px"
+                               decoration-success="quote_type == 'delivery_stage'"
+                               decoration-info="quote_type == 'sales_quote'"
+                               decoration-warning="quote_type == 'project_quote'"/>
+                        <field name="system_revision" width="150px" string="Revision" optional="show"/>
+                        <field name="zone_type" width="150px"/>
+                        <field name="date_order" width="370px" optional="show" readonly="state in ['cancel', 'sale']"/>
+                        <field name="commitment_date" optional="hide"/>
+                        <field name="expected_date" optional="hide"/>
+                        <field name="partner_id" readonly="1" width="170px"/>
+                        <field name="user_id" widget="many2one_avatar_user" optional="show" width="520px"/>
+                        <!-- <field name="activity_ids" widget="list_activity" optional="show"/> -->
+                        <!-- <field name="team_id" optional="hide"/> -->
+                        <field name="company_id" groups="!base.group_multi_company" column_invisible="True"/>
+                        <field name="company_id" width="230px"
+                               groups="base.group_multi_company"
+                               optional="show"
+                               readonly="1"/>
+                        <field name="pricelist_id" width="180px" optional="show"/>
+                        <field name="payment_term_id" width="220px" optional="show"/>
+                        <field name="amount_untaxed" width="600px"
+                               sum="Total Tax Excluded"
+                               widget="monetary"
+                               optional="show"/>
+                        <field name="amount_tax" width="220px"
+                               sum="Tax Total"
+                               widget="monetary"
+                               optional="show"/>
+                        <field name="amount_total" width="220px"
+                               sum="Total Tax Included"
+                               widget="monetary"
+                               decoration-bf="1"
+                               decoration-info="invoice_status == 'to invoice'"
+                               optional="show"/>
+                        <!-- <field name="tag_ids"
+                              widget="many2many_tags"
+                              options="{'color_field': 'color'}"
+                              optional="hide"/> -->
+                        <field name="state" width="180px"
+                               decoration-success="state == 'sale'"
+                               decoration-info="state == 'draft'"
+                               decoration-primary="state == 'sent'"
+                               widget="badge"
+                               optional="hide"/>
+                        <field name="invoice_status" width="180px"
+                               decoration-success="invoice_status == 'invoiced'"
+                               decoration-info="invoice_status == 'to invoice'"
+                               decoration-warning="invoice_status == 'upselling'"
+                               widget="badge"
+                               optional="hide"
+                               invisible="quote_type != 'project_quote'"/>
+                        <field name="client_order_ref" optional="hide" width="180px"/>
+                        <field name="validity_date" optional="hide" width="180px"/>
+                        <field name="name" string="Number" readonly="1" decoration-bf="1" optional="hide"
+                               width="180px"/>
+                        <field name="since_earliest_po_weekly_update" class="text-center" optional="hide" width="180px"
+                               invisible="quote_type != 'delivery_stage'"/>
+                        <field name="hubspot_ticket_id" class="text-center" invisible="quote_type != 'delivery_stage'"
+                               readonly="1" optional="hide" width="300px"/>
+                        <field name="hubspot_ticket_schedule_dispatch" invisible="quote_type != 'delivery_stage'"
+                               readonly="1" width="200px" optional="hide"/>
+                        <field name="latest_eta_date" invisible="quote_type != 'delivery_stage'" width="170px"
+                               optional="hide"/>
+                        <field name="scheduled_delivers_date" string="Scheduled Delivery" optional="hide" width="170px"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="scheduled_install_date" string="Scheduled Install" optional="hide" width="170px"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="scheduled_install_complete_date" string="Scheduled Install Complete"
+                               optional="hide" width="170px"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field string="ETA vs Dispatch (Days)" name="latest_eta_dispatch_date_diff"
+                               invisible="quote_type != 'delivery_stage'" width="200px" optional="hide"
+                               class="text-center"/>
+                        <field name="delay_risk" invisible="not delay_risk or quote_type != 'delivery_stage'"
+                               width="170px" optional="hide"/>
+                        <field name="hubspot_ticket_status" width="350px" optional="hide"/>
+                        <field name="delivery_status_tracking" string="Delivery Status"
+                               decoration-muted="delivery_status_tracking == 'unscheduled'"
+                               decoration-info="delivery_status_tracking == 'fully_received'"
+                               decoration-success="delivery_status_tracking == 'on_track'"
+                               decoration-warning="delivery_status_tracking == 'caution'"
+                               decoration-danger="delivery_status_tracking == 'off_track'"
+                               widget="badge" invisible="quote_type != 'delivery_stage'" width="350px" optional="hide"/>
+                        <field name="is_backorder_registered" optional="hide" width="200px" widget="boolean_toggle"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="qr_url" widget="url" readonly="1" width="150px" optional="hide"
+                               invisible="quote_type != 'delivery_stage'" string="Hubspot Ticket URL"/>
+
+                    </list>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="burgtec_list_views.sale_order_list_upload">
+            <field name="name">burgtec.list.views.sales.order.list.upload</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_list_upload"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//list" position="replace">
+                    <list class="o_sale_order" string="Sales Orders" sample="1" decoration-muted="state == 'cancel'">
+                        <field name="message_needaction" column_invisible="True"/>
+                        <field name="currency_id" column_invisible="True"/>
+                        <button type="object" name="open_record_in_new_window" class="btn btn-link"
+                                icon="fa-external-link" title="Open Sale Order in New Tab"/>
+                        <field name="burgtec_quote_reference" readonly="1" decoration-bf="1" width="600px"/>
+                        <field name="project_name" width="500px"/>
+                        <field name="quote_type" widget="badge" width="500px"
+                               decoration-success="quote_type == 'delivery_stage'"
+                               decoration-info="quote_type == 'sales_quote'"
+                               decoration-warning="quote_type == 'project_quote'"/>
+                        <field name="system_revision" width="150px" string="Revision" optional="show"/>
+                        <field name="zone_type" width="150px"/>
+                        <field name="date_order" width="370px" optional="show" readonly="state in ['cancel', 'sale']"/>
+                        <field name="commitment_date" optional="hide"/>
+                        <field name="expected_date" optional="hide"/>
+                        <field name="partner_id" readonly="1" width="170px"/>
+                        <field name="user_id" widget="many2one_avatar_user" optional="show" width="520px"/>
+                        <!-- <field name="activity_ids" widget="list_activity" optional="show"/> -->
+                        <!-- <field name="team_id" optional="hide"/> -->
+                        <field name="company_id" groups="!base.group_multi_company" column_invisible="True"/>
+                        <field name="company_id" width="230px"
+                               groups="base.group_multi_company"
+                               optional="show"
+                               readonly="1"/>
+                        <field name="pricelist_id" width="180px" optional="show"/>
+                        <field name="payment_term_id" width="220px" optional="show"/>
+                        <field name="amount_untaxed" width="600px"
+                               sum="Total Tax Excluded"
+                               widget="monetary"
+                               optional="show"/>
+                        <field name="amount_tax" width="220px"
+                               sum="Tax Total"
+                               widget="monetary"
+                               optional="show"/>
+                        <field name="amount_total" width="220px"
+                               sum="Total Tax Included"
+                               widget="monetary"
+                               decoration-bf="1"
+                               decoration-info="invoice_status == 'to invoice'"
+                               optional="show"/>
+                        <!-- <field name="tag_ids"
+                              widget="many2many_tags"
+                              options="{'color_field': 'color'}"
+                              optional="hide"/> -->
+                        <field name="state" width="180px"
+                               decoration-success="state == 'sale'"
+                               decoration-info="state == 'draft'"
+                               decoration-primary="state == 'sent'"
+                               widget="badge"
+                               optional="hide"/>
+                        <field name="invoice_status" width="180px"
+                               decoration-success="invoice_status == 'invoiced'"
+                               decoration-info="invoice_status == 'to invoice'"
+                               decoration-warning="invoice_status == 'upselling'"
+                               widget="badge"
+                               optional="hide"
+                               invisible="quote_type != 'project_quote'"/>
+                        <field name="client_order_ref" optional="hide" width="180px"/>
+                        <field name="validity_date" optional="hide" width="180px"/>
+                        <field name="name" string="Number" readonly="1" decoration-bf="1" optional="hide"
+                               width="180px"/>
+                        <field name="since_earliest_po_weekly_update" class="text-center" optional="hide" width="180px"
+                               invisible="quote_type != 'delivery_stage'"/>
+                        <field name="hubspot_ticket_id" class="text-center" invisible="quote_type != 'delivery_stage'"
+                               readonly="1" optional="hide" width="300px"/>
+                        <field name="hubspot_ticket_schedule_dispatch" invisible="quote_type != 'delivery_stage'"
+                               readonly="1" width="200px" optional="hide"/>
+                        <field name="latest_eta_date" invisible="quote_type != 'delivery_stage'" width="170px"
+                               optional="hide"/>
+                        <field name="scheduled_delivers_date" string="Scheduled Delivery" optional="hide" width="170px"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="scheduled_install_date" string="Scheduled Install" optional="hide" width="170px"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="scheduled_install_complete_date" string="Scheduled Install Complete"
+                               optional="hide" width="170px"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field string="ETA vs Dispatch (Days)" name="latest_eta_dispatch_date_diff"
+                               invisible="quote_type != 'delivery_stage'" width="200px" optional="hide"
+                               class="text-center"/>
+                        <field name="delay_risk" invisible="not delay_risk or quote_type != 'delivery_stage'"
+                               width="170px" optional="hide"/>
+                        <field name="hubspot_ticket_status" width="350px" optional="hide"/>
+                        <field name="delivery_status_tracking" string="Delivery Status"
+                               decoration-muted="delivery_status_tracking == 'unscheduled'"
+                               decoration-info="delivery_status_tracking == 'fully_received'"
+                               decoration-success="delivery_status_tracking == 'on_track'"
+                               decoration-warning="delivery_status_tracking == 'caution'"
+                               decoration-danger="delivery_status_tracking == 'off_track'"
+                               widget="badge" invisible="quote_type != 'delivery_stage'" width="350px" optional="hide"/>
+                        <field name="is_backorder_registered" optional="hide" width="200px" widget="boolean_toggle"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="qr_url" widget="url" readonly="1" width="150px" optional="hide"
+                               invisible="quote_type != 'delivery_stage'" string="Hubspot Ticket URL"/>
+
+
+                    </list>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="burgtec_list_views.sale_order_tree" model="ir.ui.view">
+            <field name="name">burgtec_list_views.sale.order.list.inherit.website.sale</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='website_id']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Purchase Orders List Views -->
+
+
+        <record id="burgtec_list_views.purchase_order_kpis_tree_inherit" model="ir.ui.view">
+            <field name="name">burgtec_list_views.purchase.order.kpis.tree.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="replace">
+                    <list string="Purchase Order" decoration-info="state in ['draft', 'sent']"
+                          decoration-muted="state == 'cancel'" class="o_purchase_order"
+                          js_class="purchase_dashboard_list" sample="1">
+                        <!-- <header>
+                            <button name="action_create_invoice" type="object" string="Create Bills"/>
+                            <button name="button_cancel" type="object" string="Cancel"
+                                confirm="Are you sure you want to cancel the selected RFQs/Orders?"/>
+                        </header> -->
+                        <button type="object" name="open_record_in_new_window" class="btn btn-link"
+                                icon="fa-external-link" title="Open Purchase Order in New Tab"/>
+                        <field name="priority" optional="hide" widget="priority" nolabel="1" width="25px"/>
+                        <field name="burgtec_purchase_reference" readonly="1" decoration-bf="1" width="600px"/>
+                        <field name="partner_id" readonly="1" width="300px"/>
+                        <field name="partner_ref" optional="hide" width="500px"/>
+                        <field name="burgtec_po_status" widget="badge" width="200px"
+                               decoration-warning="burgtec_po_status in ['sent','await_receipt']"
+                               decoration-info="burgtec_po_status in ['draft_to_approve','draft_to_sent']"
+                               decoration-primary="burgtec_po_status in ['received_partial','received_full']"
+                               decoration-success="burgtec_po_status in ['delivery_only','delivered_partial','delivered_full']"/>
+                        <field name="required_arrival_date" width="200px"/>
+                        <field name="hubspot_dispatch_date" width="200px"/>
+                        <field name="date_planned" width="200px"/>
+                        <field name="bo_number" string="BO Number#" width="250px" optional="show"/>
+                        <field name="is_po_not_going_to_bv" readonly="1" widget="boolean_toggle" width="250px"
+                               optional="hide"/>
+                        <field name="bo_notes" width="250px" optional="hide"/>
+                        <field name="is_burgtec_vendor" widget="boolean_toggle" width="500px" optional="hide"/>
+                        <field name="deal_project_name" width="300px"/>
+                        <field name="tag" readonly="1" widget="badge" decoration-success="tag == 'child'"
+                               decoration-primary="tag == 'parent'" width="500px"/>
+                        <!-- <field name="name" string="Reference" readonly="1" decoration-bf="1"/> -->
+                        <field name="date_approve" column_invisible="context.get('quotation_only', False)"
+                               optional="show"/>
+                        <field name="company_id" readonly="1" options="{'no_create': True}"
+                               groups="base.group_multi_company" optional="show"/>
+                        <field name="company_id" groups="!base.group_multi_company" column_invisible="True"
+                               readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <field name="is_manual_expected_arrival" widget="boolean_toggle" readonly="1" width="200px"/>
+                        <field name="last_po_weekly_update_date" optional="show" width="200px"/>
+                        <field name="overdue_po_weekly_update" widget="boolean_toggle" readonly="1" optional="show"
+                               width="200px"/>
+                        <field name="po_due_in_two_days" widget="boolean_toggle" readonly="1" optional="show"
+                               width="200px"/>
+                        <field name="po_due_after_dispatch" widget="boolean_toggle" readonly="1" optional="show"
+                               width="200px"/>
+                        <field name="po_sent_date" string="PO Sent Date" readonly="1" optional="show" width="200px"/>
+                        <field name="since_sent_days" string="Since Sent Days" readonly="1" optional="show"
+                               width="200px"/>
+                        <field name="user_id" optional="show" widget="many2one_avatar_user" width="200px"/>
+                        <field name="date_order" width="150px"
+                               invisible="state == 'purchase' or state == 'done' or state == 'cancel'"
+                               column_invisible="not context.get('quotation_only', False)"
+                               readonly="state in ['cancel', 'done', 'purchase']" widget="remaining_days"
+                               optional="show"/>
+                        <!-- <field name="activity_ids" widget="list_activity" optional="show"/> -->
+                        <field name="origin" optional="show" width="150px"/>
+                        <field name="picking_type_id" optional="show" width="200px"/>
+                        <field name="dest_address_id" optional="show" width="230px"/>
+                        <field name="shipping_address_type" optional="show" width="260px"/>
+                        <field name="manual_shipping_address" optional="show" width="300px"
+                               invisible="shipping_address_type not in 'manual'"/>
+                        <field name="wh_rack_location" readonly="1" widget="url" optional="hide" width="250px"/>
+                        <field name="delivery_stage_link" optional="hide" readonly="1" widget="url" width="250px"/>
+                        <field name="onedrive_po_folder_link" optional="hide" readonly="1" widget="url" width="250px"/>
+                        <field name="amount_untaxed" sum="Total Untaxed amount" string="Untaxed" widget="monetary"
+                               optional="show" width="250px"/>
+                        <field name="amount_total" sum="Total amount" widget="monetary" optional="show"
+                               decoration-bf="state in ['purchase', 'done']" width="250px"/>
+                        <field name="currency_id" column_invisible="True"
+                               readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <field name="remaining_purchase_amount" width="250px" widget="monetary" sum="Outstanding Balance"/>
+                        <field name="amount_total_cc" sum="Total amount" widget="monetary" optional="hide"
+                               width="250px"/>
+                        <field name="company_currency_id" column_invisible="True"/>
+                        <field name="state" optional="show" widget="badge"
+                               decoration-success="state == 'purchase' or state == 'done'"
+                               decoration-warning="state == 'to approve'"
+                               decoration-info="state == 'draft' or state == 'sent'" width="250px"/>
+                        <field name="invoice_status" optional="show" width="180px"/>
+                        <field name="purchase_comments" width="200px" optional="show"/>
+
+                    </list>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="burgtec_list_views.purchase_order_view_tree" model="ir.ui.view">
+            <field name="name">burgtec_list_views.purchase.order.view.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="replace">
+                    <list decoration-muted="state == 'cancel'"
+                          decoration-info="invoice_status == 'to invoice'"
+                          string="Purchase Order"
+                          class="o_purchase_order"
+                          sample="1">
+                        <!-- <header>
+                            <button name="action_create_invoice" type="object" string="Create Bills"/>
+                            <button name="button_cancel" type="object" string="Cancel"
+                                confirm="Are you sure you want to cancel the selected RFQs/Orders?"/>
+                        </header> -->
+                        <button type="object" name="open_record_in_new_window" class="btn btn-link"
+                                icon="fa-external-link" title="Open Purchase Order in New Tab"/>
+                        <field name="priority" optional="hide" widget="priority" nolabel="1" width="25px"/>
+                        <field name="burgtec_purchase_reference" readonly="1" decoration-bf="1" width="600px"/>
+                        <field name="partner_id" readonly="1" width="300px"/>
+                        <field name="partner_ref" optional="hide" width="500px"/>
+                        <field name="burgtec_po_status" widget="badge" width="200px"
+                               decoration-warning="burgtec_po_status in ['sent','await_receipt']"
+                               decoration-info="burgtec_po_status in ['draft_to_approve','draft_to_sent']"
+                               decoration-primary="burgtec_po_status in ['received_partial','received_full']"
+                               decoration-success="burgtec_po_status in ['delivery_only','delivered_partial','delivered_full']"/>
+                        <field name="required_arrival_date" width="200px"/>
+                        <field name="hubspot_dispatch_date" width="200px"/>
+                        <field name="date_planned" width="200px"/>
+                        <field name="bo_number" string="BO Number#" width="250px" optional="show"/>
+                        <field name="is_po_not_going_to_bv" readonly="1" widget="boolean_toggle" width="250px"
+                               optional="hide"/>
+                        <field name="bo_notes" width="250px" optional="hide"/>
+                        <field name="is_burgtec_vendor" widget="boolean_toggle" width="500px" optional="hide"/>
+                        <field name="deal_project_name" width="300px"/>
+                        <field name="tag" readonly="1" widget="badge" decoration-success="tag == 'child'"
+                               decoration-primary="tag == 'parent'" width="500px"/>
+                        <!-- <field name="name" string="Reference" readonly="1" decoration-bf="1"/> -->
+                        <field name="date_approve" column_invisible="context.get('quotation_only', False)"
+                               optional="show"/>
+                        <field name="company_id" readonly="1" options="{'no_create': True}"
+                               groups="base.group_multi_company" optional="show"/>
+                        <field name="company_id" groups="!base.group_multi_company" column_invisible="True"
+                               readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <field name="is_manual_expected_arrival" widget="boolean_toggle" readonly="1" width="200px"/>
+                        <field name="last_po_weekly_update_date" optional="show" width="200px"/>
+                        <field name="overdue_po_weekly_update" widget="boolean_toggle" readonly="1" optional="show"
+                               width="200px"/>
+                        <field name="po_due_in_two_days" widget="boolean_toggle" readonly="1" optional="show"
+                               width="200px"/>
+                        <field name="po_due_after_dispatch" widget="boolean_toggle" readonly="1" optional="show"
+                               width="200px"/>
+                        <field name="po_sent_date" string="PO Sent Date" readonly="1" optional="show" width="200px"/>
+                        <field name="since_sent_days" string="Since Sent Days" readonly="1" optional="show"
+                               width="200px"/>
+                        <field name="user_id" optional="show" widget="many2one_avatar_user" width="200px"/>
+                        <field name="date_order" width="150px"
+                               invisible="state == 'purchase' or state == 'done' or state == 'cancel'"
+                               column_invisible="not context.get('quotation_only', False)"
+                               readonly="state in ['cancel', 'done', 'purchase']" widget="remaining_days"
+                               optional="show"/>
+                        <!-- <field name="activity_ids" widget="list_activity" optional="show"/> -->
+                        <field name="origin" optional="show" width="150px"/>
+                        <field name="picking_type_id" optional="show" width="200px"/>
+                        <field name="dest_address_id" optional="show" width="230px"/>
+                        <field name="shipping_address_type" optional="show" width="260px"/>
+                        <field name="manual_shipping_address" optional="show" width="300px"
+                               invisible="shipping_address_type not in 'manual'"/>
+                        <field name="wh_rack_location" readonly="1" widget="url" optional="hide" width="250px"/>
+                        <field name="delivery_stage_link" optional="hide" readonly="1" widget="url" width="250px"/>
+                        <field name="onedrive_po_folder_link" optional="hide" readonly="1" widget="url" width="250px"/>
+                        <field name="amount_untaxed" sum="Total Untaxed amount" string="Untaxed" widget="monetary"
+                               optional="show" width="250px"/>
+                        <field name="amount_total" sum="Total amount" widget="monetary" optional="show"
+                               decoration-bf="state in ['purchase', 'done']" width="250px"/>
+                        <field name="currency_id" column_invisible="True"
+                               readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <field name="remaining_purchase_amount" width="250px" widget="monetary" sum="Outstanding Balance"/>
+                        <field name="amount_total_cc" sum="Total amount" widget="monetary" optional="hide"
+                               width="250px"/>
+                        <field name="company_currency_id" column_invisible="True"/>
+                        <field name="state" optional="show" widget="badge"
+                               decoration-success="state == 'purchase' or state == 'done'"
+                               decoration-warning="state == 'to approve'"
+                               decoration-info="state == 'draft' or state == 'sent'" width="250px"/>
+                        <field name="invoice_status" optional="show" width="180px"/>
+                        <field name="purchase_comments" width="200px" optional="show"/>
+
+                    </list>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="burgtec_online_quotation_link.planning_screen_view_ext1" model="ir.ui.view">
+        <field name="name">burgtec_online_quotation_link.planning.screen.view.ext1</field>
+        <field name="model">planning.screen</field>
+        <field name="inherit_id" ref="artwork_url_attachment_for_screens.planning_screen_view_ext"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Customer Feedback Preference" name="user_feedback_preference">
+                    <field name="line_ids" readonly="1" nolabel="1">
+                        <list create="0" edit="0" delete="0">
+                            <button type="object" name="open_record_in_new_window" class="btn btn-link"
+                                    invisible="not(artwork_image_url)"
+                                    icon="fa-external-link" title="Open Artwork in New Tab"/>
+                            <field name="artwork_image_url" widget="url" column_invisible="1"/>
+                            <field name="product_variant_id"/>
+                            <field name="public_comment" string="Customer Comment"/>
+                            <field name="customer_finish_preference"/>
+                            <field name="user_feedback" widget="badge" string="Customer Feedback"
+                                   decoration-success="user_feedback == 'approve'"
+                                   decoration-warning="user_feedback == 'rev_required'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="burgtec_online_quotation_link.preplanning_screen_view_ext1" model="ir.ui.view">
+        <field name="name">burgtec_online_quotation_link.preplanning.screen.view.ext1</field>
+        <field name="model">sale.quote.planning.screen</field>
+        <field name="inherit_id" ref="artwork_url_attachment_for_screens.preplanning_screen_view_ext"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Customer Feedback Preference" name="user_feedback_preference">
+                    <field name="sale_quote_line_ids" readonly="1" nolabel="1">
+                        <list create="0" edit="0" delete="0">
+                            <button type="object" name="open_record_in_new_window" class="btn btn-link"
+                                    invisible="not(artwork_image_url)"
+                                    icon="fa-external-link" title="Open Artwork in New Tab"/>
+                            <field name="artwork_image_url" widget="url" column_invisible="1"/>
+                            <field name="product_variant_id"/>
+                            <field name="public_comment" string="Customer Comment"/>
+                            <field name="customer_finish_preference"/>
+                            <field name="user_feedback" widget="badge" string="Customer Feedback"
+                                   decoration-success="user_feedback == 'approve'"
+                                   decoration-warning="user_feedback == 'rev_required'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

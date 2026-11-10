@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="burgtec_delivery_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <style>
+                        .form-field {
+                        border: 1px solid black;
+                        padding: 8px;
+                        margin-bottom: 10px;
+                        background-color: white;
+                        }
+                        .form-field1 {
+                        padding: 8px;
+                        margin-bottom: 10px;
+                        background-color: white;
+                        }
+                        .form-field-inline {
+                        border: 1px solid black;
+                        padding: 8px;
+                        background-color: white;
+                        }
+                        .form-label {
+                        font-size: 14px;
+                        }
+                        .form-label1 {
+                        font-size: 14px;
+                        font-weight: bold;
+                        }
+                        .product-table {
+                        border-collapse: collapse;
+                        width: 100%;
+                        margin-bottom: 15px;
+                        table-layout: fixed;
+                        }
+                        .product-table th, .product-table td {
+                        border: 1px solid black;
+                        padding: 8px;
+                        text-align: left;
+                        word-wrap: break-word;
+                        vertical-align: top;
+                        }
+                        .product-table td {
+                        padding: 8px;
+                        text-align: left;
+                        }
+                        .product-table th {
+                        background-color: #f5f5f5;
+                        font-weight: bold;
+                        }
+                        .status-checkbox {
+                        width: 20px;
+                        height: 20px;
+                        border: 1px solid black;
+                        display: inline-block;
+                        margin: 0 auto;
+                        vertical-align: middle;
+                        }
+                        .po-section {
+                        margin-bottom: 30px;
+                        }
+                        .timestamp-section {
+                        position: absolute;
+                        bottom: 20px;
+                        right: 20px;
+                        color: red;
+                        }
+                        /* Fixed column widths */
+                        .product-table .col-product-code {
+                        width: 18%;
+                        word-wrap: break-word;
+                        white-space: normal;
+                        font-size:14px;
+                        padding: 8px 0px 8px 4px;
+                        }
+                        .product-table .col-product-group {
+                        width: 28%;
+                        word-wrap: break-word;
+                        white-space: normal;
+                        font-size:14px;
+                        text-align: left;
+                        <!--                        padding: 8px 0px;-->
+
+                        }
+                        .product-table .col-description {
+                        width: 35%;
+                        max-width: 35%;
+                        font-size:14px;
+                        text-align: left;
+                        <!--                        padding: 8px 0px;-->
+
+                        }
+                        .product-table .col-qty {
+                        width: 8%;
+                        vertical-align: middle;
+                        text-align: center;
+                        font-size:14px;
+                        padding: 8px 0px;
+
+                        }
+                        .product-table .col-status {
+                        vertical-align: middle;
+                        width: 14%;
+                        text-align: center;
+                        font-size:14px;
+                        padding: 8px 0px;
+
+                        }
+                        .product-table .col-status-dispatched {
+                        vertical-align: middle;
+                        width: 16%;
+                        text-align: center;
+                        font-size:14px;
+                        padding: 8px 0px;
+
+                        }
+                        /* Prevent breaking inside rows */
+                        .product-table tr {
+                        page-break-inside: avoid;
+                        break-inside: avoid;
+                        }
+                        .header-indicators > div {
+                        display: table-cell;
+                        vertical-align: middle;
+                        box-sizing: border-box;
+                        padding: 0; /* override inline paddings */
+                        white-space: nowrap; /* prevent line-wrap between cells */
+                        }
+
+                        .header-indicators {
+                        display: table; /* table-based layout (stable in wkhtmltopdf) */
+                        table-layout: fixed;
+                        border-spacing: 10px 0; /* reduced horizontal gap from 20px to 10px */
+                        float: right;
+                        z-index: 10;
+                        margin-top: 0; /* remove top margin */
+                        }
+
+                        .qr-code-container {
+                        padding: 10px;
+                        background-color: #fff;
+                        border: 2px solid #333;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                        width: 140px; /* fixed width to keep consistent */
+                        text-align: center;
+                        margin-top: 0; /* remove top margin */
+                        }
+
+                        .qr-code-container img {
+                        width: 120px;
+                        height: 120px;
+                        display: block;
+                        margin: 0 auto;
+                        }
+
+                        .location-indicator {
+                        padding: 20px 30px; /* reduced so it fits beside QR */
+                        color: #fff;
+                        font-weight: bold;
+                        font-size: 32px;
+                        text-align: center;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                        min-width: 140px; /* ensures it doesn't collapse */
+                        margin-top: 0; /* remove top margin */
+                        margin-right: 0; /* remove right margin */
+                        }
+
+                    </style>
+
+                    <!-- Header Indicators Container -->
+
+
+                    <!-- Header section -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <h1 style="font-family: 'Arial', sans-serif; font-weight: 600; font-size: 48px; margin-bottom: 30px;">
+                                burgtec.
+                            </h1>
+                        </div>
+                        <div class="col-6  pe-0">
+                            <div class="header-indicators">
+                                <!-- QR Code -->
+                                <div class="qr-code-container">
+                                    <img t-attf-src="data:image/png;base64,#{o.qr_code}" alt="QR Code"/>
+                                </div>
+
+                                <!-- Location Indicator -->
+                                <div class="location-indicator"
+                                     t-attf-style="background-color: #{
+                                          'nsw' in (o.location or '').lower() and '#6366F1' or
+                                          'act' in (o.location or '').lower() and '#EAB308' or
+                                          'vic' in (o.location or '').lower() and '#22C55E' or
+                                          'qld' in (o.location or '').lower() and '#DC2626' or
+                                          'other' in (o.location or '').lower() and '#9333EA' or
+                                          '#6366F1'
+                                       };">
+                                    <t t-if="'nsw' in (o.location or '').lower()">NSW</t>
+                                    <t t-elif="'act' in (o.location or '').lower()">ACT</t>
+                                    <t t-elif="'vic' in (o.location or '').lower()">VIC</t>
+                                    <t t-elif="'qld' in (o.location or '').lower()">QLD</t>
+                                    <t t-elif="'other' in (o.location or '').lower()">OTHER</t>
+                                    <t t-else="">NSW</t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <!-- Delivery Stage Number -->
+                        <div class="col-6">
+                            <div class="form-field1 d-flex align-items-center">
+                                <span class="form-label1 me-2">Delivery Stage Number:</span>
+                                <span style="font-size:14px">
+                                    <t t-esc="o.burgtec_quote_reference"/>
+                                    <!--                                    <t t-esc="o.delivery_stage"/>-->
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Client Name -->
+                        <div class="col-6">
+                            <div class="form-field1 d-flex align-items-center">
+                                <span class="form-label1 me-2">Client Name:</span>
+                                <span style="font-size:14px">
+                                    <t t-esc="o.partner_id.name"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Name -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <div class="form-field1 d-flex align-items-center">
+                                <span class="form-label1 me-2">Project Name:</span>
+                                <span style="font-size:14px">
+                                    <t t-esc="o.project_name"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PO + Table block with page-break control -->
+                    <t t-foreach="parent_po" t-as="p_po">
+                        <t t-foreach="child_pos" t-as="child_po">
+                            <div style="page-break-inside: avoid; break-inside: avoid; margin-bottom: 20px;">
+                                <div class="form-field" style="margin-bottom: 1px;">
+                                    <t t-set="base_url"
+                                       t-value="o.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                                    <t t-set="po_print_url"
+                                       t-value="base_url + '/label/print/%s/%s' % (o.id, child_po.id)"/>
+                                    <t t-set="qr_size" t-value="'width:20mm;height:20mm'"/>
+                                    <table style="width: 100%; border: none;">
+                                        <tr>
+                                            <td style="vertical-align: top; border: none;">
+                                                <div style="height: 20px;">
+                                                    <span class="form-label1 me-2">PO Number:</span>
+                                                    <span style="font-size:14px">
+                                                        <t t-esc="child_po.burgtec_purchase_reference"/>
+                                                    </span>
+                                                </div>
+                                                <div style="height: 20px;">
+                                                    <span class="form-label1 me-2">PO Supplier:</span>
+                                                    <span style="font-size:14px">
+                                                        <t t-esc="child_po.partner_id.name"/>
+                                                    </span>
+                                                </div>
+                                                <div style="height: 20px;">
+                                                    <span class="form-label1 me-2">Delivery Address:</span>
+                                                    <span style="font-size:14px">
+                                                        <t t-if="child_po.shipping_address_type == 'manual'">
+                                                            <t t-esc="child_po.manual_shipping_address"/>
+                                                        </t>
+                                                        <t t-elif="child_po.shipping_address_type == 'pickup'">
+                                                            <t t-esc="'Pick Up'"/>
+                                                        </t>
+                                                        <t t-elif="child_po.shipping_address_type == 'burgtec_vendor'">
+                                                            <t t-esc="'Burgtec Berkeley Vale - 10A Corella Close, Berkeley Vale NSW 2261 - Contact Ben Froome 0401630398'"/>
+                                                        </t>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td style="width: 25mm; vertical-align: middle; text-align: center; border: none;">
+                                                <div t-out="po_print_url"
+                                                     t-options="{'widget': 'barcode',
+                                    'symbology': 'QR',
+                                    'img_style': qr_size}"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <table class="product-table" style="page-break-inside: avoid; break-inside: avoid;">
+                                    <thead>
+                                        <tr>
+
+                                            <th class="col-product-group">Group Code</th>
+                                            <th class="col-product-code">Product Code</th>
+                                            <th class="col-description">Description</th>
+                                            <th class="col-qty">Qty</th>
+                                            <th class="col-status">Received</th>
+                                            <th class="col-status">Staged</th>
+                                            <th class="col-status-dispatched">Dispatched</th>
+                                            <th class="col-status">Delivered</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="child_po.order_line.filtered(lambda l: not l.product_id.is_delivery_and_installation)"
+                                           t-as="line">
+                                            <tr>
+
+                                                <td class="col-product-code">
+                                                    <t t-esc="line.line_section_name_child"/>
+                                                </td>
+                                                <td class="col-product-code">
+                                                    <t t-esc="line.product_id.default_code"/>
+                                                </td>
+                                                <td class="col-description">
+                                                    <span>
+                                                        <t t-esc="line.product_id.name"/>
+                                                        <t t-if="line.note">
+                                                            <br/>
+                                                            <strong>Note:</strong>
+                                                            <br/>
+                                                            <t t-esc="line.note"/>
+                                                        </t>
+
+                                                    </span>
+                                                </td>
+                                                <td class="col-qty">
+                                                    <!--                                                    <t t-esc="line.product_uom_qty"/>-->
+                                                    <t t-out="'{0:,.0f}'.format(line.product_uom_qty) if line.product_uom_qty == int(line.product_uom_qty) else '{0:,.2f}'.format(line.product_uom_qty)"/>
+                                                </td>
+                                                <td class="col-status">
+                                                    <div class="status-checkbox"></div>
+                                                </td>
+                                                <td class="col-status">
+                                                    <div class="status-checkbox"></div>
+                                                </td>
+                                                <td class="col-status">
+                                                    <div class="status-checkbox"></div>
+                                                </td>
+                                                <td class="col-status">
+                                                    <div class="status-checkbox"></div>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer" style="font-family: 'Graphik-Semibold'; font-weight: 600; font-size: 13px;">
+                    <div style="display: flex; flex-direction: row; align-items: center; width: 100%;">
+
+                        <!-- Left: Location Badge -->
+                        <div style="width: 60px;align-items: center; flex-shrink: 0;">
+                            <div class="location-footer"
+                                 t-attf-style="padding: 5px 8px;
+                     color: white; font-weight: bold; font-size: 10px;
+                     text-align: center;
+                     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+                     background-color: #{
+                         'nsw' in (o.location or '').lower() and '#6366F1' or
+                         'act' in (o.location or '').lower() and '#EAB308' or
+                         'vic' in (o.location or '').lower() and '#22C55E' or
+                         'qld' in (o.location or '').lower() and '#DC2626' or
+                         'other' in (o.location or '').lower() and '#9333EA' or
+                         '#6366F1'
+                     };">
+                                <t t-if="'nsw' in (o.location or '').lower()">NSW</t>
+                                <t t-elif="'act' in (o.location or '').lower()">ACT</t>
+                                <t t-elif="'vic' in (o.location or '').lower()">VIC</t>
+                                <t t-elif="'qld' in (o.location or '').lower()">QLD</t>
+                                <t t-elif="'other' in (o.location or '').lower()">OTHER</t>
+                                <t t-else="">NSW</t>
+                            </div>
+                        </div>
+
+                        <!-- Center: Page Number -->
+                        <div style="margin-top:-15px;flex: 1;align-items: center; text-align: center;">
+                            <div name="pager" t-if="report_type == 'pdf'">
+                                Page:
+                                <span class="page"/>
+                                /
+                                <span class="topage"/>
+                            </div>
+                        </div>
+
+                        <!-- Right: Quote + Date/Time -->
+                        <div style="margin-top: -15px;flex-shrink: 0;align-items: center; text-align: right; font-size: 13px;">
+                            <div t-if="report_type == 'pdf'">
+                                Quote:
+                                <span t-out="o.burgtec_quote_reference"/>
+                                |
+                                <t t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                                |
+                                <t t-out="context_timestamp(datetime.datetime.now()).strftime('%I:%M %p')"/>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+    <record id="paperformat_burgtec_delivery_report" model="report.paperformat">
+        <field name="name">Burgtec Delivery Report Paperformat</field>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_burgtec_delivery_report" model="ir.actions.report">
+        <field name="name">Burgtec Delivery Report</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">burgtec_delivery_report.burgtec_delivery_report</field>
+        <field name="report_file">burgtec_delivery_report.burgtec_delivery_report</field>
+        <!--        <field name="print_report_name">'Burgtec - %s' % (object.burgtec_quote_reference)</field> -->
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="domain">[('quote_type','=','delivery_stage')]</field>
+        <field name="paperformat_id" ref="burgtec_delivery_report.paperformat_burgtec_delivery_report"/>
+    </record>
+</odoo>

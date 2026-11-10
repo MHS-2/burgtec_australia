@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View bulk.action.operations form -->
+    <record id="view_bulk_action_operations_form" model="ir.ui.view">
+        <field name="name">view.bulk.action.operations.form</field>
+        <field name="model">bulk.action.operations</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Action Operations">
+                <div class="alert alert-danger" role="alert" invisible="not is_no_admin_right or operation_type not in ['duplicate','duplicate_with_group_and_code']">
+                    ⚠️ Attention: You dont have any Admin right for Sales or Project!.
+                </div>
+                <div class="alert alert-warning" role="alert" invisible="not is_admin or operation_type not in ['duplicate','duplicate_with_group_and_code']">
+                    ⚠️ Attention: You are admin for both Sales and Project! Select quote type manually.
+                </div>
+                <div class="alert alert-warning" role="alert" invisible="not show_warning or operation_type not in ['duplicate','duplicate_with_group_and_code']">
+                    ⚠️ Attention: This line is being duplicated to another sales order.
+                </div>
+                <group>
+                    <group>
+                        <field name="operation_type"/>
+                        <field name="margin_percentage" invisible="operation_type != 'add_margin'"/>
+                        <field name="global_select"/>
+                    </group>
+                    <group>
+                        <field name="is_admin" invisible="1"/>
+                        <field name="is_no_admin_right" invisible="1"/>
+                        <field name="quote_type" invisible="operation_type not in ['duplicate','duplicate_with_group_and_code'] or is_no_admin_right"/>
+                        <field name="target_sale_order_id" required="True" string="Quote" invisible="operation_type not in ['duplicate','duplicate_with_group_and_code'] or quote_type or is_no_admin_right" context="{'group_swap':1}" options="{'no_open':1,'no_create':1,'search_view_ref': 'sale_custom_report.sale_custom_report_inherit_view_search'}"/>
+                        <field name="target_sale_order_id" required="True" string="Quote" invisible="operation_type not in ['duplicate','duplicate_with_group_and_code'] or not quote_type or quote_type == 'project_quote' or is_no_admin_right" domain="[('quote_type','=','sales_quote')]" context="{'group_swap':1}" options="{'no_open':1,'no_create':1,'search_view_ref': 'sale_custom_report.sale_custom_report_inherit_view_search'}"/>
+                        <field name="target_sale_order_id" required="True" string="Quote" invisible="operation_type not in ['duplicate','duplicate_with_group_and_code'] or not quote_type or quote_type == 'sales_quote' or is_no_admin_right" domain="[('quote_type','=','project_quote')]" context="{'group_swap':1}" options="{'no_open':1,'no_create':1,'search_view_ref': 'sale_custom_report.sale_custom_report_inherit_view_search'}"/>
+                        <field name="group_id" required="True" context="{'group_swap':1}" invisible="operation_type != 'duplicate' or is_no_admin_right" options="{'no_open':1,'no_create':1,'list_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_list_view','search_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_search_view'}"/>
+                        <field name="section_id" required="True" context="{'group_swap':1}" invisible="operation_type != 'duplicate' or is_no_admin_right" options="{'no_open':1,'no_create':1,'list_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_list_view','search_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_search_view'}"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <field name="bulk_lines" mode="list" widget="section_and_note_one2many" no_label="1" invisible="not operation_type">
+                    <list class="no_reorder" editable="bottom" delete="0" create="0"
+                          decoration-danger="display_type == 'line_section'"
+                          decoration-info="display_type == 'line_note'">
+                        <!-- <field name="sequence" widget="handle" force_save="1"/> -->
+                        <field name="is_check" force_save="1" string="Check" width="60px;"/>
+                        <field name="product_id" width="500px;" force_save="1" options="{'no_open':1}" readonly="1"/>
+                        <!-- <field name="custom_product_name" width="500px;"/> -->
+                        <field name="product_uom_qty" width="150px;" force_save="1" readonly="1"/>
+                        <field name="price_unit" force_save="1" readonly="1"/>
+                        <field name="price_subtotal" force_save="1" readonly="1"/>
+                        <field name="currency_id" column_invisible="1" force_save="1"/>
+                        <field name="name" widget="sol_text" string="" invisible="not display_type" force_save="1" readonly="1"/>
+                        <field name="order_line_id" force_save="1" column_invisible="1"/>
+                        <field name="line_group_id_value" force_save="1" column_invisible="1"/>
+                        <field name="line_section_id_value" force_save="1" column_invisible="1"/>
+                    </list>
+                </field>
+
+                <footer>
+                    <button name="action_bulk_delete" type="object" string="Delete" class="oe_highlight"
+                            icon="fa-trash-o" title="delete"
+                            invisible="operation_type != 'delete'"
+                            confirm="Are you sure you want to delete selected lines? Once it's gone, it's gone for good!"/>
+                    <button name="action_add_bulk_margin" type="object" string="Add Margin" class="oe_highlight"
+                            icon="fa-plus" title="add margin"
+                            invisible="operation_type != 'add_margin'"
+                            confirm="Are You Sure You Want to Add Margin on Selected Lines?"/>
+                    <button name="action_duplicate" type="object" string="Duplicate" class="oe_highlight"
+                            icon="fa-clone" title="duplicate"
+                            invisible="operation_type not in ['duplicate','duplicate_with_group_and_code']"
+                            confirm="Are You Sure You Want to Duplicate the Selected Line(s)?"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action bulk.action.operations -->
+    <record id="action_bulk_action_operations" model="ir.actions.act_window">
+        <field name="name">Bulk Action Operations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bulk.action.operations</field>
+        <field name="view_mode">form</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

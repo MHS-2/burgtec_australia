@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="dpg_sale_quote">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <!-- Article Section -->
+
+                    <div class="article" style="padding: 60px 30px 0;">
+                        <div class="row"
+                             style="display: table; width: 100%; table-layout: fixed;">
+
+                            <div class="col-4"
+                                 style="display: table-cell; width: 33.33%; vertical-align: top; padding: 0;">
+
+                                <img t-att-src="'/dpg_sale_custom_report/static/img/DPG_Logo.png'"
+                                     alt="Image Description" style="max-height: 87px; max-width: 90%;display: block;"/>
+
+                            </div>
+
+                            <div class="col-4"
+                                 style="display: table-cell; width: 33.33%; vertical-align: top;padding: 0;"></div>
+
+                            <div class="col-4"
+                                 style="display: table-cell; width: 33.33%; vertical-align: top; padding: 0;">
+                                <table class="table table-borderless"
+                                       style="width: 100%; border-collapse: collapse; margin: 0;">
+                                    <tr>
+                                        <td style="text-align: right; padding: 0 0 6px 0;vertical-align: top;">
+                                            <span style="font-family: 'Fonetika-Light'; font-size: 15px;">
+                                                <strong>QUOTATION</strong>
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="text-align: right; padding: 0 0 6px 0;vertical-align: top; line-height: 1;">
+                                            <span style="font-size: 15px;">
+                                                <strong>Quote #</strong>
+                                                <t t-out="o.new_sale_order_number"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="text-align: right; padding: 0 0 6px 0;vertical-align: top;line-height: 1;">
+                                            <span style="font-size: 15px;">
+                                                <strong>Date:</strong>
+                                                <t t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="text-align: right; padding: 0; vertical-align: top;line-height: 1;">
+                                            <span style="font-size: 15px;">
+                                                <strong>Validity:</strong>
+                                                <t t-if="o.validity_date">
+                                                    <t t-out="o.validity_date.strftime('%d/%m/%Y')"/>
+                                                </t>
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div style="clear: both; height: 25px;"></div>
+
+
+                        <div style="width: 100%;">
+                            <table style="
+                                    width: 100%;
+                                    table-layout: fixed;
+                                    border: 1px solid #E4E5E6;
+                                    border-collapse: collapse;
+                                    background-color: #F4F7F9;">
+                                <tr>
+                                    <td style="width: 50%; text-align: left; padding: 6px 10px 4px 10px; border:none; vertical-align: top;">
+                                        <span style="font-family: 'Fonetika-Light'; font-size: 15px;">
+                                            <strong>DPG SYSTEMS</strong>
+                                        </span>
+                                    </td>
+
+                                    <td style="width: 50%; text-align: left; padding: 6px 10px 4px 10px; border:none; vertical-align: top;">
+                                        <span style="font-family: 'Fonetika-Light'; font-size: 15px;">
+                                            <strong>PREPARED FOR:</strong>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- ABN / Customer Name -->
+                                <tr>
+                                    <td style="width: 50%; text-align: left; padding: 0 10px 4px 10px; border:none; vertical-align: top;">
+                                        <span style="font-size: 15px;">
+                                            ABN:
+                                            <t t-out="'95 639 808 754'"/>
+                                        </span>
+                                    </td>
+
+                                    <td style="width: 50%; text-align: left; padding: 0 10px 4px 10px; border:none; vertical-align: top;">
+                                        <span style="font-size: 15px;">
+                                            <t t-out="o.partner_id.name"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- Address -->
+                                <tr>
+                                    <td style="width: 50%; text-align: left; padding: 0 10px 0 10px; border:none; vertical-align: top;">
+                                        <span style="font-size: 15px;">
+                                            10A Corella Close,Berkeley Vale NSW 2261
+                                        </span>
+                                    </td>
+
+                                    <td style="width: 50%; text-align: left; padding: 0 10px 0 10px; border:none; vertical-align: top;">
+                                        <span style="font-size: 15px;">
+                                            <t t-out="o.customer_address"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+
+                        <div style="clear: both; height: 30px;"></div>
+
+                        <div class="row">
+                            <table class="table table-borderless"
+                                   style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="text-align: left !important;">
+                                        <th style="width: 15%; padding: 18px; background-color: #0B1F3A;color: white; vertical-align: middle;">
+                                            PRODUCT
+                                        </th>
+
+                                        <th style="width: 50%; background-color: #0B1F3A; color: white; text-align: center; vertical-align: middle;">
+                                            DESCRIPTION
+                                        </th>
+
+                                        <th style="width: 13%; background-color: #0B1F3A; color: white; text-align: center; vertical-align: middle;">
+                                            PRICE
+                                            <br/>
+                                            (EX-GST)
+                                        </th>
+
+                                        <th style="width: 7%; background-color: #0B1F3A; color: white; text-align: center; vertical-align: middle;">
+                                            QTY
+                                        </th>
+
+                                        <th style="width: 15%; background-color: #0B1F3A; color: white; text-align: center; vertical-align: middle;">
+                                            TOTAL
+                                            <br/>
+                                            (EX-GST)
+                                        </th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <t t-foreach="o.order_line.filtered(lambda l: not l.display_type)"
+                                       t-as="line">
+                                        <tr>
+                                            <!-- Product -->
+                                            <td style="width: 20%;
+                                                text-align: center; vertical-align: top; padding: 10px; border:none;">
+                                                <span t-field="line.custom_product_name"/>
+                                            </td>
+
+                                            <!-- Description -->
+                                            <td style="width: 45%; text-align: left; vertical-align: top; padding: 10px; border:none; white-space: normal; word-wrap: break-word;">
+                                                <span t-field="line.name"/>
+                                            </td>
+
+                                            <!-- Price Ex GST -->
+                                            <td style="width: 13%; text-align: left; vertical-align: top; text-align: center; padding: 10px; border:none; white-space: nowrap;">
+                                                <t t-out="o.currency_id.symbol"/>
+                                                <t t-out="'{:,.2f}'.format(line.price_unit)"/>
+                                            </td>
+
+                                            <!-- Quantity -->
+                                            <td style="width: 7%; text-align: left; vertical-align: top; text-align: center; padding: 10px; border:none; white-space: nowrap;">
+                                                <t t-out="line.product_uom_qty"/>
+                                            </td>
+
+                                            <!-- Total Ex GST -->
+                                            <td style="width: 15%; text-align: left; vertical-align: top; text-align: center; padding: 10px; border:none; white-space: nowrap;">
+                                                <t t-out="o.currency_id.symbol"/>
+                                                <t t-out="'{:,.2f}'.format(line.price_subtotal)"/>
+                                            </td>
+
+                                        </tr>
+
+                                    </t>
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <div style="clear: both; height: 25px;"></div>
+
+
+                        <div class="row">
+                            <div class="col-4"></div>
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <table class="table table-borderless"
+                                       style="width: 100%; float: right; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="text-align: right; padding: 0 0 6px 0; vertical-align: bottom;">
+                                            <span style="font-family: 'Fonetika-Light'; font-weight: 100; font-size: 15px;">
+                                                Subtotal (EX-GST):
+                                            </span>
+                                        </td>
+                                        <td></td>
+                                        <td style="text-align: right; padding: 0 0 6px 0; vertical-align: top; line-height:1;">
+                                            <span style="font-size: 15px;">
+                                                <t t-out="o.currency_id.symbol"/>
+                                                <t t-out="'{:,.2f}'.format(o.amount_untaxed)"/>
+
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; padding: 0 0 6px 0; vertical-align: top; line-height:1;">
+                                            <span style="font-size: 15px;">
+                                                GST (10%):
+                                            </span>
+                                        </td>
+                                        <td></td>
+                                        <td style="text-align: right; padding: 0 0 6px 0; vertical-align: top; line-height:1;">
+                                            <span style="font-size: 15px;">
+                                                <t t-out="o.currency_id.symbol"/>
+                                                <t t-out="'{:,.2f}'.format(o.amount_tax)"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div style="clear: both; height: 0px;"></div>
+
+                        <div style="width: 45%; float: right; border-top: 2.5px solid #000000;"></div>
+
+
+                        <div style="clear: both; height: 6px;"></div>
+
+                        <div class="row">
+                            <div class="col-4"></div>
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <table class="table table-borderless"
+                                       style="width: 100%; float: right; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="text-align: right; padding: 0 25px 6px 0; vertical-align: bottom;">
+                                            <span style="font-family: 'Fonetika-Light'; font-size: 15px;">
+                                                <strong>Total (Inc-GST):</strong>
+                                            </span>
+                                        </td>
+                                        <td></td>
+                                        <td style="text-align: right; padding: 0 0 6px 0; vertical-align: top; line-height:1;">
+                                            <strong>
+                                                <span style="font-size: 15px;">
+                                                    <t t-out="o.currency_id.symbol"/>
+                                                    <t t-out="'{:,.2f}'.format(o.amount_total)"/>
+                                                </span>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div style="clear: both; height: 45px;"></div>
+
+                        <div class="row" style="page-break-inside: avoid;">
+                            <div style="width: 100%;">
+
+                                <strong>
+                                    <span style=" font-size: 17px; color: black; display: block; margin-bottom: 5px;">
+                                        Terms &amp; Conditions:
+                                    </span>
+                                </strong>
+
+                                <ol style="font-size: 15px; line-height: 1.4; color: black; margin: 0;padding-left: 20px;">
+                                    <li>
+                                        All Quotes are strictly valid for 30 days from date of issue.
+                                    </li>
+
+                                    <li>
+                                        Custom manufactured items entail a standard 6-8 week lead time unless specified
+                                        otherwise.
+                                    </li>
+
+                                    <li>
+                                        Standard commercial warranties apply to softwired modules and cable basket
+                                        componentry.
+                                    </li>
+                                </ol>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paperformat_dpg_sale_quote_report" model="report.paperformat">
+        <field name="name">Dpg Sale Quote Report Paperformat</field>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_dpg_sale_quote" model="ir.actions.report">
+        <field name="name">DPG Sales Quotation Report</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dpg_sale_custom_report.dpg_sale_quote</field>
+        <field name="report_file">dpg_sale_custom_report.dpg_sale_quote</field>
+        <field name="print_report_name">'DPG Sales Quotation - %s' % (object.burgtec_quote_reference)</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="dpg_sale_custom_report.paperformat_dpg_sale_quote_report"/>
+    </record>
+</odoo>
+

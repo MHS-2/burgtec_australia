@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_nscr_creation_choice_wizard_form" model="ir.ui.view">
+        <field name="name">nscr.creation.choice.form</field>
+        <field name="model">nscr.creation.choice</field>
+        <field name="arch" type="xml">
+            <form string="NSCR Entry Choice">
+                <sheet>
+                    <field name="bom_component_line_id" invisible="1"/>
+                    <div class="container">
+                        <div class="row mt16">
+                            <div class="col-12 text-center">
+                                <h3>How would you like to proceed?</h3>
+                            </div>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-12 text-center">
+                                <button name="create_new_nscr_register_entry"
+                                        type="object"
+                                        string="Create New NSCR Register Entry"
+                                        class="btn btn-primary btn-lg mb-3"
+                                        style="width: 300px;"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h3>OR</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <button name="assign_existing_nscr_register_entry"
+                                        type="object"
+                                        string="Assign Existing NSCR Register Entry"
+                                        class="btn btn-primary btn-lg"
+                                        style="width: 300px;"/>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+                <footer>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="new_delivery_stage_sale_order_extend" model="ir.ui.view">
+        <field name="name">new.delivery.stage.sale.order.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="js_class">new_delivery_stage_form</attribute>
+            </xpath>
+
+
+            <!--            In cae of quotation type customization this xpath will be applicable to above -->
+            <xpath expr="//button[@name='action_view_invoice']" position="before">
+                <button class="oe_stat_button" type="object" name="action_show_child_sale_orders"
+                        invisible="not is_parent_sale_order"
+                        icon="fa-share-square-o">
+                    <field string="Project" name="child_quote_count" widget="statinfo"
+                           invisible="quote_type != 'sales_quote'"/>
+                    <field string="Delivery Stages" name="child_quote_count" widget="statinfo"
+                           invisible="quote_type != 'project_quote'"/>
+                </button>
+                <button class="oe_stat_button" type="object" name="action_show_parent_sale_order"
+                        invisible="not is_child_sale_order"
+                        icon="fa-share-square-o">
+                    <field string="Sale Quote" name="reference_count1" widget="statinfo"
+                           invisible="quote_type != 'project_quote'"/>
+                    <field string="Project" name="reference_count1" widget="statinfo"
+                           invisible="quote_type != 'delivery_stage'"/>
+
+
+                </button>
+            </xpath>
+            <xpath expr="//button[@name='action_show_component']" position="after">
+                <button name="action_show_planning_screen" string="Planning Screen" type="object" icon="fa-eye"
+                        invisible="is_having_delivery_stage or quote_type != 'project_quote'"
+                        class="btn-primary"/>
+            </xpath>
+<!--              invisible="is_old_data or quote_type != 'project_quote'"-->
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="before">
+                <field name="total_available_quantity" invisible="total_available_quantity ==  0.0"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="new_delivery_stage_sale_order_bom_based_inventory_extend" model="ir.ui.view">
+        <field name="name">new.delivery.stage.sale.order.bom.based.inventory.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="bom_based_inventory.sale_order_inherit"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form" position="inside">
+                <field name="is_child_sale_order" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_show_delivery_orders']" position="attributes">
+                <attribute name="context">{'child_sale_order': not is_child_sale_order}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="new_delivery_stage_sale_custom_report_sale_order_extend" model="ir.ui.view">
+        <field name="name">new.delivery.stage.sale.order.bom.based.inventory.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_custom_report.burgtec_report_sale_order_extend"/>
+        <field name="arch" type="xml">
+
+
+
+            <xpath expr="//field[@name='quote_type']" position="attributes">
+                <attribute name="readonly">state == 'sale' or is_sales_quote or is_project_quote</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

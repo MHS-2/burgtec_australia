@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="sale_custom_report.view_sale_order_bom_components_form_ext3" model="ir.ui.view">
+        <field name="name">view.sale.order.bom.component.form ext3</field>
+        <field name="model">sale.order.bom.component</field>
+        <field eval="11" name="priority"/>
+        <field name="inherit_id" ref="bom_based_inventory.view_sale_order_bom_components_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='component_line_ids'][1]//list//button[@name='action_open_add_components_wizard']"
+                   position="after">
+                <button name="action_open_update_parent_line"
+                        string="Product"
+                        type="object"
+                        class="btn-primary text-white"
+                        icon="fa-pencil"
+                        invisible="not is_parent"
+                        help=" components to this parent line"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//button[@name='action_open_add_components_wizard']"
+                   position="after">
+                <button name="action_open_update_parent_line"
+                        string="Product"
+                        type="object"
+                        class="btn-primary text-white"
+                        icon="fa-pencil"
+                        invisible="not is_parent"
+                        help=" components to this parent line"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//button[@name='action_open_add_components_wizard']"
+                   position="after">
+                <button name="action_open_update_parent_line"
+                        string="Product"
+                        type="object"
+                        class="btn-primary text-white"
+                        icon="fa-pencil"
+                        invisible="not is_parent"
+                        help=" components to this parent line"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//button[@name='action_open_add_components_wizard']"
+                   position="after">
+                <button name="action_open_update_parent_line"
+                        string="Product"
+                        type="object"
+                        class="btn-primary text-white"
+                        icon="fa-pencil"
+                        invisible="not is_parent"
+                        help=" components to this parent line"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

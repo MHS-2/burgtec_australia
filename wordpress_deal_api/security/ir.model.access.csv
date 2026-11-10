@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wordpress_api_log_admin,wordpress.api.log admin,model_wordpress_api_log,base.group_system,1,0,0,0
+access_wordpress_api_key_admin,wordpress.api.key admin,model_wordpress_api_key,base.group_system,1,1,0,1
+access_wordpress_api_key_wizard_admin,wordpress.api.key.wizard admin,model_wordpress_api_key_wizard,base.group_system,1,1,1,1

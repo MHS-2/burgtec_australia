@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="bom_based_floating_table.sale_order_ext" model="ir.ui.view">
+            <field name="name">sale.order.form.bom.ext</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="bom_based_inventory.sale_order_inherit"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='order_line']" position="before">
+                    <field name="amount_untaxed" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='system_cost_per_unit']/ancestor::group[1]" position="replace">
+                    <group invisible="1">
+                        <field name="system_cost_per_unit" invisible="1"/>
+                        <field name="percentage_markup_system_cost" invisible="1"/>
+                        <field name="percentage_margin_system_cost" invisible="1"/>
+                        <field name="quoted_cost_per_unit" invisible="1"/>
+                        <field name="percentage_markup_quoted_cost" invisible="1"/>
+                        <field name="percentage_margin_quoted_cost" invisible="1"/>
+                        <field name="pre_project_cost_per_unit" invisible="1"/>
+                        <field name="percentage_markup_pre_project_cost" invisible="1"/>
+                        <field name="percentage_margin_pre_project_cost" invisible="1"/>
+                        <field name="live_unit_cost" invisible="1"/>
+                        <field name="percentage_markup_live_cost" invisible="1"/>
+                        <field name="percentage_margin_live_cost" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

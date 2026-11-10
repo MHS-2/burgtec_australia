@@ -1,0 +1,49 @@
+.o_form_sheet_bg {
+    position: relative;
+}
+
+.o_chatter_floating_toggle {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1050;
+
+    .o_chatter_toggle_btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all .3s ease;
+
+        &:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transform: scale(1.1);
+        }
+
+        &[data-collapsed='true'] {
+            span {
+                transform: translateY(-30%) rotate(45deg) scaleX(-1);
+            }
+        }
+
+        span {
+            display: block;
+            width: 12px;
+            height: 12px;
+            transform: translateY(-10%) rotate(315deg);
+            border-bottom: 3px solid #000000;
+            border-right: 3px solid #000000;
+            position: relative;
+            top: 0;
+            transition: transform .3s ease;
+        }
+    }
+}
+
+.max-width-unset {
+    max-width: unset !important;
+}

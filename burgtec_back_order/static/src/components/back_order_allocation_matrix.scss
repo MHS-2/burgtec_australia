@@ -1,0 +1,75 @@
+.back-order-allocation-matrix {
+    position: relative;
+
+    .bo-saving-indicator {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        color: #666;
+        z-index: 10;
+    }
+
+    .bo-matrix-table {
+        th {
+            background-color: #f8f9fa;
+            vertical-align: middle;
+        }
+
+        .bo-col-item,
+        .bo-col-available {
+            min-width: 100px;
+            width: 120px;
+        }
+
+        .bo-col-code,
+        .bo-col-available {
+            min-width: 150px;
+            max-width: 400px;
+        }
+
+        .bo-col-product {
+            min-width: 500px;
+            max-width: 800px;
+        }
+
+        .bo-col-supplier {
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        .bo-col-qty,
+        .bo-col-available {
+            min-width: 100px;
+            width: 120px;
+        }
+
+        .bo-col-bo {
+            min-width: 120px;
+            width: 150px;
+        }
+
+        .bo-name-input {
+            font-weight: 600;
+            max-width: 130px;
+            margin: 0 auto;
+        }
+
+        .bo-qty-input {
+            max-width: 100px;
+            margin: 0 auto;
+
+            // Hide number input arrows
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            -moz-appearance: textfield;
+        }
+    }
+}

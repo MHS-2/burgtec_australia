@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="burgtec_registers_customization.sale_order_form_view_ext1" model="ir.ui.view">
+        <field name="name">burgtec_registers_customization.sale.order.form.view.ext1</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="quotation_type_customization.sale_order_ext"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//list//field[@name='custom_product_name']" position="after">
+                <field name="has_indented_components" optional="hide"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="burgtec_hubspot_customization_sale_order_extend" model="ir.ui.view">
+        <field name="name">burgtec.hubspot.sale.order.extend</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='project_rev_details']" position="after">
+                <group name="hubspot_data" string="Hubspot Data" colspan="2" invisible="quote_type != 'delivery_stage'">
+                    <group>
+                        <div class="row align-items-center"
+                             invisible="quote_type != 'delivery_stage' or hubspot_ticket_id">
+                            <div class="col-auto">
+                                <label for="hubspot_ticket_id" class="fw-bold mb-0" string="Hubspot Ticket"
+                                       invisible="quote_type != 'delivery_stage'"/>
+                            </div>
+                            <div class="col">
+                                <field name="hubspot_ticket_id" invisible="quote_type != 'delivery_stage'" readonly="1"
+                                       options="{'no_open':1,'no_create':1}"/>
+                            </div>
+                            <div class="col-auto">
+                                <button type="object" class="btn btn-primary"
+                                        name="action_attach_hubspot_ticket_and_dispatch_date" string="Assign Ticket"
+                                        icon="fa-check" title="Assign Ticket If Available"
+                                        invisible="quote_type != 'delivery_stage' or hubspot_ticket_id"/>
+                            </div>
+                        </div>
+                        <field name="hubspot_ticket_id" string="Hubspot Ticket"
+                               invisible="quote_type != 'delivery_stage' or not hubspot_ticket_id" readonly="1"
+                               options="{'no_open':1,'no_create':1}"/>
+                        <field name="hubspot_ticket_status"/>
+                        <field name="hubspot_ticket_schedule_dispatch" invisible="quote_type != 'delivery_stage'"
+                               readonly="1"
+                               force_save='1'/>
+                        <field name="latest_eta_date" invisible="quote_type != 'delivery_stage'"/>
+                        <field string="ETA vs Dispatch (Days)" name="latest_eta_dispatch_date_diff"
+                               invisible="quote_type != 'delivery_stage'"/>
+                        <field name="delivery_status_tracking" string="Delivery Status"
+                               decoration-muted="delivery_status_tracking == 'unscheduled'"
+                               decoration-info="delivery_status_tracking == 'fully_received'"
+                               decoration-success="delivery_status_tracking == 'on_track'"
+                               decoration-warning="delivery_status_tracking == 'caution'"
+                               decoration-danger="delivery_status_tracking == 'off_track'"
+                               widget="badge" invisible="quote_type != 'delivery_stage'"/>
+                        <div class="o_row" invisible="not delay_risk or quote_type != 'delivery_stage'">
+                            <div class="alert alert-warning" role="alert" style="white-space: pre;">
+                                <i class="fa fa-exclamation-triangle fa-2x text-warning" title="warning"
+                                   aria-hidden="true"></i>
+                                <span></span>
+                                <field name="delay_risk"/>
+                            </div>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="scheduled_delivers_date" string="Scheduled Delivery"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="scheduled_install_date" string="Scheduled Install"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="scheduled_install_complete_date" string="Scheduled Install Complete"
+                               invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                        <field name="is_backorder_registered" invisible="quote_type != 'delivery_stage'" readonly="1"/>
+                    </group>
+                    <div class="row align-items-center" invisible="quote_type != 'delivery_stage'" colspan="2">
+                        <div class="col-auto">
+                            <label for="qr_url" class="fw-bold mb-0" string="Hubspot Ticket URL"/>
+                        </div>
+                        <div class="col">
+                            <field name="qr_url" widget="url" readonly="1"/>
+                        </div>
+                    </div>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='qr_url']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='project_rev_details']" position="inside">
+                <field name="since_earliest_po_weekly_update" string="Since Earliest PO Weekly Update"
+                       invisible="quote_type != 'delivery_stage'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="burgtec_hubspot_customization_sale_order_search_view_extend" model="ir.ui.view">
+        <field name="name">burgtec.hubspot.sale.order.search.view.extend</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='filter_create_date']" position="after">
+                <separator/>
+                <filter string="Delay Risk Orders" name="filter_delay_risk" domain="[('is_delay_risk', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

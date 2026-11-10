@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<odoo>
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value eval="[('name', '=', 'email_template_edi_purchase_done'), ('module', '=', 'purchase')]" />
+        </function>
+        <value eval="{'noupdate': False}" />
+    </function>
+
+    <record id="purchase.email_template_edi_purchase_done" model="mail.template">
+        <field name="subject">{{ object.company_id.name }} Order (Ref {{ object.burgtec_purchase_reference or 'n/a' }})</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear <t t-out="object.partner_id.name or ''">Brandon Freeman</t>
+                    <t t-if="object.partner_id.parent_id">
+                        (<t t-out="object.partner_id.parent_id.name or ''">Azure Interior</t>)
+                    </t>
+                    <br/><br/>
+                    Please find attached Purchase Order <span style="font-weight:bold;" t-out="object.burgtec_purchase_reference or ''"></span>
+                    <br/><br/>
+                    All order details, including the delivery address, are outlined in the attached PDF.
+                    <br/><br/>
+                    <span style="font-weight:bold;">
+                        We require delivery by <t t-out="object.required_arrival_date and object.required_arrival_date.strftime('%d/%m/%Y') or 'N/A'"/>
+                    </span>
+                    <br/>
+                    Please confirm if you can meet this date.                    
+                    <br/><br/>
+                    Also, please reply to confirm receipt of this Purchase Order.
+                    <br/><br/>
+                    If there are any issues with supply, lead times, or details in the order, let me know as soon as possible so we can address them early.
+                    <br/><br/>
+                    Thanks in advance for your prompt response. 
+                    <br/><br/>
+                    Kind Regards,
+                    <br/>
+                    Purchase Department
+                    <br/>
+                    Burgtec
+                    <br/>
+                    Building A/10 Corella Cl, Berkeley Vale NSW 2261
+                </p>
+            </div>
+        </field>
+    </record>
+
+
+<!-- After we make the adjustments, we must return the noupdate to True for the record. -->
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value eval="[('name', '=', 'email_template_edi_purchase_done'), ('module', '=', 'purchase')]" />
+        </function>
+        <value eval="{'noupdate': True}" />
+    </function>
+</odoo>

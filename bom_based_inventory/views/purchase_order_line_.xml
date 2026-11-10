@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_purchase_order_form_inherit_add_note" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.add.note</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div class="alert alert-warning text-center" role="alert" invisible="tag != 'parent'">
+                    <h3>⚠️ Attention: This is a Parent Purchase Order. Hence, It's Bill cannot be created!.</h3>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="burgtec_purchase_reference"/>
+            </xpath>
+            <xpath expr="//form//field[@name='partner_id']" position="after">
+                <field name="is_old_data" readonly="1"/>
+                <field name="is_builder_trend" force_save="1"/>
+            </xpath>
+            <xpath expr="//field[@name='date_approve']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="name" readonly="1"/>
+                <field name="wh_rack_location" placeholder="WH Rack Location"/>
+                <field name="delivery_stage_link" placeholder="Type URL here" widget="url"/>
+                <field name="onedrive_po_folder_link" placeholder="Type URL here" widget="url"/>
+                <field name="child_po_count" readonly="1" invisible="1"/>
+
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="string">Odoo PO Reference</attribute>
+            </xpath>
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="hubspot_reference" readonly="1"/>
+                <field name="tag"/>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="before">
+                <field name="burgtec_po_status" placeholder="Select PO Status"/>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="string">Requested Dispatch Date</attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_approve']" position="attributes">
+                <attribute name="string">Confirmed Dispatch Date</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_ref']" position="after">
+                <field name="delivery_stage" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="width">500px;</attribute>
+                <!--                <attribute name="readonly">state in ('purchase', 'to approve', 'done', 'cancel')</attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom'][2]" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_packaging_qty']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_packaging_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="after">
+                <field name="note" width="400px;" readonly="1"/>
+                <!--                <field name="note" readonly="state in ('purchase', 'to approve', 'done', 'cancel')"/>-->
+            </xpath>
+
+             <xpath expr="//form" position="inside">
+                <field name="is_not_readonly_for_group" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_qty']" position="attributes">
+                <attribute name="readonly">parent.is_not_readonly_for_group</attribute>
+                <!--                <attribute name="readonly">state in ('purchase', 'to approve', 'done', 'cancel')</attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">parent.is_not_readonly_for_group</attribute>
+                <!--                <attribute name="readonly">qty_invoiced != 0 or state in ('purchase', 'to approve', 'done', 'cancel')</attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='taxes_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <!--                <attribute name="readonly">state in ('purchase', 'to approve', 'done', 'cancel')</attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='date_planned']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <!--                <attribute name="readonly">state in ('purchase', 'to approve', 'done', 'cancel')</attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='discount']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <!--                <attribute name="readonly">qty_invoiced != 0 or state in ('purchase', 'to approve', 'done', 'cancel')</attribute>-->
+            </xpath>
+
+            <xpath expr="//label[@for='date_planned']" position="before">
+                <field name="required_arrival_date" placeholder="Choose Required Arrival Date" readonly="0" required="1"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="purchase_order_kpis_tree_inherit_fields" model="ir.ui.view">
+        <field name="name">purchase.order.tree.inherit.builder.trend.delivery.stage</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <!-- Insert the two fields before the 'origin' field -->
+            <xpath expr="//field[@name='name']" position="before">
+                <button width="25" type="object" name="open_record_in_new_window" class="btn btn-link"
+                        icon="fa-external-link" title="Open Purchase Order in New Tab"/>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="before">
+                <!-- <field name="builder_trend_po"/> -->
+                <field name="delivery_stage"/>
+                <field name="tag"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="burgtec_purchase_reference"/>
+                <field name="burgtec_po_status"/>
+            </xpath>
+            <xpath expr="//field[@name='activity_ids']" position="before">
+                <field name="required_arrival_date" width="165px"/>
+                <field name="date_planned"/>
+            </xpath>
+            <xpath expr="//field[@name='tag']" position="after">
+                <field name="wh_rack_location" optional="hide"/>
+                <field name="delivery_stage_link" optional="hide"/>
+                <field name="onedrive_po_folder_link" optional="hide"/>
+                <field name="hubspot_reference" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='date_approve']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_filter_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.search.inherit.builder.trend.delivery.stage</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <!-- Add fields at the end of the search view -->
+            <xpath expr="//search/field[1]" position="before">
+                <field name="burgtec_purchase_reference"/>
+                <field name="tag"/>
+
+                <!-- <field name="builder_trend_po" string="Builder Trend PO"/> -->
+                <field name="delivery_stage" string="Delivery Stage"/>
+
+
+                <!-- Filter for delivery_stage -->
+                <filter string="Delivery Stage" name="filter_delivery_stage_shipped"
+                        domain="[('delivery_stage', '!=', False)]"/>
+                
+                <separator/>
+                
+                <filter string="Parent PO" name="filter_parent_po"
+                        domain="[('tag', '=', 'parent')]"/>
+
+                <filter string="Child PO" name="filter_child_po"
+                        domain="[('tag', '=', 'child')]"/>
+                        
+                <separator/>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_purchase_bom_base_inherit_list" model="ir.ui.view">
+        <field name="name">view.purchase.bom.base.inherit.list</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <button width="25" type="object" name="open_record_in_new_window" class="btn btn-link"
+                        icon="fa-external-link" title="Open Purchase Order in New Tab"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

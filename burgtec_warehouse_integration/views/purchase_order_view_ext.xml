@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_purchase_order_form_ext_automatic_quotation_button" model="ir.ui.view">
+        <field name="name">purchase.order.form.burgtec.warehouse.quotation.button</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="create_quotation_in_warehouse_instance" type="object"
+                        string="Create Wh Quotation" class="btn-primary"
+                        invisible="tag == 'parent' or warehouse_sale_order_id"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page name="warehouse_instance_info" string="Warehouse Quotation Information">
+                    <group>
+                        <group>
+                            <field name="warehouse_sale_order_name"/>
+                            <field name="warehouse_sale_order_id" invisible="1"/>
+                            <field name="warehouse_sale_order_url" widget="url" invisible="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="before">
+                <field name="is_present_in_warehouse" string="Component Available in WH Instance?" class="text-center"
+                       column_invisible="1"/>
+                <field name="is_delivery_and_installation" string="Delivery Install?" class="text-center"
+                       column_invisible="1"/>
+                <button name="create_product_in_warehouse_instance" string="Create Wh Product"
+                        invisible="is_present_in_warehouse or is_delivery_and_installation or parent.tag == 'parent'"
+                        class="btn btn-primary"
+                        type="object"/>
+                <field name="warehouse_status_html" widget="html" string="In Wh?" class="text-start" width="40px"
+                       invisible="is_present_in_warehouse or is_delivery_and_installation or parent.tag == 'parent'"/>
+                <field name="warehouse_bom_id"
+                       invisible="is_delivery_and_installation or not is_present_in_warehouse or parent.tag == 'parent'"
+                       options="{'no_create': True}" domain="[('product_id','=', product_id)]"/>
+
+
+            </xpath>
+
+
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_open_warehouse_instance_quotation"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-usd"
+                        invisible="not warehouse_sale_order_url">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Open Quotation</span>
+                    </div>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

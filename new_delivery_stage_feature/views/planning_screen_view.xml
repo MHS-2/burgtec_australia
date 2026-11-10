@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="new_delivery_stage_feature.planning_screen_form_view" model="ir.ui.view">
+        <field name="name">new.delivery.stage.planning.screen.form</field>
+        <field name="model">planning.screen</field>
+        <field name="arch" type="xml">
+            <form string="Planning Screen">
+                <sheet>
+                    <notebook>
+                        <page name="planning_screen_lines" string="Plan">
+                            <field name="line_ids" widget="section_and_note_one2many" no_label="True">
+                                <list class="no_reorder" create="false" no_open="True" editable="bottom" delete="false">
+                                    <!-- Allow user to create a section or group -->
+                                    <control>
+                                        <create string="Add Line"/>
+                                        <create string="Add Section"
+                                                context="{'default_display_type': 'line_section'}"/>
+                                        <create string="Add Group"
+                                                context="{'default_display_type': 'line_group'}"/>
+                                    </control>
+
+                                    <!-- Required for section/group headers -->
+                                    <field name="sequence" widget="handle" column_invisible="1"/>
+                                    <field name="display_type" column_invisible="1"/>
+                                    <!--                                    <field name="name" readonly="1" force_save="1" string="" width="100"-->
+                                    <!--                                           invisible="not display_type"/>-->
+
+                                    <!-- Regular product lines -->
+                                    <field name="order_line_id" column_invisible="1" force_save="1"/>
+                                    <field name="product_reference" readonly="1" force_save="True" width="150"/>
+                                    <field name="product_id" readonly="1" force_save="True" width="150"/>
+                                    <!--                            <field name="quantity" readonly="1" force_save="True" width="150"/>-->
+                                    <!--                            <field name="available_quantity" readonly="1" force_save="True" width="150"/>-->
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

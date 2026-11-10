@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_product_template_form_inherit_product_role" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.product.role</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="invoice_policy" position="after">
+                <field name="product_bom_type" widget="radio" readonly="id" required="1"/>
+                <field name="is_old_data" readonly="1"/>
+                <field name="external_id_computed"/>
+            </field>
+            <xpath expr="//field[@name='route_ids']" position="attributes">
+                <attribute name="readonly">id != False</attribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='product_tooltip']" position="after">
+                <field name="old_product_template_eid"/>
+                <field name="old_product_template_name"/>
+                <field name="is_delivery_and_installation"/>
+                <field name="product_pricing_category"/>
+            </xpath>
+
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="product_sale_type" widget="radio"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_product_product_form_inherit_product_role" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.product.role</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="invoice_policy" position="after">
+                <field name="variant_bom_type" widget="radio"/>
+                <field name="external_id_computed"/>
+                <field name="fabric_meterage"/>
+            </field>
+            <xpath expr="//field[@name='route_ids']" position="attributes">
+                <attribute name="readonly">id != False</attribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='product_tooltip']" position="after">
+                <field name="old_product_variant_eid"/>
+                <field name="old_product_variant_name"/>
+                <field name="is_delivery_and_installation"/>
+            </xpath>
+
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="product_sale_type" widget="radio"/>
+                <field name="product_certification_ids" options="{'no_create_edit': True, 'color_field': 'color'}"
+                       widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//field[@name='default_code']" position="attributes">
+                <attribute name="required">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="bom_based_inventory_view_product_template_search_inherit" model="ir.ui.view">
+        <field name="name">bom.based.inventory.view.product.template.search.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="after">
+                <separator/>
+                <filter string="Old Data" name="old_data" domain="[('is_old_data','=',True)]"/>
+                <filter string="New Data" name="new_data" domain="[('is_old_data','=',False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Product Type" name="type" context="{'group_by':'type'}"/>
+                    <filter string="Product Category" name="categ_id" context="{'group_by':'categ_id'}"/>
+                </group>
+            </xpath>
+            <xpath expr="//group//filter[@name='categ_id']" position="after">
+                <filter string="BOM Product Type" name="product_bom_type" context="{'group_by':'product_bom_type'}"/>
+            </xpath>
+
+            <xpath expr="//filter[@name='services']" position="before">
+                <filter string="BOM Product" name="bom_product" domain="[('product_bom_type','=','product')]"/>
+                <filter string="BOM Component" name="bom_component" domain="[('product_bom_type','=','components')]"/>
+                <separator/>
+                <filter string="Burgtec Product" name="burgtec product" domain="[('product_sale_type','=','burgtec')]"/>
+                <filter string="DPG Product" name="dpg product" domain="[('product_sale_type','=','dpg')]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ######################### LIST VIEW INHERIT #################################### -->
+
+    <record id="bom_based_inventory_product_template_tree_view" model="ir.ui.view">
+        <field name="name">bom.based.inventory.product.template.tree.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" string="Product Name" width="600px"/>
+            </xpath>
+            <xpath expr="//field[@name='default_code']" position="replace">
+                <field name="default_code" optional="show" width="350px"/>
+            </xpath>
+            <xpath expr="//field[@name='default_code']" position="after">
+                <field name="product_bom_type" widget="badge" width="210px"
+                       decoration-info="product_bom_type == 'product'"
+                       decoration-warning="product_bom_type == 'components'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="external_id_computed" width="330px"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="bom_based_inventory_product_product_tree_view" model="ir.ui.view">
+        <field name="name">bom.based.inventory.product.product.tree.view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" readonly="1" width="200px"/>
+            </xpath>
+
+            <xpath expr="//field[@name='default_code']" position="replace">
+                <field name="default_code" optional="show" readonly="1" width="350px"/>
+            </xpath>
+
+            <xpath expr="//field[@name='product_template_variant_value_ids']" position="replace">
+                <field name="product_template_variant_value_ids" width="350px" widget="many2many_tags"
+                       groups="product.group_product_variant" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="variant_bom_type" widget="badge" width="210px"
+                       decoration-info="variant_bom_type == 'product'"
+                       decoration-warning="variant_bom_type == 'components'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="external_id_computed" width="320px"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ######################### LIST VIEW INHERIT #################################### -->
+
+    <!-- ######################## KANBAN VIEW INHERTI ################################### -->
+
+    <record id="bom_based_inventory_product_template_kanban_view" model="ir.ui.view">
+        <field name="name">bom.based.inventory.product.template.kanban.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//aside" position="replace">
+                <aside>
+                    <field name="product_bom_type" widget="badge" width="210px"
+                           decoration-info="product_bom_type == 'product'"
+                           decoration-warning="product_bom_type == 'components'"/>
+                    <field
+                            name="image_128"
+                            widget="image"
+                            alt="Product"
+                            options="{'img_class': 'w-100 object-fit-contain'}"
+                            invisible="not image_128"
+                    />
+                </aside>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="bom_based_inventory_product_product_kanban_view" model="ir.ui.view">
+        <field name="name">bom.based.inventory.product.product.kanban.view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('d-flex')]" position="attributes">
+                <attribute name="class">d-flex mb-1 h5 w-100</attribute>
+            </xpath>
+
+            <xpath expr="//div[hasclass('d-flex')]//field[@name='name']" position="after">
+                <span class="ms-auto">
+                    <field name="variant_bom_type"
+                           widget="badge"
+                           decoration-info="variant_bom_type == 'product'"
+                           decoration-warning="variant_bom_type == 'components'"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!--  ######################## KANBAN VIEW INHERTI ################################### -->
+
+
+</odoo>

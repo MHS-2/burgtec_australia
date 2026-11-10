@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View sale.order.bom.component form -->
+    <record id="burgtec_registers_customization_view_sale_order_bom_component_form" model="ir.ui.view">
+        <field name="name">burgtec.registers.customization.view.sale.order.bom.component.form</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="quotation_type_customization.view_sale_order_bom_components_form_ext1"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='view_team']" position="after">
+                <field name="skip_nscr_entry"/>
+<!--                <field name="skip_nscr_entry" groups="quotation_type_customization.group_super_admin"/>-->
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='live_unit_cost']"
+                   position="after">
+                <!-- <field name="icr_register_id" column_invisible="1"/> -->
+                <field name="is_icr_register" width="60px;" optional="show"/>
+                <field name="icr_register_id" string="ICR" readonly="1" class="dark-blue" optional="hide"/>
+                <button name="action_open_nscr_creation_choice_wizard" class="fa fa-plus"
+                        type="object"
+                        invisible="nscr_register_id or is_parent or display_type or parent.skip_nscr_entry"/>
+                <field name="nscr_register_id" string="NSCR" readonly="1" class="bright-red" optional="hide"
+                       column_invisible="parent.skip_nscr_entry"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly"
+                           add="(not is_parent) and (not parent.skip_nscr_entry) and (not nscr_register_id)"
+                           separator=" or "/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='live_unit_cost']"
+                   position="after">
+                <!-- <field name="icr_register_id" column_invisible="1"/> -->
+                <field name="is_icr_register" width="60px;" optional="show"/>
+                <field name="icr_register_id" string="ICR" readonly="1" class="dark-blue" optional="hide"/>
+                <button name="action_open_nscr_creation_choice_wizard" class="fa fa-plus"
+                        type="object"
+                        invisible="nscr_register_id or is_parent or display_type or parent.skip_nscr_entry"/>
+                <field name="nscr_register_id" string="NSCR" readonly="1" class="bright-red" optional="hide"
+                       column_invisible="parent.skip_nscr_entry"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly"
+                           add="(not is_parent) and (not parent.skip_nscr_entry) and (not nscr_register_id)"
+                           separator=" or "/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='live_unit_cost']"
+                   position="after">
+                <!-- <field name="icr_register_id" column_invisible="1"/> -->
+                <field name="is_icr_register" width="60px;" optional="show"/>
+                <field name="icr_register_id" string="ICR" readonly="1" class="dark-blue" optional="hide"/>
+                <button name="action_open_nscr_creation_choice_wizard" class="fa fa-plus"
+                        type="object"
+                        invisible="nscr_register_id or is_parent or display_type or parent.skip_nscr_entry"/>
+                <field name="nscr_register_id" string="NSCR" readonly="1" class="bright-red" optional="hide"
+                       column_invisible="parent.skip_nscr_entry"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly"
+                           add="(not is_parent) and (not parent.skip_nscr_entry) and (not nscr_register_id)"
+                           separator=" or "/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='live_unit_cost']"
+                   position="after">
+                <!-- <field name="icr_register_id" column_invisible="1"/> -->
+                <field name="is_icr_register" width="60px;" optional="show"/>
+                <field name="icr_register_id" string="ICR" readonly="1" class="dark-blue" optional="hide"/>
+                <button name="action_open_nscr_creation_choice_wizard" class="fa fa-plus"
+                        type="object"
+                        invisible="nscr_register_id or is_parent or display_type or parent.skip_nscr_entry"/>
+                <field name="nscr_register_id" string="NSCR" readonly="1" class="bright-red" optional="hide"
+                       column_invisible="parent.skip_nscr_entry"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly"
+                           add="(not is_parent) and (not parent.skip_nscr_entry) and (not nscr_register_id)"
+                           separator=" or "/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="auto_lock_sales_quote_upon_project_creation.sale_quote_planning_screen_view_ext" model="ir.ui.view">
+        <field name="name">auto.lock.sales.quote.upon.project.creation.sale_quote_planning_screen.view.ext</field>
+        <field name="model">sale.quote.planning.screen</field>
+        <field name="inherit_id" ref="sale_quote_planning_screen.sale_quote_planning_screen_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='stage_count']" position="attributes">
+                <attribute name="readonly" add="auto_lock_sales_quote_upon_project_creation" separator=" or "/>
+            </xpath>
+
+            <xpath expr="//field[@name='stage_count']" position="after">
+                <field name="project_name"/>
+            </xpath>
+
+
+            <xpath expr="//field[@name='sale_quote_line_ids']" position="attributes">
+                <attribute name="readonly" add="auto_lock_sales_quote_upon_project_creation" separator=" or "/>
+            </xpath>
+            <xpath expr="//page[@name='sale_quote_planning_lines']" position="after">
+                <page name="line_item_status_quantity" string="Line Item Status Quantity">
+                    <field name="line_item_status_ids" no_label="1" force_save="1" widget="one2many">
+                        <list class="no_reorder" create="false" no_open="True" editable="bottom" delete="false">
+                            <field name="status_name" width="300px"/>
+                            <field name="status_quantity" width="200px"/>
+                            <field name="crm_lead_id" force_save="1" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>

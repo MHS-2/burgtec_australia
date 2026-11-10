@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View deal.stage View List -->
+    <record id="update_crm_burgtec_view_deal_stage_list" model="ir.ui.view">
+        <field name="name">view.deal.stage.list</field>
+        <field name="model">deal.stage</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="freeze_project"/>
+                <field name="probability" widget="percentage"/>
+                <field name="active" column_invisible="1"/>
+                <field name="deal_stage_id" invisible="0"/>
+                <field name="pipeline_name" invisible="0"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- View deal.stage form -->
+    <record id="update_crm_burgtec_view_deal_stage_form" model="ir.ui.view">
+        <field name="name">view.deal.stage.form</field>
+        <field name="model">deal.stage</field>
+        <field name="arch" type="xml">
+            <form string="Deal Stage">
+                <sheet>
+                    <group>
+                        <field name="active" invisible="1"/>
+                        <field name="deal_stage_id"/>
+                        <field name="pipeline_name"/>
+                        <field name="freeze_project"/>
+                    </group>
+                    <div class="oe_title">
+                        <h2 class="row g-0">
+                            <div class="col-12 pb-2 pb-md-0">
+                                <label for="name" class="oe_edit_only"/>
+                                <div class="d-flex flex-wrap align-items-baseline">
+                                    <field name="name" required="1"/>
+                                </div>
+                            </div>
+                        </h2>
+                        <h2 class="row g-0 pb-3 pb-sm-4">
+                            <div class="col-auto">
+                                <label for="probability" class="d-inline-block"/>
+                                <div id="probability" class="d-flex align-items-baseline">
+                                    <field name="probability" widget="percentage" class="oe_inline o_input_6ch"/>
+                                    <span class="oe_grey p-2">%</span>
+                                </div>
+                            </div>
+                        </h2>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View deal.stage search -->
+    <record id="update_crm_burgtec_view_deal_stage_search" model="ir.ui.view">
+        <field name="name">view.deal.stage.search</field>
+        <field name="model">deal.stage</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action deal.stage -->
+    <record id="update_crm_burgtec_action_deal_stage" model="ir.actions.act_window">
+        <field name="name">Deal Stage</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">deal.stage</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no examples click here to add new Deal Stage.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="update_crm_burgtec_hubspot_deals_menu"
+            name="Hubspot Deals"
+            parent="crm.crm_menu_config"
+            sequence="30"/>
+
+
+    <menuitem
+            id="update_crm_burgtec_deal_stage_menu"
+            name="Deal Stage"
+            action="update_crm_burgtec_action_deal_stage"
+            parent="update_crm_burgtec_hubspot_deals_menu"
+            sequence="31"/>
+
+
+</odoo>

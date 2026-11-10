@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+      
+    <!-- View res.partner form -->
+    <record id="view_res_partner_form" model="ir.ui.view">
+        <field name="name">view.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']//group[@name='misc']" position="after">
+              <group name="checks" string="Checks">
+                <field name="is_xero_contact"/>
+                <field name="is_export_contact"/>
+              </group>
+            </xpath>
+
+            <xpath expr="//div[hasclass('mb24')]" position="before">
+              <div class="alert alert-success text-start d-inline-flex"
+                  invisible="not is_export_contact and not contact_xero_company_ids"
+                  role="alert">This contact has been exported to Xero.</div>
+              <div class="alert alert-danger text-start d-inline-flex"
+                  invisible="is_export_contact or contact_xero_company_ids"
+                  role="alert">This contact has not been exported to Xero yet.</div>
+            </xpath>
+
+            <xpath expr="//page[@name='internal_notes']" position="after">
+              <page name="xero_partner_data" string="XERO Details">
+                <group>
+                  <field name="contact_xero_company_ids" readonly="1" nolabel="1">
+                      <list editable="bottom">
+                          <field name="company_id"/>
+                          <field name="xero_contact_id"/>
+                      </list>
+                  </field>
+                </group>
+              </page>
+            </xpath>
+
+        </field>
+    </record>
+
+  </odoo>

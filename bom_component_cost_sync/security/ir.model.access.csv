@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bom_component_bulk_cost_update_wizard,bom.component.bulk.cost.update.wizard,model_bom_component_bulk_cost_update_wizard,,1,1,1,1
+access_bom_component_bulk_cost_update_wizard_line,bom.component.bulk.cost.update.wizard.line,model_bom_component_bulk_cost_update_wizard_line,,1,1,1,1
+
+
+
+

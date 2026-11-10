@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+      
+    <!-- View product.product form -->
+    <record id="view_product_product_form" model="ir.ui.view">
+        <field name="name">view.product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="after">
+            <group name="delivery_code_values" string="Delivery Code Data">
+                <group>
+                        <field name="variant_delivery_code_selection_id" options = "{'no_create':1, 'no_open':1}" placeholder="Delivery Code Selection"/>
+                        <field name="variant_cbm_flatpacked"/>
+                        <field name="variant_cbm_assembled"/>
+                    </group>
+                    <group>
+                        <field name="variant_zone1_delivery_cost"/>
+                        <field name="variant_zone1_installation_cost"/>
+                        <field name="zone1_total_cost"/>
+                    </group>
+            </group>
+              <group name="variant_quotations_data" string="Quotation Description Details">
+                    <group>
+                        <field name="variant_quotation_dimensions" placeholder="Add Dimensions Here."/>
+                        <field name="variant_quotation_features" placeholder="Add Features Here."/>
+                        <field name="variant_quotation_lead_time" placeholder="Add Lead Time Here."/>
+                    </group>
+                    <group>
+                        <field name="variant_quotation_finishes" placeholder="Add Finishes Here."/>
+                        <field name="variant_quotation_warranty" placeholder="Add Warranty Here."/>
+                        <field name="variant_quotation_other_details" placeholder="Add Other Details Here."/>
+                    </group>
+              </group>
+            </xpath>
+
+            <xpath expr="//group[@name='sales']" position="after">
+              <group name="quotation_description_sale" string="Sales Description">
+                    <field colspan="2" name="variant_description_sale" nolabel="1" placeholder="This note is added to sales orders and invoices." force_save="1"/>
+              </group>
+            </xpath>
+
+            <!-- <xpath expr="//group[@name='codes']" position="inside">
+                <field name="variant_delivery_code_selection_id" options = "{'no_create':1, 'no_open':1}" placeholder="Delivery Code Selection"/>
+                <field name="variant_cbm_flatpacked"/>
+                <field name="variant_cbm_assembled"/>
+            </xpath> -->
+        </field>
+    </record>
+
+    <!-- ALSO INHERTING THE VIEW OF PRODUCT PRODUCT TO SHOW THE SAME FIELDS / CHANGES-->
+    
+    <record id="product_product_extended_burgtec" model="ir.ui.view">
+        <field name="name">product.product.extended.burgtec</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group[@name='internal_notes']" position="before">
+                <group name="delivery_code_values" string="Delivery Code Data">
+                    <group>
+                            <field name="variant_delivery_code_selection_id" options = "{'no_create':1, 'no_open':1}" placeholder="Delivery Code Selection"/>
+                            <field name="variant_cbm_flatpacked"/>
+                            <field name="variant_cbm_assembled"/>
+                        </group>
+                        <group>
+                            <field name="variant_zone1_delivery_cost"/>
+                            <field name="variant_zone1_installation_cost"/>
+                            <field name="zone1_total_cost"/>
+                        </group>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='sales']//group[@name='sale']" position="after">
+                <group string="Quotation Description Details">
+                    <group>
+                        <field name="variant_quotation_dimensions" placeholder="Add Dimensions Here."/>
+                        <field name="variant_quotation_features" placeholder="Add Features Here."/>
+                        <field name="variant_quotation_lead_time" placeholder="Add Lead Time Here."/>
+                    </group>
+                    <group>
+                        <field name="variant_quotation_finishes" placeholder="Add Finishes Here."/>
+                        <field name="variant_quotation_warranty" placeholder="Add Warranty Here."/>
+                        <field name="variant_quotation_other_details" placeholder="Add Other Details Here."/>
+                    </group>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='description_sale']" position="replace">
+                <field colspan="2" name="variant_description_sale" nolabel="1" placeholder="This note is added to sales orders and invoices." force_save="1"/>
+            </xpath>
+            <xpath expr="//group[@name='description']" position="after">
+                <group string="Original Quotation Description" name="og_description">
+                    <field colspan="2" name="description_sale" nolabel="1" placeholder="This note is added to sales orders and invoices."/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+  </odoo>

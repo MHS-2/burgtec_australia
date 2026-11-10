@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+
+    <t t-name="bom_based_inventory.SaleProductFieldOverride" t-inherit="sale.SaleProductField" t-inherit-mode="primary">
+        <!-- Override readonly textareas to prevent click propagation -->
+        <xpath expr="//textarea[@t-on-change]" position="attributes">
+            <attribute name="t-on-click">onTextareaClick</attribute>
+        </xpath>
+    </t>
+
+</templates>

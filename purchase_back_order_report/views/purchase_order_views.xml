@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="purchase_back_order_report_view_purchase_order_list" model="ir.ui.view">
+        <field name="name">purchase_back_order_report.view.purchase.order.list</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_planned']" position="after">
+                <field name="latest_back_order_date_planned"/>
+                <field name="is_po_not_going_to_bv" width="150px" readonly="1" widget="boolean_toggle" optional="show"/>
+                <field name="bo_number" width="150px" optional="show"/>
+                <field name="bo_notes" width="150px" optional="show"/>
+                <field name="bo_dispatch_date" width="150px" optional="show"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <!-- View purchase.order form -->
+    <record id="purchase_back_order_report_view_purchase_order_form" model="ir.ui.view">
+        <field name="name">purchase_back_order_report.view.purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='onedrive_po_folder_link']" position="after">
+                <field name="latest_back_order_date_planned" invisible="tag == 'parent'"/>
+                <field name="purchase_comments"/>
+                <field name="is_po_not_going_to_bv" invisible="tag != 'child'"/>
+                <field name="bo_number" invisible="tag != 'child'"/>
+                <field name="bo_notes" invisible="tag != 'child'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//field[@name='product_qty']" position="before">
+                <field name="is_back_order" width="100px;" class="text-center"
+                       column_invisible="parent.tag == 'parent'"/>
+                <field name="back_order_qty" required="is_back_order" width="130px;"
+                       column_invisible="parent.tag == 'parent'"/>
+                <field name="back_order_date_planned" required="is_back_order"
+                       column_invisible="parent.tag == 'parent'"/>
+                <field name="back_order_comments" required="is_back_order" width="170px;"
+                       column_invisible="parent.tag == 'parent'"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_burgtec_warehouse_parent" model="ir.module.category">
+        <field name="name">Burgtec Warehouse</field>
+        <field name="description">Helps you handle Burgtec Warehouse module's operations</field>
+        <field name="sequence">90</field>
+    </record>
+
+    <record model="ir.module.category" id="module_category_burgtec_warehouse_id">
+        <field name="name">Warehouse Receiving</field>
+        <field name="description">Helps manage warehouse app permissions.</field>
+        <field name="sequence">30</field>
+        <field name="parent_id" ref="burgtec_warehouse.module_category_burgtec_warehouse_parent"/>
+    </record>
+
+    <record id="group_warehouse_user" model="res.groups">
+        <field name="name">User: Read Only</field>
+        <field name="category_id" ref="burgtec_warehouse.module_category_burgtec_warehouse_id"/>
+    </record>
+
+    <record id="group_warehouse_manager" model="res.groups">
+        <field name="name">Manager: Manage all operations</field>
+        <field name="category_id" ref="burgtec_warehouse.module_category_burgtec_warehouse_id"/>
+        <field name="implied_ids" eval="[(4,ref('burgtec_warehouse.group_warehouse_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]" />
+    </record>
+
+     <record id="group_warehouse_superuser" model="res.groups">
+        <field name="name">Super User: Can Do Anything!</field>
+        <field name="category_id" ref="burgtec_warehouse.module_category_burgtec_warehouse_id"/>
+        <field name="implied_ids" eval="[(4,ref('burgtec_warehouse.group_warehouse_manager'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]" />
+    </record>
+</odoo>

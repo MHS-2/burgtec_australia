@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- A3 DELIVERY LABEL                                             -->
+    <!-- Shows child PO info in large text covering most of the page   -->
+    <!-- Data: docs = child purchase orders, sale_order = parent SO    -->
+    <!-- ============================================================ -->
+    <template id="burgtec_delivery_label">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="padding: 15mm 20mm;">
+                    <style>
+                        @page {
+                            size: A3 portrait;
+                            margin: 10mm;
+                        }
+                        .label-wrap {
+                            width: 100%;
+                            text-align: center;
+                            padding: 10px 0;
+                        }
+                        .label-brand {
+                            font-family: 'Arial', sans-serif;
+                            font-weight: 700;
+                            font-size: 52px;
+                            margin-bottom: 25px;
+                            letter-spacing: 2px;
+                        }
+                        .label-box {
+                            width: 92%;
+                            margin: 0 auto 25px auto;
+                            border: 3px solid #000;
+                            padding: 22px 30px;
+                            background-color: #fff;
+                            text-align: center;
+                        }
+                        .label-title {
+                            font-size: 26px;
+                            font-weight: bold;
+                            color: #555;
+                            margin-bottom: 6px;
+                            text-transform: uppercase;
+                            letter-spacing: 3px;
+                        }
+                        .label-value-huge {
+                            font-size: 80px;
+                            font-weight: 900;
+                            color: #000;
+                            line-height: 1.15;
+                            word-wrap: break-word;
+                        }
+                        .label-value-large {
+                            font-size: 52px;
+                            font-weight: 700;
+                            color: #000;
+                            line-height: 1.25;
+                            word-wrap: break-word;
+                        }
+                        .label-barcode {
+                            margin-top: 20px;
+                            text-align: center;
+                        }
+                        .label-barcode-text {
+                            font-size: 16px;
+                            margin-top: 6px;
+                            color: #666;
+                        }
+                        .label-location {
+                            display: inline-block;
+                            padding: 14px 50px;
+                            color: #fff;
+                            font-weight: bold;
+                            font-size: 38px;
+                            margin-bottom: 20px;
+                        }
+                    </style>
+
+                    <div class="label-wrap">
+
+                        <!-- Brand -->
+                        <div class="label-brand">burgtec.</div>
+
+                        <!-- Location Badge (from sale order) -->
+<!--                        <t t-if="sale_order">-->
+<!--                            <div class="label-location"-->
+<!--                                 t-attf-style="background-color: #{-->
+<!--                                     'nsw' in (sale_order.location or '').lower() and '#6366F1' or-->
+<!--                                     'act' in (sale_order.location or '').lower() and '#EAB308' or-->
+<!--                                     'vic' in (sale_order.location or '').lower() and '#22C55E' or-->
+<!--                                     'qld' in (sale_order.location or '').lower() and '#DC2626' or-->
+<!--                                     'other' in (sale_order.location or '').lower() and '#9333EA' or-->
+<!--                                     '#6366F1'-->
+<!--                                 };">-->
+<!--                                <t t-if="'nsw' in (sale_order.location or '').lower()">NSW</t>-->
+<!--                                <t t-elif="'act' in (sale_order.location or '').lower()">ACT</t>-->
+<!--                                <t t-elif="'vic' in (sale_order.location or '').lower()">VIC</t>-->
+<!--                                <t t-elif="'qld' in (sale_order.location or '').lower()">QLD</t>-->
+<!--                                <t t-elif="'other' in (sale_order.location or '').lower()">OTHER</t>-->
+<!--                                <t t-else="">NSW</t>-->
+<!--                            </div>-->
+<!--                        </t>-->
+
+                        <!-- PO # -->
+                        <div class="label-box">
+                            <div class="label-title">PO #</div>
+                            <div class="label-value-huge">
+                                <t t-esc="o.burgtec_purchase_reference or o.name"/>
+                            </div>
+                        </div>
+
+                        <!-- Project Name (from parent sale order) -->
+                        <div class="label-box">
+                            <div class="label-title">Project</div>
+                            <div class="label-value-large">
+                                <t t-if="sale_order">
+                                    <t t-esc="sale_order.project_name or ''"/>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Package / Delivery Stage (from parent sale order) -->
+                        <div class="label-box">
+                            <div class="label-title">Package</div>
+                            <div class="label-value-huge">
+                                <t t-if="sale_order">
+                                    <t t-esc="sale_order.burgtec_quote_reference or ''"/>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- PO Supplier -->
+                        <div class="label-box">
+                            <div class="label-title">Supplier</div>
+                            <div class="label-value-large">
+                                <t t-esc="o.partner_id.name"/>
+                            </div>
+                        </div>
+
+                        <!-- Barcode at bottom -->
+<!--                        <div class="label-barcode">-->
+<!--                            <t t-if="sale_order">-->
+<!--                                <img t-attf-src="/report/barcode/?barcode_type=Code128&amp;value=LABEL-PO-{{ o.id }}&amp;width=500&amp;height=70"-->
+<!--                                     style="max-width: 75%;"/>-->
+<!--                            </t>-->
+<!--                            <div class="label-barcode-text">-->
+<!--                                <t t-esc="o.burgtec_purchase_reference or o.name"/>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- A3 Paper Format -->
+    <record id="paperformat_a3_label" model="report.paperformat">
+        <field name="name">Burgtec A3 Delivery Label</field>
+        <field name="format">A3</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Report Action (bound to purchase.order since we print child PO labels) -->
+    <record id="action_burgtec_delivery_label" model="ir.actions.report">
+        <field name="name">Burgtec Delivery Label (A3)</field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">burgtec_delivery_report.burgtec_delivery_label</field>
+        <field name="report_file">burgtec_delivery_report.burgtec_delivery_label</field>
+        <field name="print_report_name">'Label - %s' % (object.name)</field>
+        <field name="paperformat_id" ref="burgtec_delivery_report.paperformat_a3_label"/>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

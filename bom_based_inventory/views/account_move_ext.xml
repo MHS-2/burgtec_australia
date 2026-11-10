@@ -1,0 +1,41 @@
+<odoo>
+    <record id="view_account_move_form_ext" model="ir.ui.view">
+        <field name="name">view.account.move.form.ext</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="name" invisible="not (name or name_placeholder or quick_edit_mode)"
+                       readonly="state != 'draft'" options="{'placeholder_field': 'name_placeholder'}"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="string">Odoo Bill Reference</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_old_data" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="inherit_account_bill_filter_custom" model="ir.ui.view">
+        <field name="name">account.bill.filter.inherit.custom</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_bill_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[1]" position="before">
+                <field name="burgtec_bill_reference_computed"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="inherit_account_bill_tree_view_ext" model="ir.ui.view">
+        <field name="name">account.bill.tree.view.ext</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_in_invoice_bill_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="burgtec_bill_reference_computed"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

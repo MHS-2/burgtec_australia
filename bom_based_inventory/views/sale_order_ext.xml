@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="bom_based_inventory.sale_order_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.bom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="readonly">state == 'sale'</attribute>
+                </xpath>
+                <xpath expr="//form//field[@name='name']" position="replace">
+                    <field name="burgtec_quote_reference" placeholder="Burgtec Sale Reference"/>
+                </xpath>
+
+                <xpath expr="//div[hasclass('oe_title')]" position="before">
+                    <div name="old_data_warning" class="row" invisible="not is_old_data">
+                        <div class="col-1">
+                            <i class="fa fa-exclamation-triangle fa-3x text-danger" title="danger"
+                               aria-hidden="true"></i>
+                        </div>
+                        <div class="col-10 alert alert-danger text-center d-inline-flex"
+                             role="alert">
+                            <strong>Warning:</strong>
+                            <span class="mx-2">Deleting Products May Affect the BOM Components and Their Lines.</span>
+
+                        </div>
+                    </div>
+
+                </xpath>
+
+                <xpath expr="//form//page[@name='other_information']/group/group" position="before">
+                    <group name="old_phase_check" string="Phase 1 Checks">
+                        <field name="is_old_data" readonly="1" force_save="1"/>
+                        <!--                        <field name="is_in_builder_trend" readonly="1" force_save="1" invisible="quote_type != 'project_quote'"/>-->
+                        <field name="is_having_delivery_stage" readonly="1" force_save="1"/>
+                        <field name="is_having_project_stage" readonly="1" invisible="0" force_save="1"/>
+                    </group>
+                </xpath>
+
+                <!-- NEW FLOW -->
+
+                <xpath expr="//div[hasclass('oe_title')]" position="after">
+                    <div class="row">
+                        <div class="col-6"></div>
+                        <div class="col-6 d-flex gap-2 mt-3">
+                            <button name="action_show_component" type="object" class="btn-primary" icon="fa-eye">
+                                Components
+                            </button>
+                            <button name="action_show_delivery_orders" type="object" icon="fa-eye"
+                                    class="btn-primary">
+                                Delivery Orders
+                            </button>
+                        </div>
+                    </div>
+
+                </xpath>
+
+                <xpath expr="//group[@name='partner_details']" position="attributes">
+                    <attribute name="string">Customer Details</attribute>
+                </xpath>
+
+                <xpath expr="//group[@name='order_details']" position="attributes">
+                    <attribute name="string">Order Details</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="name" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//group[@name='order_details']" position="after">
+                    <!-- <group name="placeholder_group">
+
+                    </group> -->
+                    <group name="project_rev_details" string="Project Details">
+                        <field name="manual_rev" readonly="state == 'sale'"/>
+                        <field name="custom_project_id" string="Bom Report Project" placeholder="BOM Report Project"
+                               options="{'no_create': True}"/>
+                    </group>
+                </xpath>
+
+                <!-- NEW FLOW -->
+
+                <xpath expr="//button[@name='action_quotation_send']" position="after">
+                    <button name="action_mark_as_quoation_sent" string="Mark as Quotation Sent" type="object"
+                            invisible="state != 'draft'" confirm="Are you sure?"/>
+                    <button name="action_quotation_confirm" string="Quote Confirm" type="object"
+                            invisible="state != 'sent'" confirm="Are you sure?"/>
+                </xpath>
+
+
+                <!-- Old Flow -->
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="widget">statusbar</attribute>
+                    <attribute name="statusbar_visible">draft,sent,quotation_confirmed,sale</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_quotation_send']" position="attributes">
+                    <attribute name="invisible">state not in ('draft','quotation_confirmed')</attribute>
+                </xpath>
+
+                <!-- Update 'Confirm Sale' button visibility -->
+                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="confirm">Are you sure?</attribute>
+                    <attribute name="invisible">state != 'quotation_confirmed'</attribute>
+                </xpath>
+
+                <xpath expr="//group[hasclass('oe_subtotal_footer') or hasclass('o_subtotal_footer')]"
+                       position="attributes">
+                    <attribute name="class" remove="col-lg-8" add="col-lg-12" separator=" "/>
+                </xpath>
+
+                <xpath expr="//group[hasclass('oe_subtotal_footer') or hasclass('o_subtotal_footer')]"
+                       position="inside">
+                    <group>
+                        <table class="table"
+                               style="margin-left: 106%; border: 1px solid #000; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 200px; border: 1px solid #000; padding: 8px;"></th>
+                                    <th style="width: 120px; text-align: left; color: red; border: 1px solid #000; padding: 8px;">
+                                        GP$
+                                    </th>
+                                    <th style="width: 120px; text-align: left; color: red; border: 1px solid #000; padding: 8px;">
+                                        Markup
+                                    </th>
+                                    <th style="width: 120px; text-align: left; color: red; border: 1px solid #000; padding: 8px;">
+                                        Margin
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <label for="system_cost_per_unit" class="text-muted opacity-100"
+                                               style="font-weight: bold;">
+                                            Margin on System Cost
+                                        </label>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="system_cost_per_unit"
+                                               widget="monetary"
+                                               currency_field="currency_id"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-muted="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="percentage_markup_system_cost"
+                                               widget="percentage"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-muted="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="percentage_margin_system_cost"
+                                               widget="percentage"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-muted="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <label for="quoted_cost_per_unit" class="text-muted opacity-100"
+                                               style="font-weight: bold;">
+                                            Margin on Quoted Cost
+                                        </label>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="quoted_cost_per_unit"
+                                               widget="monetary"
+                                               currency_field="currency_id"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-danger="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="percentage_markup_quoted_cost"
+                                               widget="percentage"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-danger="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="percentage_margin_quoted_cost"
+                                               widget="percentage"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-danger="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <label for="pre_project_cost_per_unit" class="text-muted opacity-100"
+                                               style="font-weight: bold;">
+                                            Margin on Pre‑Project Cost
+                                        </label>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="pre_project_cost_per_unit"
+                                               widget="monetary"
+                                               currency_field="currency_id"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-bf="1 == 1"
+                                               decoration-primary="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="percentage_markup_pre_project_cost"
+                                               widget="percentage"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-bf="1 == 1"
+                                               decoration-primary="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="percentage_margin_pre_project_cost"
+                                               widget="percentage"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-bf="1 == 1"
+                                               decoration-primary="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <label for="live_unit_cost" class="text-muted opacity-100"
+                                               style="font-weight: bold;">
+                                            Margin on Live Cost
+                                        </label>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="live_unit_cost"
+                                               widget="monetary"
+                                               currency_field="currency_id"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-warning="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="percentage_markup_live_cost"
+                                               widget="percentage"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-warning="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                    <td style="text-align: left; padding: 8px; border: 1px solid #000;">
+                                        <field name="percentage_margin_live_cost"
+                                               widget="percentage"
+                                               readonly="1"
+                                               force_save="1"
+                                               decoration-warning="1 == 1"
+                                               class="text-start opacity-100"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/list//field[@name='product_template_id']"
+                       position="attributes">
+                    <attribute name="domain">[('product_bom_type', '!=', 'components')]</attribute>
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/list//field[@name='product_id']"
+                       position="attributes">
+                    <attribute name="domain">[('product_bom_type', '!=', 'components')]</attribute>
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+
+
+                <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']"
+                       position="attributes">
+                    <attribute name="readonly">parent.state == 'sale'</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']"
+                       position="attributes">
+                    <attribute name="readonly">state == 'sale'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/list" position="attributes">
+                    <attribute name="limit">99999</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/list//field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="readonly">parent.state == 'sale'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list"
+                       position="attributes">
+                    <attribute name="decoration-danger">display_type == 'line_section'</attribute>
+                    <attribute name="decoration-info">display_type == 'line_note'</attribute>
+                    <attribute name="class">no_reorder</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='action_view_purchase_orders']//span[hasclass('o_stat_text')]"
+                       position="replace">
+                    <span class="o_stat_text">DO</span>
+                </xpath>
+            </field>
+        </record>
+        <record id="burgtec_report_sale_order_tree_view_extended" model="ir.ui.view">
+            <field name="name">burgtec.report.sale.order.tree.view.extended</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="before">
+                    <button width="25" type="object" name="open_record_in_new_window" class="btn btn-link"
+                            icon="fa-external-link" title="Open Sale Order in New Tab"/>
+                </xpath>
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="burgtec_quote_reference"/>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="view_sales_order_filter_inherit_custom" model="ir.ui.view">
+            <field name="name">sale.order.search.inherit.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[1]" position="before">
+                    <field name="burgtec_quote_reference"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hubspot_ticket_creation_ps.view_sale_order_bom_components_form_ext1" model="ir.ui.view">
+        <field name="name">hubspot_ticket_creation_ps.view.sale.order.bom.component.form</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="quotation_type_customization.view_sale_order_bom_components_form_ext1"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='supplier_id']"
+                   position="after">
+                <field name="is_early_procurement_supplier" class="text-center" width="170px" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='supplier_id']"
+                   position="after">
+                <field name="is_early_procurement_supplier" class="text-center" width="170px" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='supplier_id']"
+                   position="after">
+                <field name="is_early_procurement_supplier" class="text-center" width="170px" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='supplier_id']"
+                   position="after">
+                <field name="is_early_procurement_supplier" class="text-center" width="170px" optional="hide"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

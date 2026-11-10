@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_purchase_order_form_inherit_add_group_section_code" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.add.group.section.code</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="before">
+                <field name="line_group_name" optional="hide" force_save="1" column_invisible="parent.tag=='child'"/>
+                <field name="line_section_name" optional="hide" force_save="1" column_invisible="parent.tag=='child'"/>
+                <field name="line_group_name_child" optional="hide" force_save="1" column_invisible="parent.tag=='parent'" readonly="1"/>
+                <field name="line_section_name_child"  optional="hide" force_save="1" column_invisible="parent.tag=='parent'" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

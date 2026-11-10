@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Form View for Components -->
+    <record id="bom_based_floating_table.view_sale_order_bom_components_form_ext" model="ir.ui.view">
+        <field name="name">sale.order.bom.components.form.ext</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="bom_based_inventory.view_sale_order_bom_components_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='margin_live_cost']"
+                   position="before">
+                <field name="unit_margin" class="text-center" readonly="1" invisible="not is_parent" optional="show"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='quoted_cost_per_unit']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='pre_project_cost_per_unit']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='margin_system_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='margin_quoted_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='margin_pre_project_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='margin_system_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='margin_quoted_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='margin_pre_project_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='markup_system_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='markup_quoted_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='markup_pre_project_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <!--            Second View-->
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='margin_live_cost']"
+                   position="before">
+                <field name="unit_margin" class="text-center" readonly="1" invisible="not is_parent" optional="show"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='quoted_cost_per_unit']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='pre_project_cost_per_unit']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='margin_system_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='margin_quoted_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='margin_pre_project_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='margin_system_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='margin_quoted_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='margin_pre_project_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='markup_system_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='markup_quoted_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='markup_pre_project_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <!--            Third View-->
+
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='margin_live_cost']"
+                   position="before">
+                <field name="unit_margin" class="text-center" readonly="1" invisible="not is_parent" optional="show"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='quoted_cost_per_unit']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='pre_project_cost_per_unit']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='margin_system_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='margin_quoted_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='margin_pre_project_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='margin_system_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='margin_quoted_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='margin_pre_project_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='markup_system_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='markup_quoted_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='markup_pre_project_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <!--            4th View-->
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='margin_live_cost']"
+                   position="before">
+                <field name="unit_margin" class="text-center" readonly="1" invisible="not is_parent" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='quoted_cost_per_unit']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='pre_project_cost_per_unit']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='margin_system_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='margin_quoted_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='margin_pre_project_cost']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='margin_system_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='margin_quoted_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='margin_pre_project_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='markup_system_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='markup_quoted_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='markup_pre_project_cost_per_parent']"
+                   position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

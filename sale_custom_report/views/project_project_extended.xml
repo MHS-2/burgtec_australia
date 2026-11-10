@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="project_project_burgtec_form_view_inherit" model="ir.ui.view">
+        <field name="name">project.proect.burgtec.form.view.extend</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='label_tasks']" position="before">
+                <field name="project_reference" string="Project Reference" placeholder="Project Reference" readonly="project_reference" force_save="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="currency_id" invisible="1"/>
+                <field name="delivery_installation_cost" widget="monetary" string="Delivery &amp; Installation Cost" placeholder="Delivery &amp; Installation Cost"/>
+            </xpath>
+        </field>
+
+    </record>
+</odoo>

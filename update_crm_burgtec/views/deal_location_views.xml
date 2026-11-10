@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View deal.location View List -->
+    <record id="update_crm_burgtec_view_deal_location_list" model="ir.ui.view">
+        <field name="name">update.crm.burgtec.view.deal.location.list</field>
+        <field name="model">deal.location</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="hubspot_internal_name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- View deal.location form -->
+    <record id="update_crm_burgtec_view_deal_location_form" model="ir.ui.view">
+        <field name="name">update.crm.burgtec.view.deal.location.form</field>
+        <field name="model">deal.location</field>
+        <field name="arch" type="xml">
+            <form string="Deal Location">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="hubspot_internal_name" placeholder="Internal Name" required="1"/>
+                            <field name="name" placeholder="Label" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View deal.location search -->
+    <record id="update_crm_burgtec_view_deal_location_search" model="ir.ui.view">
+        <field name="name">update.crm.burgtec.view.deal.location.search</field>
+        <field name="model">deal.location</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="hubspot_internal_name"/>
+                <field name="name"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Name" name="name" domain="[]" context="{'group_by':'hubspot_internal_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action deal.location -->
+    <record id="update_crm_burgtec_action_deal_location" model="ir.actions.act_window">
+        <field name="name">Deal Location</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">deal.location</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no examples click here to add new Deal Location.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="update_crm_burgtec_location_menu"
+        name="Territory / Location"
+        action="update_crm_burgtec_action_deal_location"
+        parent="update_crm_burgtec_hubspot_deals_menu"
+        sequence="33"/>
+
+</odoo>

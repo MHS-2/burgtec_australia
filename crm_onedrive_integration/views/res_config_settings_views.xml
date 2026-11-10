@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_onedrive" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.crm.onedrive</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='crm']" position="inside">
+                <block title="OneDrive / SharePoint Integration" id="onedrive_integration_block">
+                    <setting id="onedrive_credentials_setting"
+                             string="Azure AD Application"
+                             help="Credentials from your Azure App Registration (Application permissions, not delegated).">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="onedrive_tenant_id" class="col-lg-4 o_light_label"/>
+                                <field name="onedrive_tenant_id" class="col-lg-5"
+                                       placeholder="Directory (tenant) ID"/>
+                            </div>
+                            <div class="row mt8">
+                                <label for="onedrive_client_id" class="col-lg-4 o_light_label"/>
+                                <field name="onedrive_client_id" class="col-lg-5"
+                                       placeholder="Application (client) ID"/>
+                            </div>
+                            <div class="row mt8">
+                                <label for="onedrive_client_secret" class="col-lg-4 o_light_label"/>
+                                <field name="onedrive_client_secret" class="col-lg-5" password="True"
+                                       placeholder="Client Secret value"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting id="onedrive_sharepoint_setting"
+                             string="SharePoint Target"
+                             help="Where lead folders will be created inside SharePoint.">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="onedrive_sharepoint_site_url" class="col-lg-4 o_light_label"/>
+                                <field name="onedrive_sharepoint_site_url" class="col-lg-5"
+                                       placeholder="https://yourtenant.sharepoint.com/sites/YourSite"/>
+                            </div>
+                            <div class="row mt8">
+                                <label for="onedrive_root_folder" class="col-lg-4 o_light_label"/>
+                                <field name="onedrive_root_folder" class="col-lg-5"
+                                       placeholder="CRM Leads"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

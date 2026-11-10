@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View icr.register View List -->
+    <record id="view_icr_register_list" model="ir.ui.view">
+        <field name="name">view.icr.register.list</field>
+        <field name="model">icr.register</field>
+        <field name="arch" type="xml">
+            <list string="ICR Register" create="0" delete="0">
+                <field name="name" decoration-bf="1"/>
+                <field name="burgtec_project_reference" decoration-bf="1" width="220px;"/>
+                <field name="icr_date"/>
+                <!-- <field name="order_id" context="{'burgtec_project_reference':True}"/> -->
+                <field name="product_variant_id" width="500px;"/>
+                <field name="product_component_id" width="500px;"/>
+                <field name="user_id" widget="many2one_avatar_user" width="215px;"/>
+                <field name="state" width="100px;" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'in_progress'" decoration-success="state == 'complete'" decoration-danger="state == 'cancel'" />
+            </list>
+        </field>
+    </record>
+
+    <!-- View icr.register form -->
+    <record id="view_icr_register_form" model="ir.ui.view">
+        <field name="name">view.icr.register.form</field>
+        <field name="model">icr.register</field>
+        <field name="arch" type="xml">
+            <form string="ICR Register" create="0" delete="0">
+                <header>
+                    <button name="set_state_to_inprogress" class="btn btn-primary" type="object" string="Set To In Progress" invisible="state != 'draft'"/>
+                    <button name="set_state_to_complete" class="btn btn-primary" type="object" string="Set To Complete" invisible="state != 'in_progress'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object"
+                            name="action_open_sale_order" icon="fa-pencil-square-o">
+                            Sales Order
+                        </button>
+                        <button class="oe_stat_button" type="object"
+                            name="action_open_product" icon="fa-share">
+                            Product
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="icr_date" readonly="1"/>
+                            <field name="order_id" options="{'no_open':1}" readonly="1" context="{'burgtec_project_reference':True}"/>
+                            <field name="product_variant_id" options="{'no_open':1}" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="product_component_id" options="{'no_open':1}" readonly="1" invisible="not product_component_id"/>
+                            <field name="burgtec_project_reference" readonly="1" />
+                            <field name="user_id" widget="many2one_avatar_user" options="{'no_open':1}" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- View icr.register search -->
+    <record id="view_icr_register_search" model="ir.ui.view">
+        <field name="name">view.icr.register.search</field>
+        <field name="model">icr.register</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_variant_id"/>
+                <field name="product_component_id"/>
+                <field name="burgtec_project_reference"/>
+                <filter string="Product" name="product_filter" domain="[('product_variant_id', '!=', False)]"/>
+                <filter string="Component" name="component_filter" domain="[('product_component_id', '!=', False)]"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Complete" name="complete" domain="[('state', '=', 'complete')]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Order" name="order" domain="[]" context="{'group_by':'order_id'}"/>
+                    <filter string="Requested By" name="requested_user" domain="[]" context="{'group_by':'user_id'}"/>
+                    <filter string="State" name="state" domain="[]" context="{'group_by':'state'}"/>
+                    <separator orientation="vertical" />
+                    <filter string="Product" name="product" domain="[]" context="{'group_by':'product_variant_id'}"/>
+                    <filter string="Component" name="product" domain="[('product_component_id','=',True)]" context="{'group_by':'product_component_id'}"/>
+                    <filter string="ICR Date" name="icr_date" context="{'group_by':'icr_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action icr.register -->
+    <record id="action_icr_register" model="ir.actions.act_window">
+        <field name="name">ICR Register</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">icr.register</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'burgtec_project_reference':True}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no examples click here to add new Icr Register.
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Registers" id="menu_burgtec_register" parent="sale.sale_menu_root" sequence="35"/>
+    <menuitem name="ICR Register" id="menu_burgtec_icr_register" parent="burgtec_registers_customization.menu_burgtec_register" sequence="1" action="burgtec_registers_customization.action_icr_register"/>
+
+</odoo>

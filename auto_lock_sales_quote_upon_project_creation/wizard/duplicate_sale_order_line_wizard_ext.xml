@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="auto_lock_sales_quote_upon_project_creation.view_duplicate_quotation_line_wizard_form_inherit_freeze"
+            model="ir.ui.view">
+        <field name="name">duplicate.quotation.line.wizard.form.inherit.freeze</field>
+        <field name="model">duplicate.quotation.line.wizard</field>
+        <field name="inherit_id"
+               ref="sale_order_customisation.view_duplicate_quotation_line_wizard_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="(//field[@name='order_id'])[1]" position="attributes">
+                <attribute name="domain">
+                    [('is_frozen_due_to_project_creation', '=', False),('freeze_sale_order', '=', False)]
+                </attribute>
+            </xpath>
+
+            <xpath expr="(//field[@name='order_id'])[2]" position="attributes">
+                <attribute name="domain">
+                    [('quote_type', '=', 'sales_quote'),
+                    ('is_frozen_due_to_project_creation', '=', False)]
+                </attribute>
+            </xpath>
+            <xpath expr="(//field[@name='order_id'])[3]" position="attributes">
+                <attribute name="domain">
+                    [('quote_type', '=', 'project_quote'),
+                    ('freeze_sale_order', '=', False)]
+                </attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

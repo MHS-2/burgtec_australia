@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--List View-->
+    <record id="product_product_list_view_inherit_inherit_burgtec_warehouse_presence" model="ir.ui.view">
+        <field name="name">product.product.list.burgtec.warehouse.presence</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="is_present_in_warehouse" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!--Search View-->
+
+    <record id="product_search_form_view_inherit_burgtec_warehouse_presence" model="ir.ui.view">
+        <field name="name">product.product.search.burgtec.warehouse.presence</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter name="in_warehouse" string="In Burgtec Warehouse Instance"
+                        domain="[('is_present_in_warehouse', '=', True)]"/>
+                <filter name="not_in_warehouse" string="Not in Burgtec Warehouse Instance"
+                        domain="[('is_present_in_warehouse', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- Product Variant form OG -->
+    <record id="product_normal_form_view_inherit_burgtec_warehouse_presence" model="ir.ui.view">
+        <field name="name">product.product.form.burgtec.warehouse.presence</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="barcode" position="after">
+                <field name="is_present_in_warehouse"/>
+            </field>
+            <xpath expr="//notebook" position="inside">
+                <page name="warehouse_info" string="Warehouse Product Info" invisible="not warehouse_product_id">
+                    <group>
+                        <group>
+                            <field name="warehouse_product_id"/>
+                            <field name="warehouse_product_url"/>
+                        </group>
+                        <group>
+                            <div>
+                                <button name="action_open_warehouse_product" string="Warehouse Product" type="object"
+                                        class="oe_stat_button" icon="fa-external-link"
+                                        invisible="not warehouse_product_url">
+                                </button>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+                <page name="warehouse_boms" string="Warehouse BoMs" invisible="not warehouse_product_id">
+                    <button name="action_fetch_warehouse_boms" string="Fetch BoMs" type="object"
+                            class="btn-secondary mb-2" icon="fa-refresh"/>
+                    <field name="warehouse_bom_line_ids" nolabel="1">
+                        <list>
+                            <field name="warehouse_bom_id" options="{'no_open':True}"/>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="is_kit"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- opened from the template's Variants button -->
+    <record id="product_variant_easy_edit_view_inherit_burgtec_warehouse_presence" model="ir.ui.view">
+        <field name="name">product.product.easy.edit.burgtec.warehouse.presence</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="arch" type="xml">
+            <field name="barcode" position="after">
+                <field name="is_present_in_warehouse"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

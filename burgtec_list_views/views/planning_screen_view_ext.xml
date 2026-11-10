@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="burgtec_list_views.planning_screen_view_ext1" model="ir.ui.view">
+        <field name="name">burgtec_list_views.planning_screen_view_ext1</field>
+        <field name="model">planning.screen</field>
+        <field name="inherit_id" ref="artwork_url_attachment_for_screens.planning_screen_view_ext"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_name']"
+                   position="after">
+                <field name="view_team" widget="radio"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/list//button[@name='action_open_add_attachment_artwork_wizard']"
+                   position="attributes">
+                <attribute name="invisible">parent.view_team == 'approval_view'</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='line_ids']/list/field[@name='item']" position="attributes">
+                <attribute name="column_invisible">parent.view_team == 'approval_view'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/list/field[@name='delivery_comments']" position="attributes">
+                <attribute name="readonly">approval_status_readonly</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/list/field[@name='product_id']" position="before">
+                <field name="product_variant_id" position="move"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']" position="attributes">
+                <attribute name="class" add="sticky_list" separator=" "/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

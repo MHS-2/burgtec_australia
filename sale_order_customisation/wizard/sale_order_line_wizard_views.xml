@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ADD GROUP Dialog Template -->
+        <record id="sale_order_line_wizard_add_group_form_view" model="ir.ui.view">
+            <field name="name">sale.order.line.wizard.add.group.form.view</field>
+            <field name="model">sale.order.line.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="group_name" required="1" placeholder="Type group here"/>
+                    </group>
+                    <footer>
+                        <button name="action_add_group" string="Add" type="object" default_focus="1" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!-- Dialog Template -->
+        <record id="sale_order_line_wizard_add_code_form_view" model="ir.ui.view">
+            <field name="name">sale.order.line.wizard.add.code.form.view</field>
+            <field name="model">sale.order.line.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="code_name" required="1" placeholder="Type code here"/>
+                    </group>
+                    <footer>
+                        <button name="action_add_code" string="Add" type="object" default_focus="1" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!-- Dialog Template -->
+        <record id="sale_order_line_wizard_add_product_form_view" model="ir.ui.view">
+            <field name="name">sale.order.line.wizard.add.product.form.view</field>
+            <field name="model">sale.order.line.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="product_variant_selection" widget="selection_badge" nolabel="1" invisible="product_variant_selection == 'product_variant_sel' or product_model_type == 'product_variant'"/>
+                        <field name="product_template_selection" widget="selection_badge" nolabel="1" invisible="product_template_selection == 'product_template_sel' or product_model_type == 'product_template'"/>
+                        <!-- <button name="set_product_model_type_to_variant" string="Product Variant" type="object" class="btn-primary text-end" invisible="product_model_type == 'product_variant'"/> -->
+                    </header>
+                    <sheet>
+
+                        <div class="text-center" invisible="is_main_product_added">
+                            <div class="d-inline-flex align-items-center alert alert-info" role="alert">
+                                <p class="m-0">
+                                    <!-- <span><strong class="bold">Choice: </strong>Select what do you want to add.</span> -->
+                                     <strong>
+                                        <field name="selection_text"/>
+                                     </strong>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center" invisible="product_model_type">
+                            <field name="product_model_type" widget="selection_badge" nolabel="1"/>
+                        </div>
+                        <group>
+                            <!-- <field name="is_use_pop_up_configurator" string="POP Up Configurator"/> -->
+                             <field name="is_main_product_added" invisible="1"/>
+                             <field name="product_sale_type" invisible="1" force_save="1"/>
+                            <field name="sale_order_id" invisible="1" force_save="1"/>
+                            <field name="currency_id" invisible="1" force_save="1"/>
+                            <field name="date_order" invisible="1" force_save="1"/>
+                            <field name="company_id" invisible="1" force_save="1"/>
+
+                        </group>
+                        <group>
+                            <field name="sale_order_product_line_wizard_ids" nolabel="1" invisible="not product_model_type or is_main_product_added">
+                                <list editable="bottom">
+                                    <control>
+                                        <create string="Add a Product"/>
+                                    </control>
+                                    <field
+                                            name="product_id"
+                                            width="515px;"
+                                            string="Product"
+                                            force_save="1"
+                                            options="{'no_open':True, 'no_create':True}"
+                                            domain="[('sale_ok', '=', True),('product_bom_type', '!=', 'components'),('product_sale_type','=',parent.product_sale_type)]"
+                                            column_invisible="parent.product_model_type == 'product_template'"
+                                    />
+                                    <!-- widget="sol_product_many2one" -->
+                                    <!-- <field name="product_template_id"
+                                        width="515px;"
+                                        string="Product"
+                                        options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                        widget="wizard_product_many2one"
+                                        column_invisible="parent.product_model_type == 'product_variant'"                                        
+                                        placeholder="Type to find a product..."/> -->
+                                    <field name="product_template_id" column_invisible="1" force_save="1"/>
+
+                                    
+                                    <field name="burgtec_product_template_id"
+                                        width="515px;"
+                                        string="Product"
+                                        options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                        widget="wizard_product_many2one"
+                                        column_invisible="parent.product_model_type == 'product_variant' or parent.product_sale_type != 'burgtec'"                                        
+                                        placeholder="Type to find a product..."/>
+                                    
+                                    <field name="dpg_product_template_id"
+                                        width="515px;"
+                                        string="Product"
+                                        options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                        widget="wizard_product_many2one"
+                                        column_invisible="parent.product_model_type == 'product_variant' or parent.product_sale_type != 'dpg'"                                        
+                                        placeholder="Type to find a product..."/>
+                                
+
+                                    <field name="product_template_attribute_value_ids" column_invisible="1"/>
+                                    <!-- <field name="product_template_id" widget="sol_product_many2one" domain="[('product_bom_type', '!=', 'components'),('sale_ok','=',True)]" options="{'no_create':1}" required="1" width="100"/> -->
+                                    <field name="product_uom_qty" required="1" width="90px;"/>
+                                    <field name="is_select_optional_product" column_invisible="1"/>
+                                    <field name="optional_product_widget" widget="wizard_product_variant_many2one" invisible="is_select_optional_product or not product_id" string="Optional Groups Product" width="480px" column_invisible="parent.is_use_pop_up_configurator"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="company_id" column_invisible="True"/>
+                                    <field name="sub_selection_json" column_invisible="True"/>
+                                    <field name="sub_selection_display" column_invisible="True"/>
+                                </list>
+                            </field>
+                            <field name="sale_order_product_line_wizard_ids" nolabel="1" invisible="not product_model_type or not is_main_product_added">
+                                <list editable="bottom" create="0">
+                                    <control>
+                                        <create string="Add a Product"/>
+                                    </control>
+                                    <field
+                                            name="product_id"
+                                            width="515px;"
+                                            string="Product"
+                                            force_save="1"
+                                            options="{'no_open':True, 'no_create':True}"
+                                            domain="[('sale_ok', '=', True),('product_bom_type', '!=', 'components'),('product_sale_type','=',parent.product_sale_type)]"
+                                            column_invisible="parent.product_model_type == 'product_template'"
+                                    />
+                                    <!-- widget="sol_product_many2one" -->
+                                    <!-- <field name="product_template_id"
+                                        width="515px;"
+                                        string="Product"
+                                        options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                        widget="wizard_product_many2one"
+                                        column_invisible="parent.product_model_type == 'product_variant'"                                        
+                                        placeholder="Type to find a product..."/> -->
+                                    <field name="product_template_id" column_invisible="1" force_save="1"/>
+
+                                    <field name="burgtec_product_template_id"
+                                        width="515px;"
+                                        string="Product"
+                                        options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                        widget="wizard_product_many2one"
+                                        column_invisible="parent.product_model_type == 'product_variant' or parent.product_sale_type != 'burgtec'"                                        
+                                        placeholder="Type to find a product..."/>
+                                    
+                                    <field name="dpg_product_template_id"
+                                        width="515px;"
+                                        string="Product"
+                                        options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                        widget="wizard_product_many2one"
+                                        column_invisible="parent.product_model_type == 'product_variant' or parent.product_sale_type != 'dpg'"                                        
+                                        placeholder="Type to find a product..."/>
+                                
+
+                                    <field name="product_template_attribute_value_ids" column_invisible="1"/>
+                                    <!-- <field name="product_template_id" widget="sol_product_many2one" domain="[('product_bom_type', '!=', 'components'),('sale_ok','=',True)]" options="{'no_create':1}" required="1" width="100"/> -->
+                                    <field name="product_uom_qty" required="1" width="90px;"/>
+                                    <field name="is_select_optional_product" column_invisible="1"/>
+                                    <field name="optional_product_widget" widget="wizard_product_variant_many2one" invisible="is_select_optional_product or not product_id" string="Optional Groups Product" width="480px" column_invisible="parent.is_use_pop_up_configurator"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="company_id" column_invisible="True"/>
+                                    <field name="sub_selection_json" column_invisible="True"/>
+                                    <field name="sub_selection_display" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </group>
+                        <footer>
+                            <button name="action_add_product" string="Add" type="object" default_focus="1" class="oe_highlight" invisible="not product_model_type"/>
+                            <button string="Cancel" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sale_order_line_wizard_swap_group_form_view" model="ir.ui.view">
+            <field name="name">sale.order.line.wizard.swap.group.form.view</field>
+            <field name="model">sale.order.line.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <div class="alert alert-warning" role="alert" invisible="target_group_id">
+                    ⚠️ Attention: Target Group is not selected yet!
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active_group_id" options="{'no_open':1}" context="{'group_swap':1}"/>
+                            <!-- <field name="sale_order_id" options="{'no_open':1}"/> -->
+                        </group>
+                        <group>
+                            <field name="target_group_id" options="{'no_open':1,'no_create':1,'list_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_list_view','search_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_search_view'}" domain="[('display_type','=','line_section'),('id','!=',active_group_id),('order_id','=',sale_order_id)]" context="{'group_swap':1}" required="1"/>
+                            <field name="position" required="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_swap_groups" string="Swap" type="object" default_focus="1" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="sale_order_line_wizard_swap_code_form_view" model="ir.ui.view">
+            <field name="name">sale.order.line.wizard.swap.codes.form.view</field>
+            <field name="model">sale.order.line.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <div class="alert alert-info" role="alert">
+                    ⚠️ Attention: You are swaping code within <strong><field name="acitvie_code_line_group_name"/></strong> Group.
+                    </div>
+                    <div class="alert alert-warning" role="alert" invisible="target_code_id">
+                    ⚠️ Attention: Target Code is not selected yet!
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active_code_id" options="{'no_open':1}" context="{'group_swap':1}"/>
+                            <!-- <field name="sale_order_id" options="{'no_open':1}"/> -->
+                        </group>
+                        <group>
+                            <field name="target_code_id" options="{'no_open':1,'no_create':1,'list_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_list_view','search_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_search_view'}" domain="[('display_type','=','line_note'),('id','!=',active_code_id),('order_id','=',sale_order_id),('line_group_id_value','=',acitvie_code_line_group_id_value)]" context="{'group_swap':1}" required="1"/>
+                            <field name="position" required="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_swap_codes" string="Swap" type="object" default_focus="1" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ext_view_sale_order_form" model="ir.ui.view">
+        <field name="name">burgtec_online_quotation_link.ext.view.sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="dpg_sale_custom_report.dpg_sale_custom_report_simple_quote_view_sale_order_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='custom_po_no']" position="after">
+                <field name="quotation_review_token" invisible="1"/>
+                <field name="quotation_review_url" widget="CopyClipboardChar" readonly="1" invisible="quote_type == 'delivery_stage'"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="inside">
+                    <field name="public_comment" readonly="1" column_invisible="1"/>
+                    <field name="customer_finish_preference" readonly="1" column_invisible="1"/>
+                    <field name="user_selected_ptav_ids" widget="many2many_tags" optional="hide" readonly="0"/>
+                    <field name="user_feedback" readonly="1" widget="badge" decoration-success="user_feedback == 'approve'" decoration-warning="user_feedback == 'rev_required'" column_invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

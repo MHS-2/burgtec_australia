@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="auto_lock_sales_quote_upon_project_creation.sale_order_view_ext" model="ir.ui.view">
+        <field name="name">auto.lock.sales.quote.upon.project.creation.sale.order.ext</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+
+            <xpath expr="//field[@name='project_name']" position="after">
+                <field name="is_frozen_due_to_project_creation" string="Freeze" invisible="quote_type != 'sales_quote'"
+                       groups="auto_lock_sales_quote_upon_project_creation.group_sales_quote_unfreeze_admin"/>
+            </xpath>
+
+            <xpath expr="//field[@name='number_of_areas']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+            </xpath>
+
+            <xpath expr="//field[@name='quote_type']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='partner_invoice_id']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='sale_order_template_id']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='custom_project_id']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='project_name']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='manual_rev']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='date_order']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='validity_date']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='zone_type']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='order_line']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_order_line_ids']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='sale_order_option_ids']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='down_payment_order_line_ids']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='down_payment_order_line_ids']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='down_payment_order_line_ids']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <!--            <xpath expr="//button[@name='%(filter_one2many_fields.action_bulk_action_operations)d']"-->
+            <!--                   position="attributes">-->
+            <!--                <attribute name="invisible">is_frozen_due_to_project_creation</attribute>-->
+            <!--            </xpath>-->
+            <xpath expr="//page[@name='other_information']//group[@name='sale_info']//field[@name='fiscal_position_id']"
+                   position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='require_payment']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='require_signature']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+
+            </xpath>
+            <!--            <xpath expr="//field[@name='warehouse_id']" position="attributes">-->
+            <!--                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>-->
+
+            <!--            </xpath>-->
+            <xpath expr="//field[@name='incoterm']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='incoterm_location']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='picking_policy']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='commitment_date']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='opportunity_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+
+            </xpath>
+            <xpath expr="//field[@name='campaign_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+
+            </xpath>
+            <xpath expr="//field[@name='medium_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+
+            </xpath>
+            <xpath expr="//field[@name='source_id']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+
+            </xpath>
+
+            <xpath expr="//field[@name='signed_by']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='signed_on']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='signature']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+            <xpath expr="//field[@name='is_show_total_breakdown']" position="attributes">
+                <attribute name="readonly" add="is_frozen_due_to_project_creation" separator=" or "/>
+
+            </xpath>
+
+            <xpath expr="//div[@name='old_data_warning']" position="replace">
+                <div name="old_data_warning" class="row" invisible="not is_old_data">
+                    <div class="col-1">
+                        <i class="fa fa-exclamation-triangle fa-3x text-danger" title="danger"
+                           aria-hidden="true"></i>
+                    </div>
+                    <div class="col-10 alert alert-danger text-center d-inline-flex"
+                         role="alert">
+                        <strong>Warning:</strong>
+                        <span class="mx-2">Deleting Products May Affect the BOM Components and Their Lines.</span>
+                    </div>
+                    <div class="col-1 text-end" invisible="(not is_frozen_due_to_project_creation and quote_type == 'sales_quote') or (not freeze_sale_order and quote_type == 'project_quote')">
+                        <i class="fa fa-lock fa-3x text-info" title="Quote Locked"
+                           aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div name="old_data_warning" class="row" invisible="is_old_data or ((not is_frozen_due_to_project_creation and quote_type == 'sales_quote') or (not freeze_sale_order and quote_type == 'project_quote'))">
+                    <div class="col-1"></div>
+                    <div class="col-10"></div>
+                    <div class="col-1 text-end">
+                        <i class="fa fa-lock fa-3x text-info" title="Quote Locked"
+                           aria-hidden="true"></i>
+                    </div>
+                </div>
+
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+<!--    <record id="auto_lock_sales_quote_upon_project_creation.sale_order_lock" model="ir.ui.view">-->
+<!--        <field name="name">auto.lock.sales.quote.upon.project.creation.sale.order.lock</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="inherit_id" ref="bom_based_inventory.sale_order_inherit"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//div[@name='old_data_warning']" position="replace">-->
+<!--                <div name="old_data_warning" class="row" invisible="not is_old_data">-->
+<!--                    <div class="col-1">-->
+<!--                        <i class="fa fa-exclamation-triangle fa-3x text-danger" title="danger"-->
+<!--                           aria-hidden="true"></i>-->
+<!--                    </div>-->
+<!--                    <div class="col-10 alert alert-danger text-center d-inline-flex"-->
+<!--                         role="alert">-->
+<!--                        <strong>Warning:</strong>-->
+<!--                        <span class="mx-2">Deleting Products May Affect the BOM Components and Their Lines.</span>-->
+<!--                    </div>-->
+<!--                    <div class="col-1">-->
+<!--                        <i class="fa fa-lock fa-3x text-primary" title="danger"-->
+<!--                           aria-hidden="true"></i>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div name="old_data_warning" class="row" invisible="is_old_data">-->
+<!--                    <div class="col-1"></div>-->
+<!--                    <div class="col-10"></div>-->
+<!--                    <div class="col-1">-->
+<!--                        <i class="fa fa-lock fa-3x text-primary" title="danger"-->
+<!--                           aria-hidden="true"></i>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </xpath>-->
+
+<!--        </field>-->
+<!--    </record>-->
+
+
+    <record id="auto_lock_sales_quote_upon_project_creation.sale_order_search_view_ext" model="ir.ui.view">
+        <field name="name">auto.lock.sales.quote.upon.project.creation.sale.order.search.view.ext</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//filter[@name='filter_create_date']" position="after">
+                <separator/>
+                <filter string="Freeze Project" name="deal_stage_project_freeze_filter"
+                        domain="[('deal_stage_project_freeze', '=',True)]"/>
+                <filter string="Freeze Sale Order" name="freeze_sale_order_filter"
+                        domain="[('freeze_sale_order', '=',True)]"/>
+                <filter string="Freeze Due Project Creation" name="is_frozen_due_to_project_creation_filter"
+                        domain="[('is_frozen_due_to_project_creation', '=',True)]"/>
+                <separator/>
+                <filter string="Not Freeze" name="not_freeze_filter"
+                        domain="[('deal_stage_project_freeze', '!=',True), ('freeze_sale_order', '!=',True), ('is_frozen_due_to_project_creation', '!=',True)]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

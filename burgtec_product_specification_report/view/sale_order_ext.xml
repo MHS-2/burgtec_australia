@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="burgtec_report_sale_order_extend" model="ir.ui.view">
+        <field name="name">burgtec.report.sale.order.extend</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+             <xpath expr="//page[@name='report_config']" position="replace">
+                <page name="specs_report_selection" string="Specs Report Selection">
+                        <field name="product_specification_report_line_ids" readonly="0">
+                                    <list string="List Title" editable="bottom" create="false" delete="false">
+                                        <field name="product_template_id"/>
+                                        <field name="name" string="Decription"/>
+                                        <field name="custom_product_name" string="Product Name"/>
+                                        <field name="is_show"/>
+                                    </list>
+                        </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

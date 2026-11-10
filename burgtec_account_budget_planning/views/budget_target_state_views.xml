@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_budget_target_state_list" model="ir.ui.view">
+        <field name="name">budget.target.state.list</field>
+        <field name="model">budget.target.state</field>
+        <field name="arch" type="xml">
+            <list string="Target State" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="state_id" required="1"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+
+
+
+    <record id="view_budget_target_state_search" model="ir.ui.view">
+        <field name="name">budget.target.state.search</field>
+        <field name="model">budget.target.state</field>
+        <field name="arch" type="xml">
+            <search string="Target State">
+                <field name="state_id"/>
+                <field name="code"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_budget_target_state" model="ir.actions.act_window">
+        <field name="name">Budget Target State</field>
+        <field name="res_model">budget.target.state</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>

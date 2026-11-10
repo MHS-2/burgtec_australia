@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Wizard Form View -->
+    <record id="view_purchase_bulk_date_wizard_form" model="ir.ui.view">
+        <field name="name">purchase.bulk.date.wizard.form</field>
+        <field name="model">purchase.bulk.date.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Set Expected Arrival Date">
+                <group>
+                    <group>
+                        <field name="planned_date" widget="datetime"/>
+                    </group>
+                    <group>
+                        <field name="purchase_order_ids" invisible="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Assign"
+                            name="action_assign_date"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

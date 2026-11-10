@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View purchase.order list -->
+    <record id="purchase_order_custom_report.view_purchase_order_list_ext" model="ir.ui.view">
+        <field name="name">purchase_order_custom_report.view.purchase.order.list.ext</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_planned']" position="after">
+                <field name="po_sent_date" string="PO Sent Date" width="110px;"/>
+                <field name="since_sent_days" string="Since Sent Days" width="120px;"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- View purchase.order list -->
+    <record id="purchase_order_custom_report.view_purchase_order_list_ext_2" model="ir.ui.view">
+        <field name="name">purchase_order_custom_report.view.purchase.order.list.ext.2</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_planned']" position="after">
+                <field name="po_sent_date" string="PO Sent Date" width="110px;"/>
+                <field name="since_sent_days" string="Since Sent Days" width="120px;"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- View purchase.order form -->
+    <record id="purchase_order_custom_report.view_purchase_order_form_ext" model="ir.ui.view">
+        <field name="name">purchase_order_custom_report.view.purchase.order.form.ext</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='dest_address_id']" position="after">
+                <field name="shipping_address_type" required="1"/>
+                <field name="is_burgtec_vendor" readonly="1"/>
+                <field name="manual_shipping_address" invisible="shipping_address_type not in 'manual'" required="shipping_address_type == 'manual'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='onedrive_po_folder_link']" position="after">
+                <field name="po_sent_date" string="PO Sent Date" readonly="1"/>
+                <field name="since_sent_days" string="Since Sent Days" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

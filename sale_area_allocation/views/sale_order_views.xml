@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Extend Sale Order Form: Add "Products Area Wise" tab -->
+    <record id="sale_order_form_area_allocation" model="ir.ui.view">
+        <field name="name">sale.order.form.area.allocation</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='order_lines']" position="after">
+                <page string="Products Area Wise" name="products_area_wise">
+                    <group>
+                        <group>
+                            <field name="number_of_areas"/>
+                        </group>
+                    </group>
+                    <widget name="area_allocation_matrix"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extend Sale Quotation Template Form (if needed for quotation templates) -->
+</odoo>

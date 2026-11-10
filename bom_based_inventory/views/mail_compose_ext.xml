@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mail_compose_message_view_form_override" model="ir.ui.view">
+        <field name="name">mail.compose.message.form.remove.recipients.widget</field>
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+        <field name="arch" type="xml">
+
+<!--            remove the followers from recipient list-->
+            <xpath expr="//widget[@name='mail_composer_recipient_list']" position="replace"/>
+        </field>
+    </record>
+</odoo>

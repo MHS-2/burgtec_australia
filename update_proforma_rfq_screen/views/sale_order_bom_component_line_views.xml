@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="vendor_wise_report_information_bom_component_lines_list_view" model="ir.ui.view">
+        <field name="name">vendor.wise.report.information.bom.component.lines.list.view</field>
+        <field name="model">sale.order.bom.component.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="parent_product_code"/>
+                <field name="product_id" string="Parent Product"/>
+            </list>
+        </field>
+    </record>
+</odoo>

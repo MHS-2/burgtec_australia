@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="product_freight_out" model="product.product">
+            <field name="name">Freight Out</field>
+            <field name="default_code">freight-out</field>
+            <field name="type">consu</field>
+            <field name="product_bom_type">components</field>
+            <field name="is_freight_or_assembly" eval="True"/>
+        </record>
+
+        <record id="product_assembly_install" model="product.product">
+            <field name="name">Assembly/Install</field>
+            <field name="default_code">assy-inst</field>
+            <field name="type">consu</field>
+            <field name="product_bom_type">components</field>
+            <field name="is_freight_or_assembly" eval="True"/>
+        </record>
+
+        <record id="product_odoo_adjustment" model="product.product">
+            <field name="name">Odoo Adjustment</field>
+            <field name="default_code">ADJ</field>
+            <field name="type">consu</field>
+            <field name="product_bom_type">product</field>
+        </record>
+
+
+    </data>
+</odoo>

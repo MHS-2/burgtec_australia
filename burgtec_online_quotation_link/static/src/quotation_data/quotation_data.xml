@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="burgtec_online_quotation_link.QuotationReview">
+        <!--                Validation Error-->
+        <t t-if="state.validations">
+            <div class="o_bq_review">
+                <div class="o_bq_page">
+                    <i class="fa fa-exclamation-triangle fa-3x o_bq_accent mb-3" style="color:rgb(255,0,0)"/>
+                    <h4>Quotation Error</h4>
+                    <div class="o_bq_muted" t-out="state.validations"/>
+                </div>
+            </div>
+        </t>
+
+        <t t-else="">
+            <div class="o_bq_review">
+            <div class="o_bq_page">
+
+                <!-- ===== Loading ===== -->
+                <div t-if="state.loading" class="o_bq_center">
+                    <i class="fa fa-circle-o-notch fa-spin fa-2x o_bq_accent"/>
+                    <div class="o_bq_muted mt-3">Loading your quotation…</div>
+                </div>
+
+                <!-- ===== Bad / expired link ===== -->
+                <div t-elif="state.error" class="o_bq_center">
+                    <i class="fa fa-chain-broken fa-3x o_bq_accent mb-3"/>
+                    <h4>Link unavailable</h4>
+                    <div class="o_bq_muted" t-out="state.error"/>
+                </div>
+
+                <!-- ===== Quotation ===== -->
+                <t t-else="">
+
+                    <!-- Title -->
+                    <div class="o_bq_title">
+                        <h1>Quotation - <em t-out="state.order.name"/></h1>
+                        <span class="o_bq_secure">
+                            <i class="fa fa-lock"/>
+                            Secure review link — no login required
+                        </span>
+                    </div>
+
+
+                    <div class="o_bq_layout">
+
+                        <!-- ===== Left column ===== -->
+                        <aside class="o_bq_side">
+
+                            <!-- Quote summary -->
+                            <div class="o_bq_card">
+                                <h3 class="o_bq_card_h">Quote summary</h3>
+
+                                <div class="o_bq_fact">
+                                    <i class="fa fa-user-o"/>
+                                    <div>
+                                        <div class="o_bq_fact_label">Customer</div>
+                                        <div class="o_bq_fact_value" t-out="state.customer.name"/>
+                                        <div t-if="state.customer.address" class="o_bq_fact_sub o_bq_prewrap"
+                                             t-out="state.customer.address"/>
+                                        <div t-if="state.customer.email" class="o_bq_fact_sub"
+                                             t-out="state.customer.email"/>
+                                        <div t-if="state.customer.phone" class="o_bq_fact_sub"
+                                             t-out="state.customer.phone"/>
+                                    </div>
+                                </div>
+
+                                <div class="o_bq_fact">
+                                    <i class="fa fa-calendar"/>
+                                    <div>
+                                        <div class="o_bq_fact_label">Date</div>
+                                        <div class="o_bq_fact_value" t-out="state.order.date"/>
+                                    </div>
+                                </div>
+
+                                <div t-if="state.order.validity_date" class="o_bq_fact">
+                                    <i class="fa fa-calendar-times-o"/>
+                                    <div>
+                                        <div class="o_bq_fact_label">Expiry date</div>
+                                        <div class="o_bq_fact_value" t-out="state.order.validity_date"/>
+                                    </div>
+                                </div>
+
+                                <div class="o_bq_fact">
+                                    <i class="fa fa-usd"/>
+                                    <div>
+                                        <div class="o_bq_fact_label">Quote amount</div>
+                                        <div class="o_bq_fact_amount" t-out="state.order.amount_total"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Review Progress-->
+                            <div class="o_bq_card">
+                                <h3 class="o_bq_card_h">Review Progress</h3>
+                                <div>
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <i class="fa fa-check-circle-o mx-2" style="color:rgb(0,128,0);"
+                                                   aria-hidden="true"></i>
+                                            </div>
+                                            <div class="col-7">
+                                                 <span>Approved</span>
+                                             </div>
+                                            <div class="col-3">
+                                                <strong t-out="state.feedback_totals.approved_lines"/>
+                                            </div>
+                                        </div>
+                                    <div class="row mt-1">
+                                            <div class="col-2">
+                                                <i class="fa fa-repeat mx-2" style="color:rgb(255,102,0);"
+                                                   aria-hidden="true"></i>
+                                            </div>
+                                        <div class="col-7">
+                                                <span>Revisions</span>
+                                            </div>
+                                        <div class="col-3">
+                                                 <strong t-out="state.feedback_totals.revision_required_lines"/>
+                                            </div>
+                                        </div>
+                                    <div class="row mt-1 border-bottom">
+                                            <div class="col-2">
+                                                 <i class="fa fa-circle-thin mx-2" aria-hidden="true"></i>
+                                            </div>
+                                        <div class="col-7">
+                                                <span>Incomplete</span>
+                                            </div>
+                                        <div class="col-3">
+                                                <strong t-out="state.feedback_totals.incomplete_lines"/>
+                                            </div>
+                                        </div>
+
+                                    <div class="row mt-2">
+                                            <div class="col-9">
+                                                <span>Total Items</span>
+                                            </div>
+                                        <div class="col-3">
+                                                <strong t-out="state.feedback_totals.total_items"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <!-- Need help -->
+                            <div t-if="state.order.salesperson" class="o_bq_card">
+                                <h3 class="o_bq_card_h">Need help?</h3>
+                                <div class="o_bq_person">
+                                    <span class="o_bq_avatar"><i class="fa fa-user"/></span>
+                                    <div class="o_bq_fact_value" t-out="state.order.salesperson"/>
+                                </div>
+                                <div class="o_bq_person">
+                                    <span class="o_bq_avatar"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                                    <div class="o_bq_fact_value" t-out="state.order.salesperson_email"/>
+                                </div>
+                            </div>
+                        </aside>
+
+                        <!-- ===== Right column: lines ===== -->
+                        <main class="o_bq_main">
+
+                            <div class="o_bq_info">
+                                <i class="fa fa-info" aria-hidden="true"/>
+                                <div>
+                                    <div>Products, quantities, and finishes cannot be edited.</div>
+                                    <div>You can only select colours and add comments.</div>
+                                </div>
+                            </div>
+
+                            <t t-foreach="state.lines" t-as="line" t-key="line.id">
+
+                                <!-- Section -->
+                                <h4 t-if="line.display_type === 'line_section'"
+                                    class="o_bq_section" t-out="line.name"/>
+
+                                <!-- Note -->
+                                <div t-elif="line.display_type === 'line_note'" class="o_bq_note">
+                                    <i class="fa fa-info"/>
+                                    <span t-out="line.name"/>
+                                </div>
+
+                                <!-- Product line -->
+                                <div t-else="" class="o_bq_card o_bq_item">
+                                    <!-- Number badge comes from a CSS counter (only counts products) -->
+                                    <span class="o_bq_num_badge"/>
+
+                                    <div class="o_bq_item_img">
+                                        <img t-if="line.image_url" t-att-src="line.image_url"
+                                             loading="lazy" t-att-alt="line.product_name"/>
+                                        <i t-else="" class="fa fa-cube"/>
+                                    </div>
+
+                                    <div class="o_bq_item_info">
+                                        <h2 t-out="line.product_name"/>
+                                        <div class="attribute_value">
+                                        <t t-foreach="line.attributes_and_values" t-as="attribute" t-key="attribute.id">
+                                            <t t-out="attribute.name"/>
+                                            <!--                                            <select class="form-select form-select-sm-custom draft-planned-dropdown text-center border-dark">-->
+                                            <!--                                                <t t-if="attribute.values">-->
+                                            <!--                                                    <t t-foreach="attribute.values" t-as="value" t-key="value.id">-->
+                                            <!--                                                        <t t-foreach="line.product_template_attribute_value_ids"-->
+                                            <!--                                                           t-as="att_value" t-key="att_value">-->
+                                            <!--                                                            <t t-if="value.value == att_value">-->
+                                            <!--                                                                <t t-set="default_value" t-value="value.value"/>-->
+                                            <!--                                                            </t>-->
+                                            <!--                                                        </t>-->
+                                            <!--                                                        <option t-att-selected="default_value" value="value.value"><t t-out="value.value"/></option>-->
+                                            <!--                                                    </t>-->
+                                            <!--                                                </t>-->
+                                            <!--                                            </select>-->
+                                            <select class="form-select form-select-sm-custom draft-planned-dropdown text-center border-dark"
+                                                    t-att-disabled="line.user_selected"
+                                                    t-on-change="(ev) => this.finishChange(ev, line, attribute)">
+                                                <t t-foreach="attribute.values" t-as="value" t-key="value.id">
+                                                    <option t-att-value="value.id"
+                                                            t-att-selected="line.selected_value_ids.includes(value.id)"
+                                                            t-out="value.value"/>
+                                                </t>
+                                            </select>
+                                        </t>
+                                    </div>
+
+                                        <!--                                        <div t-if="line.name" class="o_bq_item_desc o_bq_prewrap" t-out="line.name"/>-->
+                                        <span t-if="line.discount" class="o_bq_pill">
+                                            <t t-out="line.discount"/>% discount
+                                        </span>
+                                        <div class="flex-grow-1 mt-3">
+                                            <textarea class="form-control comment-input" rows="3"
+                                                      t-att-disabled="line.user_feedback"
+                                                      placeholder="Write a comment..." t-model.lazy="line.public_comment"
+                                                      t-on-change="(ev) => this.commentChange(ev,line)"></textarea>
+                                        </div>
+
+                                        <button class="btn btn-success mt-2 mx-2"
+                                                t-att-disabled="line.user_feedback"
+                                                t-on-click="() => this.revisionApproved(line)">
+                                            Approved
+                                        </button>
+                                        <button class="btn btn-warning mt-2"
+                                                t-att-disabled="line.user_feedback"
+                                                t-on-click="() => this.revisionRequired(line)">
+                                            Revision Required
+                                        </button>
+<!--                                        <button class="btn btn-primary mt-2 mx-2"-->
+<!--                                                t-on-click="() => this.viewShopDrawing(line)">-->
+<!--                                                <i class="fa fa-file-image-o me-1" aria-hidden="true"/>-->
+<!--                                            View Shop Drawing-->
+<!--                                        </button>-->
+                                        <a t-att-href="line.artwork_image_url" t-att-download="End" target="_blank"
+                                           class="btn btn-primary mt-2 mx-2">
+                                            <i class="fa fa-file-image-o me-1"
+                                               aria-hidden="true"/>
+                                            View Shop Drawing
+                                        </a>
+
+                                    </div>
+
+                                    <div class="o_bq_item_figs">
+                                        <div>
+                                            <t t-if="line.user_feedback == 'approve'">
+                                                <span class="badge rounded-pill bg-success">
+                                                    <i class="fa fa-repeat mx-1" aria-hidden="true"></i>
+                                                    Approved
+                                                </span>
+
+                                            </t>
+                                            <t t-elif="line.user_feedback == 'rev_required'">
+                                                <span class="badge rounded-pill bg-warning">
+                                                    <i class="fa fa-repeat mx-1" aria-hidden="true"></i>
+                                                    Revision Required
+                                                </span>
+                                            </t>
+
+                                        </div>
+                                        <div>
+                                            <div class="o_bq_fact_label">Quantity</div>
+                                            <div class="o_bq_big">
+                                                <t t-out="line.qty"/>
+                                                <small t-out="line.uom"/>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="o_bq_fact_label">Sale Price</div>
+                                            <div class="o_bq_big" t-out="line.price_unit"/>
+                                        </div>
+                                        <div>
+                                            <div class="o_bq_fact_label">Subtotal</div>
+                                            <div class="o_bq_big o_bq_accent" t-out="line.subtotal"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Totals -->
+                            <div class="o_bq_card o_bq_totals">
+                                <div class="d-flex bd-highlight align-items-center">
+                                    <div class="p-2 flex-grow-1 bd-highlight">
+                                        <i class="fa fa-check-circle-o mx-2" style="color:rgb(0,128,0);"
+                                           aria-hidden="true"></i>
+                                        <span>Approved</span>
+                                        <strong class="mx-2" t-out="state.feedback_totals.approved_lines"/>
+                                    </div>
+                                    <div class="p-2 flex-grow-1 bd-highlight">
+                                        <i class="fa fa-repeat mx-2" style="color:rgb(255,102,0);"
+                                           aria-hidden="true"></i>
+                                        <span>Revision Required</span>
+                                        <strong class="mx-2" t-out="state.feedback_totals.revision_required_lines"/>
+
+                                    </div>
+                                    <div class="p-2 flex-grow-1 bd-highlight">
+                                        <i class="fa fa-circle-thin mx-2" aria-hidden="true"></i>
+                                        <span>Incomplete</span>
+                                        <strong class="mx-2" t-out="state.feedback_totals.incomplete_lines"/>
+
+                                    </div>
+                                    <!-- <div class="p-2 bd-highlight">
+                                        <div class="o_bq_submit_wrap">
+                                            <button class="btn btn-primary o_bq_submit"
+                                                    t-on-click="() => this.submitReview(state.order)">
+                                                Submit Review
+                                                <i class="fa fa-long-arrow-right ms-2" aria-hidden="true"/>
+                                            </button>
+                                            <div class="o_bq_submit_hint">
+                                                Submitting will notify Burgtec sales and save your selections.
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </t>
+            </div>
+        </div>
+        </t>
+    </t>
+
+</templates>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="burgtec_back_order.custom_color_picker">
+        <div class="color_picker_checkbox">
+            <input type="color" t-att-value="state.hexcolor" class="row_color_pick"
+                    name="row_color_value"
+                    style="width:20px;border: 1px;height: 20px;"
+                    t-on-change="(ev) => this.color_pick(ev, record)"/>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_back_order_planning_manager,back_order_planning_manager,model_back_order_planning,,1,1,1,1
+access_back_order_color_picker_manager,access_back_order_color_picker_manager,model_color_picker,,1,1,1,1
+access_back_order_color_manager,back_order_color_manager,model_back_order_color,,1,1,1,1
+access_back_order_lines_planned_allocation_manager,back_order_lines_planned_allocation_manager,model_back_order_lines_planned_allocation,,1,1,1,1
+access_back_order_picking_manager,back_order_picking_manager,model_back_order_picking,,1,1,1,1

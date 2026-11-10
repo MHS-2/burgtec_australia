@@ -1,0 +1,1438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="filter_one2many_field_original_bom_components_form_view" model="ir.ui.view">
+        <field name="name">filter.one2many.field.original.bom.components.form.view</field>
+        <field name="model">sale.order.bom.component</field>
+        <field eval="10" name="priority"/>
+        <field name="inherit_id" ref="bom_based_inventory.view_sale_order_bom_components_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet" position="replace"/>
+
+            <xpath expr="//form" position="inside">
+                <sheet>
+                    <notebook>
+                        <page name="bom_lines" string="BOM Lines">
+                            <group>
+                                <field name="order_id" readonly="1" invisible="1"/>
+                                <field name="state" readonly="1" invisible="1"/>
+                                <field name="view_team" string="View Type" placeholder="Default View" widget="radio"/>
+
+                            </group>
+
+                            <field name="component_line_ids"
+                                widget="section_and_note_one2many"
+                                mode="list"
+                                no_label="True"
+                                invisible="view_team"
+                                readonly="state == 'sale'"
+                            >
+                                <list class="no_reorder"
+                                    create="0"
+                                    editable="bottom"
+                                    decoration-success="is_parent == True"
+                                    decoration-warning="is_other_than_bom == True"
+                                    decoration-info="is_parent == False">
+
+
+                                    <!-- Toolbar for adding lines or sections -->
+                                    <!--                            <control>-->
+                                    <!--                                <create string="Add a Component"/>-->
+                                    <!--                                &lt;!&ndash;                                <create string="Add a Section"&ndash;&gt;-->
+                                    <!--                                &lt;!&ndash;                                        context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                                    <!--                            </control>-->
+
+                                    <!-- Section header fields -->
+                                    <field name="sequence" widget="handle" invisible="1"/>
+                                    <field name="display_type" column_invisible="1" string=" "/>
+                                    <field name="name"
+                                        widget="sol_text"
+                                        force_save="1" string="" readonly="1"/>
+
+                                    <!-- Existing data columns -->
+                                    <field name="is_other_than_bom"
+                                        column_invisible="1" force_save="1"/>
+                                    <!--                            <field name="parent_number" column_invisible="0" class="bright-red text-start"-->
+                                    <!--                            invisible="not is_parent and is_new_bom_line"/>-->
+
+
+                                    <button name="action_open_add_components_wizard"
+                                            string="Components"
+                                            type="object"
+                                            class="btn-primary btn-sm"
+                                            icon="fa-plus"
+                                            invisible="not is_parent"
+                                            help="Add components to this parent line"/>
+                                    <field name="parent_product_code" width="100px" force_save="1" readonly="1" optional="show"
+                                        invisible="not is_parent"
+                                        class="bright-red text-start"/>
+                                    <field name="parent_product_reference"
+                                        column_invisible="1" force_save="1"/>
+                                    <field name="order_line_id"
+                                        column_invisible="1" force_save="1"/>
+
+                                    <field name="parent_product_id"
+                                        column_invisible="1" force_save="1" readonly="1"/>
+                                    <field name="is_auto_generated" column_invisible="1"/>
+                                    <field name="is_readonly" column_invisible="1" force_save="1"/>
+                                    <field name="is_parent" column_invisible="1" force_save="1"/>
+                                    <field name="current_change" column_invisible="1" force_save="1"
+                                        readonly="parent.state == 'sale'"/>
+                                    <!--                            <field name="line_id"/>-->
+                                    <field name="product_reference"
+                                        readonly="1" force_save="1" column_invisible="1"/>
+                                    <field name="product_id" width="500px" optional="show"
+                                        options="{'no_open':1,'no_create':1}"
+                                        readonly="parent.state == 'sale' or is_readonly"
+                                        force_save="1" style="color:green;" required="1"/>
+                                    <field name="product_name" optional="hide" width="350px" readonly="1" force_save="1"/>
+                                    <field name="product_qty" optional="show"
+                                        width="60px"
+                                        readonly="parent.state == 'sale'" force_save="1"/>
+                                    <field name="unit_sale_price" width="100px" optional="show"
+                                        readonly="parent.state == 'sale'"
+                                        force_save="1"/>
+                                    <field name="total_sale_price" width="100px" optional="show"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1"/>
+                                    <field name="note" force_save="1" optional="show" readonly="is_parent"/>
+                                    <field name="system_cost_per_unit" width="140px"
+                                        readonly="1" force_save="1"
+                                        decoration-muted="1 == 1" optional="hide"/>
+                                    <field name="quoted_cost_per_unit" width="140px"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1" decoration-danger="1 == 1" optional="hide"/>
+                                    <field name="pre_project_cost_per_unit" width="150px"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1" optional="hide"/>
+                                    <!--                            <field name="manual_live_unit_cost" force_save="1" optional="show"-->
+                                    <!--                            decoration-danger="1 == 1" decoration-bf="1 == 1"/>-->
+                                    <field name="manual_live_unit_cost" readonly="is_parent" force_save="1" optional="show"
+                                        decoration-warning="1 == 1" decoration-bf="1 == 1"/>
+                                    <field name="live_unit_cost" width="100px"
+                                        readonly="1"
+                                        force_save="1" decoration-warning="1 == 1" optional="hide"/>
+                                    <field name="supplier_id"
+                                        readonly="parent.state == 'sale'" options="{'no_create':1}" optional="hide"/>
+                                    <field name="margin_system_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-muted="1 == 1"
+                                        optional="hide"/>
+                                    <field name="margin_quoted_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-danger="1 == 1"
+                                        optional="hide"/>
+                                    <field name="margin_pre_project_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1" optional="hide"/>
+                                    <field name="margin_live_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-warning="1 == 1"
+                                        optional="hide"/>
+
+                                    <!-- these fields are to show % margin and markup for each parent line on bom component screen -->
+                                    <field name="margin_system_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-muted="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_quoted_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-danger="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_pre_project_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_live_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-warning="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_system_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-muted="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_quoted_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-danger="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_pre_project_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_live_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-warning="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                </list>
+                            </field>
+
+                            <field name="component_line_ids"
+                                widget="section_and_note_one2many"
+                                mode="list"
+                                no_label="True"
+                                invisible="view_team != 'sales_team'"
+                                readonly="state == 'sale'"
+                            >
+                                <list class="no_reorder"
+                                    editable="bottom"
+                                    create="0"
+                                    decoration-success="is_parent == True"
+                                    decoration-warning="is_other_than_bom == True"
+                                    decoration-info="is_parent == False">
+
+
+                                    <!-- Toolbar for adding lines or sections -->
+                                    <!--                                                        <control>-->
+                                    <!--                                                            <create string="Add a Component"/>-->
+                                    <!--                                                            &lt;!&ndash;                                <create string="Add a Section"&ndash;&gt;-->
+                                    <!--                                                            &lt;!&ndash;                                        context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                                    <!--                                                        </control>-->
+
+                                    <!-- Section header fields -->
+                                    <field name="sequence" widget="handle" invisible="1"/>
+                                    <field name="check_move" column_invisible="1"/>
+                                    <field name="display_type" column_invisible="1" string=" "/>
+                                    <field name="name"
+                                        widget="sol_text"
+                                        force_save="1" string="" readonly="1"/>
+
+                                    <!-- Existing data columns -->
+                                    <field name="is_other_than_bom"
+                                        column_invisible="1" force_save="1"/>
+                                    <!--                            <field name="parent_number" column_invisible="0" class="bright-red text-start"-->
+                                    <!--                            invisible="not is_parent and is_new_bom_line"/>-->
+
+
+                                    <button name="action_open_add_components_wizard"
+                                            string="Components"
+                                            type="object"
+                                            class="btn-primary btn-sm"
+                                            icon="fa-plus"
+                                            invisible="not is_parent"
+                                            help="Add components to this parent line"/>
+                                    <field name="parent_product_code" width="100px" force_save="1" readonly="1" optional="show"
+                                        invisible="not is_parent"
+                                        class="bright-red text-start"/>
+                                    <field name="parent_product_reference"
+                                        column_invisible="1" force_save="1"/>
+                                    <field name="order_line_id"
+                                        column_invisible="1" force_save="1"/>
+                                    <field name="parent_product_id"
+                                        column_invisible="1" force_save="1" readonly="1"/>
+                                    <field name="is_auto_generated" column_invisible="1"/>
+                                    <field name="is_readonly" column_invisible="1" force_save="1"/>
+                                    <field name="is_parent" column_invisible="1" force_save="1"/>
+                                    <field name="current_change" column_invisible="1" force_save="1"
+                                        readonly="parent.state == 'sale'"/>
+                                    <!--                            <field name="line_id"/>-->
+                                    <field name="product_reference"
+                                        readonly="1" force_save="1" column_invisible="1"/>
+                                    <field name="product_id" width="500px" optional="show"
+                                        options="{'no_open':1,'no_create':1}"
+                                        readonly="parent.state == 'sale' or is_readonly"
+                                        force_save="1" style="color:green;" required="1"/>
+                                    <field name="product_name" optional="hide" width="350px" readonly="1" force_save="1"/>
+                                    <field name="product_qty" width="60px" optional="show"
+                                        readonly="parent.state == 'sale'" force_save="1"/>
+                                    <field name="unit_sale_price" width="100px" optional="show"
+                                        readonly="parent.state == 'sale'"
+                                        force_save="1"/>
+                                    <field name="total_sale_price" width="100px" optional="show"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1"/>
+                                    <field name="note" force_save="1" optional="show" readonly="is_parent"/>
+                                    <field name="system_cost_per_unit" width="140px" optional="hide"
+                                        readonly="1" force_save="1"
+                                        decoration-muted="1 == 1"/>
+                                    <field name="quoted_cost_per_unit" width="140px"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1" decoration-danger="1 == 1"/>
+                                    <field name="pre_project_cost_per_unit" width="150px"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1" optional="hide"/>
+                                    <field name="manual_live_unit_cost" readonly="is_parent" force_save="1" optional="show"
+                                        decoration-warning="1 == 1" decoration-bf="1 == 1"/>
+                                    <field name="live_unit_cost" width="100px" optional="hide"
+                                        readonly="1"
+                                        force_save="1" decoration-warning="1 == 1"/>
+                                    <field name="supplier_id"
+                                        readonly="parent.state == 'sale'" options="{'no_create':1}" optional="hide"/>
+                                    <field name="margin_system_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-muted="1 == 1"
+                                        optional="hide"/>
+                                    <field name="margin_quoted_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-danger="1 == 1"
+                                        optional="hide"/>
+                                    <field name="margin_pre_project_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1" optional="hide"/>
+                                    <field name="margin_live_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-warning="1 == 1"
+                                        optional="hide"/>
+
+                                    <!-- these fields are to show % margin and markup for each parent line on bom component screen -->
+                                    <field name="margin_system_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-muted="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_quoted_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-danger="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_pre_project_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_live_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-warning="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_system_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-muted="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_quoted_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-danger="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_pre_project_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_live_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-warning="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                </list>
+                            </field>
+
+                            <field name="component_line_ids"
+                                widget="section_and_note_one2many"
+                                mode="list"
+                                no_label="True"
+                                invisible="view_team != 'preproject_team'"
+                                readonly="state == 'sale'"
+                            >
+                                <list class="no_reorder"
+                                    editable="bottom"
+                                    create="0"
+                                    decoration-success="is_parent == True"
+                                    decoration-warning="is_other_than_bom == True"
+                                    decoration-info="is_parent == False">
+
+
+                                    <!-- Toolbar for adding lines or sections -->
+                                    <!--                            <control>-->
+                                    <!--                                <create string="Add a Component"/>-->
+                                    <!--                                &lt;!&ndash;                                <create string="Add a Section"&ndash;&gt;-->
+                                    <!--                                &lt;!&ndash;                                        context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                                    <!--                            </control>-->
+
+                                    <!-- Section header fields -->
+                                    <field name="sequence" widget="handle" invisible="1"/>
+                                    <field name="display_type" column_invisible="1" string=" "/>
+                                    <field name="name"
+                                        widget="sol_text"
+                                        force_save="1" string="" readonly="1"/>
+
+                                    <!-- Existing data columns -->
+                                    <field name="is_other_than_bom"
+                                        column_invisible="1" force_save="1"/>
+                                    <!--                            <field name="parent_number" column_invisible="0" class="bright-red text-start"-->
+                                    <!--                            invisible="not is_parent and is_new_bom_line"/>-->
+
+
+                                    <button name="action_open_add_components_wizard"
+                                            string="Components"
+                                            type="object"
+                                            class="btn-primary btn-sm"
+                                            icon="fa-plus"
+                                            invisible="not is_parent"
+                                            help="Add components to this parent line"/>
+                                    <field name="parent_product_code" width="100px" force_save="1" readonly="1" optional="show"
+                                        invisible="not is_parent"
+                                        class="bright-red text-start"/>
+                                    <field name="parent_product_reference"
+                                        column_invisible="1" force_save="1"/>
+                                    <field name="order_line_id"
+                                        column_invisible="1" force_save="1"/>
+
+                                    <field name="parent_product_id"
+                                        column_invisible="1" force_save="1" readonly="1"/>
+                                    <field name="is_auto_generated" column_invisible="1"/>
+                                    <field name="is_readonly" column_invisible="1" force_save="1"/>
+                                    <field name="is_parent" column_invisible="1" force_save="1"/>
+                                    <field name="current_change" column_invisible="1" force_save="1"
+                                        readonly="parent.state == 'sale'"/>
+                                    <!--                            <field name="line_id"/>-->
+                                    <field name="product_reference"
+                                        readonly="1" force_save="1" column_invisible="1"/>
+                                    <field name="product_id" width="500px" optional="show"
+                                        options="{'no_open':1,'no_create':1}"
+                                        readonly="parent.state == 'sale' or is_readonly"
+                                        force_save="1" style="color:green;" required="1"/>
+                                    <field name="product_name" optional="hide" width="350px" readonly="1" force_save="1"/>
+                                    <field name="product_qty" width="60px" optional="show"
+                                        readonly="parent.state == 'sale'" force_save="1"/>
+                                    <field name="unit_sale_price" width="100px" optional="show"
+                                        readonly="parent.state == 'sale'"
+                                        force_save="1"/>
+                                    <field name="total_sale_price" width="100px" optional="show"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1"/>
+                                    <field name="note" force_save="1" readonly="is_parent" optional="hide"/>
+                                    <field name="system_cost_per_unit" width="140px"
+                                        readonly="1" force_save="1"
+                                        decoration-muted="1 == 1" optional="hide"/>
+                                    <field name="quoted_cost_per_unit" width="140px"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1" decoration-danger="1 == 1" optional="hide"/>
+                                    <field name="pre_project_cost_per_unit" width="150px"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1" optional="hide"/>
+                                    <field name="manual_live_unit_cost" readonly="is_parent" force_save="1" optional="show"
+                                        decoration-warning="1 == 1" decoration-bf="1 == 1"/>
+                                    <field name="live_unit_cost" width="100px"
+                                        readonly="1"
+                                        force_save="1" decoration-warning="1 == 1" optional="hide"/>
+                                    <field name="supplier_id"
+                                        readonly="parent.state == 'sale'" options="{'no_create':1}" optional="hide"/>
+                                    <field name="margin_system_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-muted="1 == 1"
+                                        optional="hide"/>
+                                    <field name="margin_quoted_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-danger="1 == 1"
+                                        optional="hide"/>
+                                    <field name="margin_pre_project_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1" optional="hide"/>
+                                    <field name="margin_live_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-warning="1 == 1"
+                                        optional="hide"/>
+
+                                    <!-- these fields are to show % margin and markup for each parent line on bom component screen -->
+                                    <field name="margin_system_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-muted="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_quoted_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-danger="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_pre_project_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_live_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-warning="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_system_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-muted="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_quoted_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-danger="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_pre_project_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_live_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-warning="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                </list>
+                            </field>
+
+                            <field name="component_line_ids"
+                                widget="section_and_note_one2many"
+                                mode="list"
+                                no_label="True"
+                                invisible="view_team != 'purchasing_team'"
+                                readonly="state == 'sale'"
+                            >
+                                <list class="no_reorder"
+                                    editable="bottom"
+                                    create="0"
+                                    decoration-success="is_parent == True"
+                                    decoration-warning="is_other_than_bom == True"
+                                    decoration-info="is_parent == False">
+
+
+                                    <!-- Toolbar for adding lines or sections -->
+                                    <!--                            <control>-->
+                                    <!--                                <create string="Add a Component"/>-->
+                                    <!--                                &lt;!&ndash;                                <create string="Add a Section"&ndash;&gt;-->
+                                    <!--                                &lt;!&ndash;                                        context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                                    <!--                            </control>-->
+
+                                    <!-- Section header fields -->
+                                    <field name="sequence" widget="handle" invisible="1"/>
+                                    <field name="display_type" column_invisible="1" string=" "/>
+                                    <field name="name"
+                                        widget="sol_text"
+                                        force_save="1" string="" readonly="1"/>
+
+                                    <!-- Existing data columns -->
+                                    <field name="is_other_than_bom"
+                                        column_invisible="1" force_save="1"/>
+                                    <!--                            <field name="parent_number" column_invisible="0" class="bright-red text-start"-->
+                                    <!--                            invisible="not is_parent and is_new_bom_line"/>-->
+                                    <button name="action_open_add_components_wizard"
+                                            string="Components"
+                                            type="object"
+                                            class="btn-primary btn-sm"
+                                            icon="fa-plus"
+                                            invisible="not is_parent"
+                                            help="Add components to this parent line"/>
+                                    <field name="parent_product_code" width="100px" force_save="1" readonly="1" optional="show"
+                                        invisible="not is_parent"
+                                        class="bright-red text-start"/>
+
+                                    <field name="parent_product_reference"
+                                        column_invisible="1" force_save="1"/>
+                                    <field name="order_line_id"
+                                        column_invisible="1" force_save="1"/>
+
+                                    <field name="parent_product_id"
+                                        column_invisible="1" force_save="1" readonly="1"/>
+                                    <field name="is_auto_generated" column_invisible="1"/>
+                                    <field name="is_readonly" column_invisible="1" force_save="1"/>
+                                    <field name="is_parent" column_invisible="1" force_save="1"/>
+                                    <field name="current_change" column_invisible="1" force_save="1"
+                                        readonly="parent.state == 'sale'"/>
+                                    <!--                            <field name="line_id"/>-->
+                                    <field name="product_reference"
+                                        readonly="1" force_save="1" column_invisible="1"/>
+                                    <field name="product_id" width="500px" optional="show"
+                                        options="{'no_open':1,'no_create':1}"
+                                        readonly="parent.state == 'sale' or is_readonly"
+                                        force_save="1" style="color:green;" required="1"/>
+                                    <field name="product_name" optional="hide" width="350px" readonly="1" force_save="1"/>
+                                    <field name="product_qty" width="60px" optional="show"
+                                        readonly="parent.state == 'sale'" force_save="1"/>
+                                    <field name="unit_sale_price" width="100px" optional="show"
+                                        readonly="parent.state == 'sale'"
+                                        force_save="1"/>
+                                    <field name="total_sale_price" width="100px" optional="show"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1"/>
+                                    <field name="note" force_save="1" readonly="is_parent" optional="hide"/>
+                                    <field name="system_cost_per_unit" width="140px"
+                                        readonly="1" force_save="1"
+                                        decoration-muted="1 == 1" optional="hide"/>
+                                    <field name="quoted_cost_per_unit" width="140px"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1" decoration-danger="1 == 1" optional="hide"/>
+                                    <field name="pre_project_cost_per_unit" width="150px"
+                                        readonly="parent.state == 'sale' or is_parent"
+                                        force_save="1"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1" optional="hide"/>
+                                    <field name="manual_live_unit_cost" readonly="is_parent" force_save="1" optional="show"
+                                        decoration-warning="1 == 1" decoration-bf="1 == 1"/>
+                                    <field name="live_unit_cost" width="100px"
+                                        readonly="1"
+                                        force_save="1" decoration-warning="1 == 1" optional="hide"/>
+                                    <field name="supplier_id"
+                                        readonly="parent.state == 'sale'" options="{'no_create':1}" optional="hide"/>
+                                    <field name="margin_system_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-muted="1 == 1"
+                                        optional="hide"/>
+                                    <field name="margin_quoted_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-danger="1 == 1"
+                                        optional="hide"/>
+                                    <field name="margin_pre_project_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1" optional="hide"/>
+                                    <field name="margin_live_cost"
+                                        readonly="1" force_save="1" invisible="not is_parent" decoration-warning="1 == 1"
+                                        optional="hide"/>
+
+                                    <!-- these fields are to show % margin and markup for each parent line on bom component screen -->
+                                    <field name="margin_system_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-muted="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_quoted_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-danger="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_pre_project_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="margin_live_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-warning="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_system_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-muted="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_quoted_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-danger="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_pre_project_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-primary="1 == 1"
+                                        decoration-bf="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                    <field name="markup_live_cost_per_parent"
+                                        readonly="1" force_save="1"
+                                        invisible="not is_parent"
+                                        decoration-warning="1 == 1"
+                                        optional="hide"
+                                        widget="percentage"/>
+
+                                </list>
+                            </field>
+                            
+                        </page>
+                        <page name="filter_bom_lines" string="Filter BOM Lines">
+                            <div class="alert alert-warning text-center" role="alert" invisible="code_sale_order_line_id">
+                                <h3>⚠️ Attention: To See Filtered BOM Lines, Select Code From Sale Order First!.</h3>
+                            </div>
+                            <div class="alert alert-warning text-center" role="alert" invisible="filtered_component_line_ids">
+                                <h3>⚠️ Attention: Kindly Save The BOM Component To See Filtered Lines!.</h3>
+                            </div>
+                            <div class="alert alert-info text-center" role="alert">
+                                <h3>⚠️ Attention: Always Select The Code and then Save To See Filtered Lines!.</h3>
+                            </div>
+                            <group>
+                                <!-- <field string="" name="group_sale_order_line_id" no_label="1" context="{'group_swap':1}" options="{'no_open':1,'no_create':1}" invisible="not group_sale_order_line_id"/> -->
+                                <field string="" name="code_sale_order_line_id" options="{'no_open':1,'no_create':1}" placeholder="Select Product Code And Save, To Filter" no_label="1" context="{'group_swap':1}" domain = "[('order_id','=',order_id), ('display_type','=','line_note')]"/>
+                            </group>
+                                <field name="filtered_component_line_ids"
+                                    widget="section_and_note_one2many"
+                                    mode="list"
+                                    no_label="True"
+                                    invisible="view_team or not code_sale_order_line_id"
+                                    readonly="state == 'sale'"
+
+                                >
+                                    <list class="no_reorder"
+                                        create="0"
+                                        editable="bottom"
+                                        decoration-success="is_parent == True"
+                                        decoration-warning="is_other_than_bom == True"
+                                        decoration-info="is_parent == False">
+
+
+                                        <!-- Toolbar for adding lines or sections -->
+                                        <!--                            <control>-->
+                                        <!--                                <create string="Add a Component"/>-->
+                                        <!--                                &lt;!&ndash;                                <create string="Add a Section"&ndash;&gt;-->
+                                        <!--                                &lt;!&ndash;                                        context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                                        <!--                            </control>-->
+
+                                        <!-- Section header fields -->
+                                        <field name="sequence" widget="handle" invisible="1"/>
+                                        <field name="display_type" column_invisible="1" string=" "/>
+                                        <field name="name"
+                                            widget="sol_text"
+                                            force_save="1" string="" readonly="1"/>
+
+                                        <!-- Existing data columns -->
+                                        <field name="is_other_than_bom"
+                                            column_invisible="1" force_save="1"/>
+                                        <!--                            <field name="parent_number" column_invisible="0" class="bright-red text-start"-->
+                                        <!--                            invisible="not is_parent and is_new_bom_line"/>-->
+
+
+                                        <button name="action_open_add_components_wizard"
+                                                string="Components"
+                                                type="object"
+                                                class="btn-primary btn-sm"
+                                                icon="fa-plus"
+                                                invisible="not is_parent"
+                                                help="Add components to this parent line"/>
+                                        
+                                        <button name="action_open_update_parent_line"
+                                                string="Product"
+                                                type="object"
+                                                class="btn-primary text-white"
+                                                icon="fa-pencil"
+                                                invisible="not is_parent"
+                                                help=" components to this parent line"/>
+
+                                        <field name="parent_product_code" width="100px" force_save="1" readonly="1" optional="show"
+                                            invisible="not is_parent"
+                                            class="bright-red text-start"/>
+                                        <field name="parent_product_reference"
+                                            column_invisible="1" force_save="1"/>
+                                        <field name="order_line_id"
+                                            column_invisible="1" force_save="1"/>
+
+                                        <field name="parent_product_id"
+                                            column_invisible="1" force_save="1" readonly="1"/>
+                                        <field name="is_auto_generated" column_invisible="1"/>
+                                        <field name="is_readonly" column_invisible="1" force_save="1"/>
+                                        <field name="is_parent" column_invisible="1" force_save="1"/>
+                                        <field name="current_change" column_invisible="1" force_save="1"
+                                            readonly="parent.state == 'sale'"/>
+                                        <!--                            <field name="line_id"/>-->
+                                        <field name="product_reference"
+                                            readonly="1" force_save="1" column_invisible="1"/>
+                                        <field name="product_id" width="500px" optional="show"
+                                            options="{'no_open':1,'no_create':1}"
+                                            readonly="parent.state == 'sale' or is_readonly"
+                                            force_save="1" style="color:green;" required="1"/>
+                                        <field name="product_name" optional="hide" width="350px" readonly="1" force_save="1"/>
+                                        <field name="product_qty" optional="show"
+                                            width="60px"
+                                            readonly="parent.state == 'sale'" force_save="1"/>
+                                        <field name="unit_sale_price" width="100px"
+                                            readonly="parent.state == 'sale'"
+                                            force_save="1"/>
+                                        <field name="total_sale_price" width="100px" optional="show"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1"/>
+                                        <field name="note" force_save="1" optional="show" readonly="is_parent"/>
+                                        <!-- <field name="system_cost_per_unit" width="140px"
+                                            readonly="1" force_save="1"
+                                            decoration-muted="1 == 1" optional="hide"/>
+                                        <field name="quoted_cost_per_unit" width="140px"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1" decoration-danger="1 == 1" optional="hide"/>
+                                        <field name="pre_project_cost_per_unit" width="150px"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1" optional="hide"/> -->
+                                        <!--                            <field name="manual_live_unit_cost" force_save="1" optional="show"-->
+                                        <!--                            decoration-danger="1 == 1" decoration-bf="1 == 1"/>-->
+                                        <field name="manual_live_unit_cost" readonly="is_parent" force_save="1" optional="show"
+                                            decoration-warning="1 == 1" decoration-bf="1 == 1"/>
+                                        <field name="live_unit_cost" width="100px"
+                                            readonly="1"
+                                            force_save="1" decoration-warning="1 == 1" optional="hide"/>
+                                        <field name="supplier_id"
+                                            readonly="parent.state == 'sale'" options="{'no_create':1}" optional="hide"/>
+                                        <!-- <field name="margin_system_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-muted="1 == 1"
+                                            optional="hide"/>
+                                        <field name="margin_quoted_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-danger="1 == 1"
+                                            optional="hide"/>
+                                        <field name="margin_pre_project_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1" optional="hide"/> -->
+                                        <field name="unit_margin" class="text-center" readonly="1" invisible="not is_parent" optional="show"/>
+                                        <field name="margin_live_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-warning="1 == 1"
+                                            optional="hide"/>
+
+                                        <!-- these fields are to show % margin and markup for each parent line on bom component screen -->
+                                        <!-- <field name="margin_system_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-muted="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="margin_quoted_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-danger="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="margin_pre_project_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/> -->
+
+                                        <field name="margin_live_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-warning="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"
+                                            width="185px"/>
+
+                                        <!-- <field name="markup_system_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-muted="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="markup_quoted_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-danger="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="markup_pre_project_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/> -->
+
+                                        <field name="markup_live_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-warning="1 == 1"
+                                            optional="hide"
+                                            widget="percentage" 
+                                            width="185px"/>
+
+                                    </list>
+                                </field>
+
+                                <field name="filtered_component_line_ids"
+                                    widget="section_and_note_one2many"
+                                    mode="list"
+                                    no_label="True"
+                                    invisible="view_team != 'sales_team' or not code_sale_order_line_id"
+                                    readonly="state == 'sale'"
+                                >
+                                    <list class="no_reorder"
+                                        editable="bottom"
+                                        create="0"
+                                        decoration-success="is_parent == True"
+                                        decoration-warning="is_other_than_bom == True"
+                                        decoration-info="is_parent == False">
+
+
+                                        <!-- Toolbar for adding lines or sections -->
+                                        <!--                                                        <control>-->
+                                        <!--                                                            <create string="Add a Component"/>-->
+                                        <!--                                                            &lt;!&ndash;                                <create string="Add a Section"&ndash;&gt;-->
+                                        <!--                                                            &lt;!&ndash;                                        context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                                        <!--                                                        </control>-->
+
+                                        <!-- Section header fields -->
+                                        <field name="sequence" widget="handle" invisible="1"/>
+                                        <field name="check_move" column_invisible="1"/>
+                                        <field name="display_type" column_invisible="1" string=" "/>
+                                        <field name="name"
+                                            widget="sol_text"
+                                            force_save="1" string="" readonly="1"/>
+
+                                        <!-- Existing data columns -->
+                                        <field name="is_other_than_bom"
+                                            column_invisible="1" force_save="1"/>
+                                        <!--                            <field name="parent_number" column_invisible="0" class="bright-red text-start"-->
+                                        <!--                            invisible="not is_parent and is_new_bom_line"/>-->
+
+
+                                        <button name="action_open_add_components_wizard"
+                                                string="Components"
+                                                type="object"
+                                                class="btn-primary btn-sm"
+                                                icon="fa-plus"
+                                                invisible="not is_parent"
+                                                help="Add components to this parent line"/>
+                                        <button name="action_open_update_parent_line"
+                                                string="Product"
+                                                type="object"
+                                                class="btn-primary text-white"
+                                                icon="fa-pencil"
+                                                invisible="not is_parent"
+                                                help=" components to this parent line"/>
+                                        <field name="parent_product_code" width="100px" force_save="1" readonly="1" optional="show"
+                                            invisible="not is_parent"
+                                            class="bright-red text-start"/>
+                                        <field name="parent_product_reference"
+                                            column_invisible="1" force_save="1"/>
+                                        <field name="order_line_id"
+                                            column_invisible="1" force_save="1"/>
+                                        <field name="parent_product_id"
+                                            column_invisible="1" force_save="1" readonly="1"/>
+                                        <field name="is_auto_generated" column_invisible="1"/>
+                                        <field name="is_readonly" column_invisible="1" force_save="1"/>
+                                        <field name="is_parent" column_invisible="1" force_save="1"/>
+                                        <field name="current_change" column_invisible="1" force_save="1"
+                                            readonly="parent.state == 'sale'"/>
+                                        <!--                            <field name="line_id"/>-->
+                                        <field name="product_reference"
+                                            readonly="1" force_save="1" column_invisible="1"/>
+                                        <field name="product_id" width="500px" optional="show"
+                                            options="{'no_open':1,'no_create':1}"
+                                            readonly="parent.state == 'sale' or is_readonly"
+                                            force_save="1" style="color:green;" required="1"/>
+                                        <field name="product_name" optional="hide" width="350px" readonly="1" force_save="1"/>
+                                        <field name="product_qty" width="60px" optional="show"
+                                            readonly="parent.state == 'sale'" force_save="1"/>
+                                        <field name="unit_sale_price" width="100px" optional="show"
+                                            readonly="parent.state == 'sale'"
+                                            force_save="1"/>
+                                        <field name="total_sale_price" width="100px" optional="show"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1"/>
+                                        <field name="note" force_save="1" optional="show" readonly="is_parent"/>
+                                        <!-- <field name="system_cost_per_unit" width="140px"
+                                            readonly="1" force_save="1"
+                                            decoration-muted="1 == 1"/>
+                                        <field name="quoted_cost_per_unit" width="140px"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1" decoration-danger="1 == 1"/>
+                                        <field name="pre_project_cost_per_unit" width="150px"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1" optional="hide"/> -->
+                                        <field name="manual_live_unit_cost" readonly="is_parent" force_save="1" optional="show"
+                                            decoration-warning="1 == 1" decoration-bf="1 == 1"/>
+                                        <field name="live_unit_cost" width="100px" optional="hide"
+                                            readonly="1"
+                                            force_save="1" decoration-warning="1 == 1"/>
+                                        <field name="supplier_id"
+                                            readonly="parent.state == 'sale'" options="{'no_create':1}" optional="hide"/>
+                                        <!-- <field name="margin_system_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-muted="1 == 1"
+                                            optional="hide"/>
+                                        <field name="margin_quoted_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-danger="1 == 1"
+                                            optional="hide"/>
+                                        <field name="margin_pre_project_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1" optional="hide"/> -->
+                                        <field name="unit_margin" class="text-center" readonly="1" invisible="not is_parent" optional="show"/>
+                                        <field name="margin_live_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-warning="1 == 1"
+                                            optional="hide"/>
+
+                                        <!-- these fields are to show % margin and markup for each parent line on bom component screen -->
+                                        <!-- <field name="margin_system_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-muted="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="margin_quoted_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-danger="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="margin_pre_project_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/> -->
+
+                                        <field name="margin_live_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-warning="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"
+                                            width="185px"/>
+
+                                        <!-- <field name="markup_system_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-muted="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="markup_quoted_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-danger="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="markup_pre_project_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/> -->
+
+                                        <field name="markup_live_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-warning="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"
+                                            width="185px"/>
+
+                                    </list>
+                                </field>
+
+                                <field name="filtered_component_line_ids"
+                                    widget="section_and_note_one2many"
+                                    mode="list"
+                                    no_label="True"
+                                    invisible="view_team != 'preproject_team' or not code_sale_order_line_id"
+                                    readonly="state == 'sale'"
+                                >
+                                    <list class="no_reorder"
+                                        editable="bottom"
+                                        create="0"
+                                        decoration-success="is_parent == True"
+                                        decoration-warning="is_other_than_bom == True"
+                                        decoration-info="is_parent == False">
+
+
+                                        <!-- Toolbar for adding lines or sections -->
+                                        <!--                            <control>-->
+                                        <!--                                <create string="Add a Component"/>-->
+                                        <!--                                &lt;!&ndash;                                <create string="Add a Section"&ndash;&gt;-->
+                                        <!--                                &lt;!&ndash;                                        context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                                        <!--                            </control>-->
+
+                                        <!-- Section header fields -->
+                                        <field name="sequence" widget="handle" invisible="1"/>
+                                        <field name="display_type" column_invisible="1" string=" "/>
+                                        <field name="name"
+                                            widget="sol_text"
+                                            force_save="1" string="" readonly="1"/>
+
+                                        <!-- Existing data columns -->
+                                        <field name="is_other_than_bom"
+                                            column_invisible="1" force_save="1"/>
+                                        <!--                            <field name="parent_number" column_invisible="0" class="bright-red text-start"-->
+                                        <!--                            invisible="not is_parent and is_new_bom_line"/>-->
+
+
+                                        <button name="action_open_add_components_wizard"
+                                                string="Components"
+                                                type="object"
+                                                class="btn-primary btn-sm"
+                                                icon="fa-plus"
+                                                invisible="not is_parent"
+                                                help="Add components to this parent line"/>
+                                        <button name="action_open_update_parent_line"
+                                                string="Product"
+                                                type="object"
+                                                class="btn-primary text-white"
+                                                icon="fa-pencil"
+                                                invisible="not is_parent"
+                                                help=" components to this parent line"/>
+                                        <field name="parent_product_code" width="100px" force_save="1" readonly="1" optional="show"
+                                            invisible="not is_parent"
+                                            class="bright-red text-start"/>
+                                        <field name="parent_product_reference"
+                                            column_invisible="1" force_save="1"/>
+                                        <field name="order_line_id"
+                                            column_invisible="1" force_save="1"/>
+
+                                        <field name="parent_product_id"
+                                            column_invisible="1" force_save="1" readonly="1"/>
+                                        <field name="is_auto_generated" column_invisible="1"/>
+                                        <field name="is_readonly" column_invisible="1" force_save="1"/>
+                                        <field name="is_parent" column_invisible="1" force_save="1"/>
+                                        <field name="current_change" column_invisible="1" force_save="1"
+                                            readonly="parent.state == 'sale'"/>
+                                        <!--                            <field name="line_id"/>-->
+                                        <field name="product_reference"
+                                            readonly="1" force_save="1" column_invisible="1"/>
+                                        <field name="product_id" width="500px" optional="show"
+                                            options="{'no_open':1,'no_create':1}"
+                                            readonly="parent.state == 'sale' or is_readonly"
+                                            force_save="1" style="color:green;" required="1"/>
+                                        <field name="product_name" optional="hide" width="350px" readonly="1" force_save="1"/>
+                                        <field name="product_qty" width="60px" optional="show"
+                                            readonly="parent.state == 'sale'" force_save="1"/>
+                                        <field name="unit_sale_price" width="100px" optional="show"
+                                            readonly="parent.state == 'sale'"
+                                            force_save="1"/>
+                                        <field name="total_sale_price" width="100px" optional="show"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1"/>
+                                        <field name="note" force_save="1" readonly="is_parent" optional="hide"/>
+                                        <!-- <field name="system_cost_per_unit" width="140px"
+                                            readonly="1" force_save="1"
+                                            decoration-muted="1 == 1" optional="hide"/>
+                                        <field name="quoted_cost_per_unit" width="140px"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1" decoration-danger="1 == 1" optional="hide"/>
+                                        <field name="pre_project_cost_per_unit" width="150px"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1" optional="hide"/> -->
+                                        <field name="manual_live_unit_cost" readonly="is_parent" force_save="1" optional="show"
+                                            decoration-warning="1 == 1" decoration-bf="1 == 1"/>
+                                        <field name="live_unit_cost" width="100px"
+                                            readonly="1"
+                                            force_save="1" decoration-warning="1 == 1" optional="hide"/>
+                                        <field name="supplier_id"
+                                            readonly="parent.state == 'sale'" options="{'no_create':1}" optional="hide"/>
+                                        <!-- <field name="margin_system_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-muted="1 == 1"
+                                            optional="hide"/>
+                                        <field name="margin_quoted_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-danger="1 == 1"
+                                            optional="hide"/>
+                                        <field name="margin_pre_project_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1" optional="hide"/> -->
+                                        <field name="unit_margin" class="text-center" readonly="1" invisible="not is_parent" optional="show"/>
+                                        <field name="margin_live_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-warning="1 == 1"
+                                            optional="hide"/>
+
+                                        <!-- these fields are to show % margin and markup for each parent line on bom component screen -->
+                                        <!-- <field name="margin_system_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-muted="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="margin_quoted_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-danger="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="margin_pre_project_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/> -->
+
+                                        <field name="margin_live_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-warning="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"
+                                            width="185px"/>
+
+                                        <!-- <field name="markup_system_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-muted="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="markup_quoted_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-danger="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="markup_pre_project_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/> -->
+
+                                        <field name="markup_live_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-warning="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"
+                                            width="185px"/>
+
+                                    </list>
+                                </field>
+
+                                <field name="filtered_component_line_ids"
+                                    widget="section_and_note_one2many"
+                                    mode="list"
+                                    no_label="True"
+                                    invisible="view_team != 'purchasing_team' or not code_sale_order_line_id"
+                                    readonly="state == 'sale'"
+                                >
+                                    <list class="no_reorder"
+                                        editable="bottom"
+                                        create="0"
+                                        decoration-success="is_parent == True"
+                                        decoration-warning="is_other_than_bom == True"
+                                        decoration-info="is_parent == False">
+
+
+                                        <!-- Toolbar for adding lines or sections -->
+                                        <!--                            <control>-->
+                                        <!--                                <create string="Add a Component"/>-->
+                                        <!--                                &lt;!&ndash;                                <create string="Add a Section"&ndash;&gt;-->
+                                        <!--                                &lt;!&ndash;                                        context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                                        <!--                            </control>-->
+
+                                        <!-- Section header fields -->
+                                        <field name="sequence" widget="handle" invisible="1"/>
+                                        <field name="display_type" column_invisible="1" string=" "/>
+                                        <field name="name"
+                                            widget="sol_text"
+                                            force_save="1" string="" readonly="1"/>
+
+                                        <!-- Existing data columns -->
+                                        <field name="is_other_than_bom"
+                                            column_invisible="1" force_save="1"/>
+                                        <!--                            <field name="parent_number" column_invisible="0" class="bright-red text-start"-->
+                                        <!--                            invisible="not is_parent and is_new_bom_line"/>-->
+                                        <button name="action_open_add_components_wizard"
+                                                string="Components"
+                                                type="object"
+                                                class="btn-primary btn-sm"
+                                                icon="fa-plus"
+                                                invisible="not is_parent"
+                                                help="Add components to this parent line"/>
+                                        <button name="action_open_update_parent_line"
+                                                string="Product"
+                                                type="object"
+                                                class="btn-primary text-white"
+                                                icon="fa-pencil"
+                                                invisible="not is_parent"
+                                                help=" components to this parent line"/>
+                                        <field name="parent_product_code" width="100px" force_save="1" readonly="1" optional="show"
+                                            invisible="not is_parent"
+                                            class="bright-red text-start"/>
+
+                                        <field name="parent_product_reference"
+                                            column_invisible="1" force_save="1"/>
+                                        <field name="order_line_id"
+                                            column_invisible="1" force_save="1"/>
+
+                                        <field name="parent_product_id"
+                                            column_invisible="1" force_save="1" readonly="1"/>
+                                        <field name="is_auto_generated" column_invisible="1"/>
+                                        <field name="is_readonly" column_invisible="1" force_save="1"/>
+                                        <field name="is_parent" column_invisible="1" force_save="1"/>
+                                        <field name="current_change" column_invisible="1" force_save="1"
+                                            readonly="parent.state == 'sale'"/>
+                                        <!--                            <field name="line_id"/>-->
+                                        <field name="product_reference"
+                                            readonly="1" force_save="1" column_invisible="1"/>
+                                        <field name="product_id" width="500px" optional="show"
+                                            options="{'no_open':1,'no_create':1}"
+                                            readonly="parent.state == 'sale' or is_readonly"
+                                            force_save="1" style="color:green;" required="1"/>
+                                        <field name="product_name" optional="hide" width="350px" readonly="1" force_save="1"/>
+                                        <field name="product_qty" width="60px" optional="show"
+                                            readonly="parent.state == 'sale'" force_save="1"/>
+                                        <field name="unit_sale_price" width="100px" optional="show"
+                                            readonly="parent.state == 'sale'"
+                                            force_save="1"/>
+                                        <field name="total_sale_price" width="100px" optional="show"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1"/>
+                                        <field name="note" force_save="1" readonly="is_parent" optional="hide"/>
+                                        <!-- <field name="system_cost_per_unit" width="140px"
+                                            readonly="1" force_save="1"
+                                            decoration-muted="1 == 1" optional="hide"/>
+                                        <field name="quoted_cost_per_unit" width="140px"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1" decoration-danger="1 == 1" optional="hide"/>
+                                        <field name="pre_project_cost_per_unit" width="150px"
+                                            readonly="parent.state == 'sale' or is_parent"
+                                            force_save="1"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1" optional="hide"/> -->
+                                        <field name="manual_live_unit_cost" readonly="is_parent" force_save="1" optional="show"
+                                            decoration-warning="1 == 1" decoration-bf="1 == 1"/>
+                                        <field name="live_unit_cost" width="100px"
+                                            readonly="1"
+                                            force_save="1" decoration-warning="1 == 1" optional="hide"/>
+                                        <field name="supplier_id"
+                                            readonly="parent.state == 'sale'" options="{'no_create':1}" optional="hide"/>
+                                        <!-- <field name="margin_system_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-muted="1 == 1"
+                                            optional="hide"/>
+                                        <field name="margin_quoted_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-danger="1 == 1"
+                                            optional="hide"/>
+                                        <field name="margin_pre_project_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1" optional="hide"/> -->
+                                        <field name="unit_margin" class="text-center" readonly="1" invisible="not is_parent" optional="show"/>
+                                        <field name="margin_live_cost"
+                                            readonly="1" force_save="1" invisible="not is_parent" decoration-warning="1 == 1"
+                                            optional="hide"/>
+
+                                        <!-- these fields are to show % margin and markup for each parent line on bom component screen -->
+                                        <!-- <field name="margin_system_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-muted="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="margin_quoted_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-danger="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="margin_pre_project_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/> -->
+
+                                        <field name="margin_live_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-warning="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"
+                                            width="185px"/>
+
+                                        <!-- <field name="markup_system_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-muted="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="markup_quoted_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-danger="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/>
+
+                                        <field name="markup_pre_project_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-primary="1 == 1"
+                                            decoration-bf="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"/> -->
+
+                                        <field name="markup_live_cost_per_parent"
+                                            readonly="1" force_save="1"
+                                            invisible="not is_parent"
+                                            decoration-warning="1 == 1"
+                                            optional="hide"
+                                            widget="percentage"
+                                            width="185px"/>
+
+                                    </list>
+                                </field>
+                        </page>
+                    </notebook>
+
+
+                </sheet>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>

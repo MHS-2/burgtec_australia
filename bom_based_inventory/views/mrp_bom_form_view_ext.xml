@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="bom_based_inventory.mrp_bom_tree_view_ext" model="ir.ui.view">
+        <field name="name">mrp.bom.tree.view.ext</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="before">
+                <field name="bom_cost"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="bom_based_inventory.mrp_bom_form_view_ext" model="ir.ui.view">
+        <field name="name">mrp.bom.form.view.ext</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <newline/>
+                <field name="bom_cost" widget="monetary"
+                       options="{'currency_field': 'company_id.currency_id'}"/>
+            </xpath>
+            <xpath expr="//field[@name='bom_line_ids']//list//field[@name='product_uom_id']" position="after">
+                <field name="currency_id" column_invisible="1"/>
+                <field name="component_unit_cost" class="text-end" optional="show" sum="Total"/>
+                <field name="total_cost_per_line" class="text-end" optional="show" sum="Total"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
+
+
+
+
+
+
+

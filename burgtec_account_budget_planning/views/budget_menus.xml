@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_budget_planning_root"
+              name="Budget Planning"
+              parent="accountant.menu_accounting"
+              sequence="30"/>
+
+    <menuitem id="menu_budget_plan"
+              name="Budget Plans"
+              parent="menu_budget_planning_root"
+              action="action_budget_plan"
+              sequence="10"/>
+
+    <menuitem id="menu_budget_planning_config"
+              name="Configuration"
+              parent="menu_budget_planning_root"
+              sequence="90"/>
+
+    <menuitem id="menu_budget_target_type"
+              name="Target Types"
+              parent="menu_budget_planning_config"
+              action="action_budget_target_type"
+              sequence="10"/>
+
+    <menuitem id="menu_budget_target_state"
+              name="Target State"
+              parent="menu_budget_planning_config"
+              action="action_budget_target_state"
+              sequence="20"/>
+
+</odoo>

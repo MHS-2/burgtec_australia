@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="non_zero_component_sale_order_view_form_view" model="ir.ui.view">
+        <field name="name">non.zero.component.sale.order.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page name="bom_totals" string="Sale BOM Lines Total">
+                    <group string="Costs">
+                        <field name="system_cost_per_unit"/>
+                        <field name="live_unit_cost"/>
+                        <field name="quoted_cost_per_unit"/>
+                        <field name="pre_project_cost_per_unit"/>
+                    </group>
+                    <group string="Margin">
+                        <field name="percentage_margin_system_cost" widget="percentage"/>
+                        <field name="percentage_margin_live_cost" widget="percentage"/>
+                        <field name="percentage_margin_quoted_cost" widget="percentage"/>
+                        <field name="percentage_margin_pre_project_cost" widget="percentage"/>
+                    </group>
+                    <group string="Markup">
+                        <field name="percentage_markup_system_cost" widget="percentage"/>
+                        <field name="percentage_markup_live_cost" widget="percentage"/>
+                        <field name="percentage_markup_quoted_cost" widget="percentage"/>
+                        <field name="percentage_markup_pre_project_cost" widget="percentage"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//page[@name='defected_lines_summary']//field[@name='defected_order_line_ids']" position="after">
+                <group class="d-flex justify-content-end">
+                    <field name="defected_amount_untaxed"/>
+                    <field name="defected_total_live_cost"/>
+                </group>
+                <group class="d-flex justify-content-end">
+                    <field name="total_amount_untaxed_exl_defect"/>
+                    <field name="total_gp_exl_defect"/>
+                </group>
+                <group class="d-flex justify-content-end">
+                    <field name="percentage_margin_live_cost_exl_defect" widget="percentage"/>
+                    <field name="percentage_markup_live_cost_exl_defect" widget="percentage"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

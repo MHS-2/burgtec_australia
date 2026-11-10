@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View nscr.register View List -->
+    <record id="view_nscr_register_list" model="ir.ui.view">
+        <field name="name">view.nscr.register.list</field>
+        <field name="model">nscr.register</field>
+        <field name="arch" type="xml">
+            <list string="NSCR Register" create="1" delete="0">
+                <field name="nscr_date"/>
+                <field name="name" string="NSCR Number"/>
+                <field name="product_variant_id"/>
+                <field name="product_component_id"/>
+                <field name="user_id"/>
+                <field name="nscr_description"/>
+                <field name="nscr_attachments_ids" widget="many2many_binary"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- View nscr.register form -->
+    <record id="view_nscr_register_form" model="ir.ui.view">
+        <field name="name">view.nscr.register.form</field>
+        <field name="model">nscr.register</field>
+        <field name="arch" type="xml">
+            <form string="NSCR Register" create="0" delete="0">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="nscr_date" readonly="1"/>
+                            <field name="product_variant_id" string="Product Name" readonly="1"/>
+                            <field name="order_id" readonly="1"/>
+                        </group>
+                        <group>
+                             <field name="user_id" readonly="1"/>
+                            <field name="product_component_id" string="Component Name" readonly="1"/>
+                            <field name="nscr_description" required="1"/>
+                            <field name="nscr_attachments_ids" widget="many2many_binary"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View nscr.register search -->
+    <record id="view_nscr_register_search" model="ir.ui.view">
+        <field name="name">view.nscr.register.search</field>
+        <field name="model">nscr.register</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="1" string="Group By">
+                    <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action nscr.register -->
+    <record id="action_nscr_register" model="ir.actions.act_window">
+        <field name="name">Nscr Register</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">nscr.register</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no examples click here to add new Nscr Register.
+            </p>
+        </field>
+    </record>
+
+<!--    <menuitem name="Registers" id="menu_burgtec_register" parent="sale.sale_menu_root" sequence="35"/>-->
+    <menuitem name="NSCR Register" id="menu_burgtec_nscr_register" parent="burgtec_registers_customization.menu_burgtec_register" sequence="2" action="burgtec_registers_customization.action_nscr_register"/>
+
+</odoo>

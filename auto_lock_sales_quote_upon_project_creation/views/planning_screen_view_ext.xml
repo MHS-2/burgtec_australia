@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="auto_lock_sales_quote_upon_project_creation.planning_screen_view_ext" model="ir.ui.view">
+        <field name="name">auto.lock.sales.quote.upon.project.creation.lanning screen view ext</field>
+        <field name="model">planning.screen</field>
+        <field name="inherit_id" ref="hubspot_deal_stage_quote_project_lock.planning_screen_view_ext1"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='stage_count']" position="after">
+                <field name="project_name"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

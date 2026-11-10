@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!-- Tree View -->
+
+    <record id="burgtec_report_sale_order_tree_view_extended" model="ir.ui.view">
+        <field name="name">burgtec.report.sale.order.tree.view.extended</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="hubspot_reference" optional="show"/>
+                <field name="project_name" optional="show"/>
+                <!--                <field name="buildertrend_po" string="Buildertrend PO #" placeholder="Buildertrend PO #" optional="show"/>-->
+                <field name="delivery_stage" string="Delivery Stage #" placeholder="Delivery Stage #" optional="show"/>
+                <field name="quote_type" optional="show"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- FORM VIEW  -->
+    <record id="view_sale_order_line_image_description" model="ir.ui.view">
+        <field name="name">view.sale.order.line.image.description</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <form string="Edit Parent Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="custom_product_name"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="image_128" widget="image"
+                                   options="{'size': [200, 200]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="burgtec_report_sale_order_extend" model="ir.ui.view">
+        <field name="name">burgtec.report.sale.order.extend</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Old Flow -->
+
+            <xpath expr="//field[@name='custom_project_id']" position="after">
+                <field name="location" invisible="quote_type != 'delivery_stage'"/>
+                <field name="is_in_builder_trend" force_save="1"
+                       invisible="quote_type != 'project_quote'"/>
+                <field name="delivery_stage" string="Delivery Stage #" placeholder="Delivery Stage #"
+                       readonly="state == 'sale'" invisible="not(is_old_data) or quote_type != 'delivery_stage'"/>
+
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="before">
+                <field name="custom_product_name" width="250px;" invisible="display_type in ('line_section','line_note')"
+                       placeholder="Add Product Name"/>
+                <field name="image_128" widget="image" class="oe_avatar" string="Image"
+                       readonly="parent.state == 'sale'" invisible="display_type in ('line_section','line_note')"/>
+
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//control//create[@name='add_section_control']"
+                   position="attributes">
+                <attribute name="string">Add a Group</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//control//create[@name='add_note_control']"
+                   position="attributes">
+                <attribute name="string">Add a Code</attribute>
+            </xpath>
+
+
+            <xpath expr="//button[@name='action_show_delivery_orders']" position="after">
+                <button name="action_show_delivery_code_calculation" type="object" icon="fa-eye"
+                        class="btn-primary">
+                    Delivery Costs
+                </button>
+            </xpath>
+
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page name="report_config" string="Report Configuration">
+                    <group>
+                        <field name="is_show_total_breakdown" string="Total Breakdown"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- NEW fLOW -->
+
+            <xpath expr="//group[@name='order_details']" position="after">
+                <group name="selections" string="Type Selections">
+                    <field name="delivery_stage" string="Delivery Stage #" placeholder="Delivery Stage #"
+                           readonly="state == 'sale'"/>
+                    <field name="quote_type" readonly="state == 'sale'" widget="radio"/>
+                    <field name="zone_type" widget="radio"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//group[@name='project_rev_details']" position="inside">
+                <field name="hubspot_reference" placeholder="Hubspot Reference" readonly="state == 'sale'"/>
+                <field name="project_name" placeholder="Project Name" readonly="state == 'sale'"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_sales_order_filter_inherit_custom" model="ir.ui.view">
+        <field name="name">sale.order.search.inherit.custom</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="hubspot_reference"/>
+                <field name="project_name"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="sale_custom_report_inherit_view_search" model="ir.ui.view">
+        <field name="name">sale.custom.report.inherit.view.search</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//search//filter" position="after">
+                <separator/>
+                <filter string="Sales Quotes" name="sales_quotes" domain="[('quote_type','=','sales_quote')]"/>
+                <filter string="Project Quotes" name="project_quotes" domain="[('quote_type','=','project_quote')]"/>
+                <filter string="Delivery Stages" name="delivery_stages" domain="[('quote_type','=','delivery_stage')]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- ############################# ACTION FOR SALE QUOTE ################################# -->
+
+    <record id="action_quotations_with_sale_quote_type" model="ir.actions.act_window">
+        <field name="name">Sales Quote</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="context">{'search_default_sales_quotes': 1}</field>
+        <!-- <field name="domain">[('quote_type', '=', 'sales_quote')]</field> -->
+        <field name="help" type="html">
+            <br/>
+            <h2>
+                Beat competitors with stunning quotations!
+            </h2>
+            <p>
+                Boost sales with online payments or signatures, upsells, and a great customer portal.
+            </p>
+            <a
+                    role="button"
+                    class="btn btn-secondary"
+                    href="https://www.odoo.com/documentation/18.0/_downloads/312a470653db882b08ad72eb30cb4088/sample_quotation.pdf"
+                    target="_blank"
+            >
+                Check a sample. It's clean!
+            </a>
+        </field>
+    </record>
+
+    <!-- ############################# ACTION FOR PROJECT QUOTE ################################# -->
+
+    <record id="action_quotations_with_project_quote_type" model="ir.actions.act_window">
+        <field name="name">Project Quote</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="context">{'search_default_project_quotes': 1}</field>
+        <!-- <field name="domain">[('quote_type', '=', 'sales_quote')]</field> -->
+        <field name="help" type="html">
+            <br/>
+            <h2>
+                Beat competitors with stunning quotations!
+            </h2>
+            <p>
+                Boost sales with online payments or signatures, upsells, and a great customer portal.
+            </p>
+            <a
+                    role="button"
+                    class="btn btn-secondary"
+                    href="https://www.odoo.com/documentation/18.0/_downloads/312a470653db882b08ad72eb30cb4088/sample_quotation.pdf"
+                    target="_blank"
+            >
+                Check a sample. It's clean!
+            </a>
+        </field>
+    </record>
+
+    <!-- ############################# ACTION FOR Delivery Stage QUOTEs ################################# -->
+
+    <record id="action_quotations_with_delivery_stage_quote_type" model="ir.actions.act_window">
+        <field name="name">Delivery Stages</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="context">{'search_default_delivery_stages': 1}</field>
+        <!-- <field name="domain">[('quote_type', '=', 'sales_quote')]</field> -->
+        <field name="help" type="html">
+            <br/>
+            <h2>
+                Beat competitors with stunning quotations!
+            </h2>
+            <p>
+                Boost sales with online payments or signatures, upsells, and a great customer portal.
+            </p>
+            <a
+                    role="button"
+                    class="btn btn-secondary"
+                    href="https://www.odoo.com/documentation/18.0/_downloads/312a470653db882b08ad72eb30cb4088/sample_quotation.pdf"
+                    target="_blank"
+            >
+                Check a sample. It's clean!
+            </a>
+        </field>
+    </record>
+
+    <menuitem id="menu_sale_quotations_with_sales_quote_type"
+              parent="sale.sale_order_menu"
+              action="action_quotations_with_sale_quote_type"
+              groups="sales_team.group_sale_salesman"
+              sequence="0"/>
+
+    <menuitem id="menu_sale_quotations_with_project_quote_type"
+              parent="sale.sale_order_menu"
+              action="action_quotations_with_project_quote_type"
+              groups="sales_team.group_sale_salesman"
+              sequence="1"/>
+
+    <menuitem id="menu_sale_quotations_with_delivery_stage_quote_type"
+              parent="sale.sale_order_menu"
+              action="action_quotations_with_delivery_stage_quote_type"
+              groups="sales_team.group_sale_salesman"
+              sequence="2"/>
+
+    <record model="ir.ui.menu" id="sale.menu_sale_quotations">
+        <field name="name">All Quotations</field>
+    </record>
+</odoo>

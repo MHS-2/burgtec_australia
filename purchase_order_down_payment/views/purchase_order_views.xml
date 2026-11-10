@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+      
+    <!-- View purchase.order form -->
+    <record id="purchase_order_down_payment.view_purchase_order_form" model="ir.ui.view">
+        <field name="name">purchase_order_down_payment.view.purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_create_invoice']" position="replace">
+              <button name="%(purchase_order_down_payment.action_purchase_order_advance_payment)d"
+                        class="btn btn-primary"
+                        string="Create Bill"
+                        invisible="state not in ('purchase', 'done') or invoice_status in ('no', 'invoiced')"
+                        type="action" data-hotkey="w"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//list" position="attributes">
+              <attribute name="delete">0</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_view_invoice']" position="after">
+                <button type="object"  name="action_view_posted_linked_invoice"
+                    class="oe_stat_button"
+                    icon="fa-check" invisible="posted_linked_invoice_count == 0 or state in ('draft', 'sent', 'to approve')">
+                    <field name="posted_linked_invoice_count" widget="statinfo" string="Posted Bills"/>
+                </button>
+
+            </xpath>
+
+            <xpath expr="//field[@name='tax_totals']" position="after">
+              <field name="remaining_purchase_amount" decoration-bf="1"/>
+            </xpath>
+        </field>
+    </record>
+
+  </odoo>

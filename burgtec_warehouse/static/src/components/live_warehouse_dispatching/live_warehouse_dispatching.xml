@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="burgtec_warehouse.Live_warehouse_dispatching">
+        <div class="warehouse-container">
+            <!-- Product Sections -->
+            <div>
+                <t t-if="state.dispatching_complete_data.complete_data and state.dispatching_complete_data.complete_data.length">
+                    <div class="product-section">
+                        <div style="overflow-x: auto;">
+                            <table class="product-table">
+                                <thead>
+                                    <tr>
+                                        <th>Group Code</th>
+                                        <th>Product Code</th>
+                                        <th>Description</th>
+                                        <th>Receipt Number</th>
+                                        <th>Received Qty</th>
+                                        <th>Dispatched</th>
+                                        <th>Delivered</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="state.dispatching_complete_data.complete_data" t-as="line" t-key="line.line_id">
+                                        <tr>
+                                            <td data-label="Group Code" style="white-space: break-spaces;"><t t-out="line.group_code"/></td>
+                                            <td data-label="Product Code" style="white-space: break-spaces;"><t t-out="line.product_default_code"/></td>
+                                            <td data-label="Description" style="white-space: break-spaces;"><t t-out="line.product_description"/></td>
+                                            <td data-label="Receipt"><t t-out="line.picking_id"/></td>
+                                            <td data-label="Received Qty"><t t-out="line.received_qty"/></td>
+                                            <td data-label="Dispatched">
+                                                <div class="status-checkbox">
+                                                    <input class="form-check-input" type="checkbox" t-attf-id="isDispatchedCheck-{{line.line_id}}" t-att-data-line-id="line.line_id" t-model="line.is_dispatched" t-on-change="onChangeDispatch"/>
+                                                </div>
+                                            </td>
+                                            <td data-label="Delivered">
+                                                <div class="status-checkbox">
+                                                    <input class="form-check-input" type="checkbox" t-attf-id="isDeliveredCheck-{{line.line_id}}" t-att-data-line-id="line.line_id" t-model="line.is_delivered" t-on-change="onChangeDeliver"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <!-- Rules -->
+                     <div class="border" style="border-radius: 5px; padding:10px; align-items: center; border: 5px solid">
+                        <div class="rules-icon">i</div>
+                        <div class="rules_content">
+                            <p class="rules-title">Rules &amp; Guidance</p>
+                            <div class="rules-items">
+                                <div class="rule-item">
+                                    <div class="rule-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 8v8a1 1 0 0 1-.5.87l-8 4.6a1 1 0 0 1-1 0l-8-4.6A1 1 0 0 1 3 16V8a1 1 0 0 1 .5-.87l8-4.6a1 1 0 0 1 1 0l8 4.6A1 1 0 0 1 21 8Z"/>
+                                            <path d="M3.3 7.3 12 12l8.7-4.7"/>
+                                            <path d="M12 22V12"/>
+                                        </svg>
+                                    </div>
+                                    <div>A product cannot be marked as dispatched until it is received.</div>
+                                </div>
+                                <div class="rule-divider"></div>
+                                    <div class="rule-item">
+                                        <div class="rule-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="m22 2-7 20-4-9-9-4Z"/>
+                                                <path d="M22 2 11 13"/>
+                                            </svg>
+                                        </div>
+                                        <div>A product cannot be marked as delivered until it is dispatched.</div>
+                                    </div>
+                                <div class="rule-divider"></div>
+                                    <div class="rule-item">
+                                        <div class="rule-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="m9 12 2 2 4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div>When all products in a stage are completed, the stage status can change from Draft to Dispatched or Delivered.</div>
+                                    </div>
+                            </div>
+                        </div>
+                     </div>
+                </t>
+            </div>
+
+        </div>
+
+    </t>
+</templates>

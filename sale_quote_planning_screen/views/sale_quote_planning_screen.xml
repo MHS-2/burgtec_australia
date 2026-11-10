@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_quote_planning_screen_view_form" model="ir.ui.view">
+        <field name="name">sale.quote.planning.screen.form</field>
+        <field name="model">sale.quote.planning.screen</field>
+        <field name="arch" type="xml">
+            <form string="Sale Quote Planning Screen">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="stage_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Sale Quote Planning Lines" name="sale_quote_planning_lines">
+                            <field name="sale_quote_line_ids" widget="section_and_note_one2many" no_label="True">
+                                <list create="false" no_open="True" editable="bottom" delete="false">
+                                    <button name="action_view_product_line" class="btn-primary" type="object"
+                                            string="Product" icon="fa-eye" width="100px"/>
+                                    <field name="item" width="50px" force_save="1" class="text-start"/>
+                                    <field name="order_line_id" column_invisible="1" force_save="1"/>
+                                    <field name="line_group_name" string="Group" readonly="1" force_save="1" optional="show" width="200px"/>
+                                    <field name="code" readonly="1" force_save="1" optional="show" string="Code" width="200px"/>
+                                    <field name="product_name" readonly="1" force_save="1" width="200px"
+                                           optional="show"/>
+                                    <field name="product_id" readonly="1" force_save="1" width="250px" optional="show"/>
+                                    <field name="product_variant_id" optional="show" readonly="1" force_save="1" width="320px"/>
+                                    <field name="lead_time" readonly="0" width="500px" optional="show"/>
+                                    <field name="sd_url" width="160px" widget="url" optional="show"/>
+                                    <field name="internal_sd_url" width="160px" widget="url" optional="show"/>
+                                    <field name="other_url" readonly="0" width="160px" widget="url" optional="show"/>
+                                    <field name="has_indented_components" class="text-center" readonly="1" width="180px"
+                                           force_save="1" optional="show"/>
+                                    <field name="approval_required_by" width="158px" optional="show"/>
+                                    <field name="approval_method" width="150px" optional="show"/>
+                                    <field name="requested_delivery_date" width="190px" optional="show"/>
+                                    <field name="approval_status" width="150px" optional="show"/>
+                                    <field name="line_item_status" width="140px" optional="show"/>
+                                    <field name="approval_comments" width="180px" optional="show"/>
+                                    <field name="sales_comments" width="150px" optional="show"/>
+                                    <field name="technical_comments" width="150px" optional="show"/>
+                                    <field name="delivery_comments" width="150px" optional="show"/>
+                                    <field name="quantity" class="text-start" readonly="1" force_save="1" width="100px"/>
+                                    <field name="total_available_quantity" class="text-start" width="100px" readonly="1"/>
+                                    <field name="do_stage_1" width="100px" force_save="1" class="text-center"
+                                           column_invisible="parent.stage_count &lt; 1"/>
+                                    <field name="do_stage_2" width="100px" force_save="1" class="text-center"
+                                           column_invisible="parent.stage_count &lt; 2"/>
+                                    <field name="do_stage_3" width="100px" force_save="1" class="text-center"
+                                           column_invisible="parent.stage_count &lt; 3"/>
+                                    <field name="do_stage_4" width="80px" force_save="1" class="text-center"
+                                           column_invisible="parent.stage_count &lt; 4"/>
+                                    <field name="do_stage_5" width="80px" force_save="1" class="text-center"
+                                           column_invisible="parent.stage_count &lt; 5"/>
+                                    <field name="do_stage_6" column_invisible="parent.stage_count &lt; 6" width="80px"
+                                           force_save="1"
+                                           class="text-center"/>
+                                    <field name="do_stage_7" column_invisible="parent.stage_count &lt; 7" width="80px"
+                                           force_save="1"
+                                           class="text-center"/>
+                                    <field name="do_stage_8" column_invisible="parent.stage_count &lt; 8" width="80px"
+                                           force_save="1"
+                                           class="text-center"/>
+                                    <field name="do_stage_9" column_invisible="parent.stage_count &lt; 9" width="80px"
+                                           force_save="1"
+                                           class="text-center"/>
+                                    <field name="do_stage_10" column_invisible="parent.stage_count &lt; 10" width="90px"
+                                           force_save="1" class="text-center"/>
+                                    <field name="do_stage_11" column_invisible="parent.stage_count &lt; 11" width="90px"
+                                           force_save="1" class="text-center"/>
+                                    <field name="do_stage_12" column_invisible="parent.stage_count &lt; 12" width="90px"
+                                           force_save="1" class="text-center"/>
+                                    <field name="do_stage_13" column_invisible="parent.stage_count &lt; 13" width="90px"
+                                           force_save="1" class="text-center"/>
+                                    <field name="do_stage_14" column_invisible="parent.stage_count &lt; 14" width="90px"
+                                           force_save="1" class="text-center"/>
+                                    <field name="do_stage_15" column_invisible="parent.stage_count &lt; 15" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_16" column_invisible="parent.stage_count &lt; 16" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_17" column_invisible="parent.stage_count &lt; 17" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_18" column_invisible="parent.stage_count &lt; 18" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_19" column_invisible="parent.stage_count &lt; 19" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_20" column_invisible="parent.stage_count &lt; 20" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_21" column_invisible="parent.stage_count &lt; 21" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_22" column_invisible="parent.stage_count &lt; 22" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_23" column_invisible="parent.stage_count &lt; 23" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_24" column_invisible="parent.stage_count &lt; 24" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_25" column_invisible="parent.stage_count &lt; 25" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_26" column_invisible="parent.stage_count &lt; 26" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_27" column_invisible="parent.stage_count &lt; 27" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_28" column_invisible="parent.stage_count &lt; 28" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_29" column_invisible="parent.stage_count &lt; 29" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_30" column_invisible="parent.stage_count &lt; 30" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_31" column_invisible="parent.stage_count &lt; 31" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_32" column_invisible="parent.stage_count &lt; 32" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_33" column_invisible="parent.stage_count &lt; 33" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_34" column_invisible="parent.stage_count &lt; 34" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_35" column_invisible="parent.stage_count &lt; 35" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_36" column_invisible="parent.stage_count &lt; 36" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_37" column_invisible="parent.stage_count &lt; 37" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_38" column_invisible="parent.stage_count &lt; 38" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_39" column_invisible="parent.stage_count &lt; 39" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_40" column_invisible="parent.stage_count &lt; 40" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_41" column_invisible="parent.stage_count &lt; 41" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_42" column_invisible="parent.stage_count &lt; 42" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_43" column_invisible="parent.stage_count &lt; 43" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_44" column_invisible="parent.stage_count &lt; 44" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_45" column_invisible="parent.stage_count &lt; 45" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_46" column_invisible="parent.stage_count &lt; 46" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_47" column_invisible="parent.stage_count &lt; 47" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_48" column_invisible="parent.stage_count &lt; 48" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_49" column_invisible="parent.stage_count &lt; 49" width="90px"
+                                           force_save="1" class="text-center"
+                                    />
+                                    <field name="do_stage_50" column_invisible="parent.stage_count &lt; 50" width="90px"
+                                    />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

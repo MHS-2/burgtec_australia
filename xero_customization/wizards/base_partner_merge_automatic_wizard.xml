@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View base.partner.merge.automatic.wizard form -->
+    <record id="xero_customization_view_base_partner_merge_automatic_wizard_form" model="ir.ui.view">
+        <field name="name">xero.customization.view.base.partner.merge.automatic.wizard.form</field>
+        <field name="model">base.partner.merge.automatic.wizard</field>
+        <field name="inherit_id" ref="base.base_partner_merge_automatic_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='dst_partner_id']" position="after">
+                <field name="xero_contact_id" domain="[('partner_id','in',partner_ids)]" context="{'xero_contact_id':1}" options="{'no_open':1,'no_create':1}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

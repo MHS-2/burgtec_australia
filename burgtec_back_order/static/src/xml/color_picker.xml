@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+        <t t-inherit="web.ListRenderer" t-inherit-mode="extension">
+                        <xpath expr="//th[hasclass('o_list_record_selector')]" position="after">
+                <th class="not_display" style="display:none">
+                        <td class="color_picker_td">Color</td>
+                    </th>
+                </xpath>
+        </t>
+        <t t-name="ListColorTemplate" t-inherit="web.ListRenderer.RecordRow"
+           t-inherit-mode="extension">
+            <xpath expr="//td[hasclass('o_list_record_selector')]" position="after">
+                <td class="not_display" t-att-data-id="record.resId"
+                    style="display:none">
+                </td>
+            </xpath>
+        </t>
+</templates>

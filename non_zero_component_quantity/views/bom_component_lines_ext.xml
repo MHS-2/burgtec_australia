@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="non_zero_component_quantity.view_sale_order_bom_components_form_ext5" model="ir.ui.view">
+        <field name="name">view.sale.order.bom.component.form ext5</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="sale_custom_report.view_sale_order_bom_components_form_ext3"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='product_qty']" position="after">
+                <field name="unit_component_quantity" optional="show" class="text-center" width="170px" force_save="1"
+                       readonly="is_parent"/>
+            </xpath>
+
+
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='product_qty']" position="after">
+                <field name="unit_component_quantity" optional="show" class="text-center" width="170px" force_save="1"
+                       readonly="is_parent"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='product_qty']" position="after">
+                <field name="unit_component_quantity" optional="show" class="text-center" width="170px" force_save="1"
+                       readonly="is_parent"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='product_qty']" position="after">
+                <field name="unit_component_quantity" optional="show" class="text-center" width="170px" force_save="1"
+                       readonly="is_parent"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">not is_parent or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">not is_parent or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">not is_parent or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">not is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='unit_component_quantity']"
+                   position="attributes">
+                <attribute name="readonly">is_product_fully_approved or is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='unit_component_quantity']"
+                   position="attributes">
+                <attribute name="readonly">is_product_fully_approved or is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='unit_component_quantity']"
+                   position="attributes">
+                <attribute name="readonly">is_product_fully_approved or is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='unit_component_quantity']"
+                   position="attributes">
+                <attribute name="readonly">is_product_fully_approved or is_parent</attribute>
+            </xpath>
+
+            <!-- PAGE FROM BOM LINE TOTALS -->
+             <xpath expr="//page[@name='filter_bom_lines']" position="after">
+                <page name="bom_line_totals" string="BOM Line Totals">
+                    <group>
+                        <field string="Total Parent Sale Price" name="total_parent_product_sale_price"/>
+                        <field string="Total Parent System Cost" name="total_parent_system_cost_per_unit"/>
+                        <field string="Total Parent Quoted Cost" name="total_parent_quoted_cost_per_unit"/>
+                        <field string="Total Parent Pre Project Cost" name="total_parent_pre_project_cost_per_unit"/>
+                        <field string="Total Parent Live Unit Cost" name="total_parent_live_unit_cost"/>
+                    </group>
+                </page>
+             </xpath>
+
+
+             <!-- FOR FILTER BOM LINES -->
+
+             <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='product_qty']" position="after">
+                <field name="unit_component_quantity" class="text-center" optional="show" width="170px" force_save="1"
+                                    readonly="is_product_fully_approved or is_parent"/>
+             </xpath>
+
+             <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='product_qty']" position="after">
+                <field name="unit_component_quantity" class="text-center" optional="show" width="170px" force_save="1"
+                                    readonly="is_product_fully_approved or is_parent"/>
+             </xpath>
+
+             <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='product_qty']" position="after">
+                <field name="unit_component_quantity" class="text-center" optional="show" width="170px" force_save="1"
+                                    readonly="is_product_fully_approved or is_parent"/>
+             </xpath>
+
+             <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='product_qty']" position="after">
+                <field name="unit_component_quantity" class="text-center" optional="show" width="170px" force_save="1"
+                                    readonly="is_product_fully_approved or is_parent"/>
+             </xpath>
+
+             <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">not is_parent or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">not is_parent or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">not is_parent or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">not is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <!-- Re Calculate Ttoal Live Cost Parent Button -->
+             <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='live_unit_cost']"
+                   position="after">
+                   <button name="recalculate_parent_total_live_cost" type="object" string="Recalculate TLC" class="btn-link" invisible="not is_parent"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='live_unit_cost']"
+                   position="after">
+                   <button name="recalculate_parent_total_live_cost" type="object" string="Recalculate TLC" class="btn-link" invisible="not is_parent"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='live_unit_cost']"
+                   position="after">
+                   <button name="recalculate_parent_total_live_cost" type="object" string="Recalculate TLC" class="btn-link" invisible="not is_parent"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='live_unit_cost']"
+                   position="after">
+                   <button name="recalculate_parent_total_live_cost" type="object" string="Recalculate TLC" class="btn-link" invisible="not is_parent"/>
+            </xpath>
+
+            <!-- FOR FILTER BOM LINES -->
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='live_unit_cost']"
+                   position="after">
+                   <button name="recalculate_parent_total_live_cost" type="object" string="Recalculate TLC" class="btn-link" invisible="not is_parent"/>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='live_unit_cost']"
+                   position="after">
+                   <button name="recalculate_parent_total_live_cost" type="object" string="Recalculate TLC" class="btn-link" invisible="not is_parent"/>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='live_unit_cost']"
+                   position="after">
+                   <button name="recalculate_parent_total_live_cost" type="object" string="Recalculate TLC" class="btn-link" invisible="not is_parent"/>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='live_unit_cost']"
+                   position="after">
+                   <button name="recalculate_parent_total_live_cost" type="object" string="Recalculate TLC" class="btn-link" invisible="not is_parent"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

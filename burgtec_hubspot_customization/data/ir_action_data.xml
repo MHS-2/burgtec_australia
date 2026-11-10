@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+
+        <record id="action_attach_hubspot_ticket_and_dispatch_date" model="ir.actions.server">
+            <field name="name">Attach Hubspot Ticket and Dispatch date</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_view_types">form</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_attach_hubspot_ticket_and_dispatch_date()
+            </field>
+        </record>
+
+
+
+
+        <record id="ir_cron_compute_overdue_po_weekly_update" model="ir.cron">
+            <field name="name">Compute Overdue PO Weekly</field>
+            <field name="model_id" ref="model_purchase_order"/>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
+            <field name="code">model.compute_overdue_po_weekly_update()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+        </record>
+
+
+         <record id="ir_cron_compute_po_due_in_two_days_check" model="ir.cron">
+            <field name="name">PO Due in Two Days</field>
+            <field name="model_id" ref="model_purchase_order"/>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
+            <field name="code">model.compute_po_due_in_two_days()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+        </record>
+
+    </data>
+</odoo>

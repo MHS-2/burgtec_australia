@@ -1,0 +1,31 @@
+{
+    'name': "Quotation Type Customization",
+    'version': '18.0.1.0.0',
+    'summary': "Customize quotation screen based on quote type (Sale Quote, Project, Delivery).",
+    'description': """
+        - Different views and functionality based on the quote type (Sale Quote, Project, Delivery)
+    """,
+    'author': "",
+    'website': "",
+    'category': 'Customizations',
+    'depends': ['base', 'web', 'sale', 'account', 'bom_based_inventory', 'sale_custom_report', 'web', 'mrp', 'purchase',
+                'stock', 'new_delivery_stage_feature','filter_one2many_fields'],
+    'data': [
+        'security/quote_type_customization_security.xml',
+        'security/ir.model.access.csv',
+        'data/sequence_data.xml',
+        'data/ir_action_data.xml',
+        'views/sale_order_ext.xml',
+        'views/sale_order_series.xml',
+        'views/planning_screen_ext.xml',
+        'views/account_move_ext.xml',
+        'views/bom_based_inventory_ext.xml',
+        'views/purchase_order_view_ext.xml',
+        'wizard/mass_cancel_orders_views_extend.xml',
+        'wizard/purchase_bulk_data_wizard.xml',
+        'views/delivery_code_calculation_view_ext.xml',
+    ],
+    'installable': True,
+    'license': 'LGPL-3',
+    'auto_install': False,
+}

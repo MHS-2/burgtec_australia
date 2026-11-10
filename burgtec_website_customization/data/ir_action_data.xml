@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_update_image_1920_of_product_variant_with_featured_attachment" model="ir.actions.server">
+            <field name="name">Update Image 1920 of Product Variant with Featured Attachment</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_update_product_product_image_1920()
+            </field>
+        </record>
+    </data>
+</odoo>

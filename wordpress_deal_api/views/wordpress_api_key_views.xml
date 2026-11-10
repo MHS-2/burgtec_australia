@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Keys: read, rename, change expiry, revoke. Creation only through the wizard. -->
+    <record id="wordpress_api_key_view_list" model="ir.ui.view">
+        <field name="name">wordpress.api.key.list</field>
+        <field name="model">wordpress.api.key</field>
+        <field name="arch" type="xml">
+            <list create="0" decoration-danger="state == 'expired'" decoration-muted="state == 'revoked'">
+                <field name="name"/>
+                <field name="key_hint"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-danger="state == 'expired'"
+                       decoration-muted="state == 'revoked'"/>
+                <field name="expiration_date"/>
+                <field name="last_used"/>
+                <field name="create_date"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="wordpress_api_key_view_form" model="ir.ui.view">
+        <field name="name">wordpress.api.key.form</field>
+        <field name="model">wordpress.api.key</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <widget name="web_ribbon" title="Revoked" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="key_hint"/>
+                        <field name="state"/>
+                        <field name="expiration_date"/>
+                        <field name="last_used"/>
+                        <field name="active"/>
+                    </group>
+                    <p class="text-muted">
+                        The key itself is not stored and cannot be shown again. To replace it,
+                        revoke this key (archive it) and generate a new one.
+                    </p>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="wordpress_api_key_action" model="ir.actions.act_window">
+        <field name="name">WordPress API Keys</field>
+        <field name="res_model">wordpress.api.key</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Wizard: generate and show once -->
+    <record id="wordpress_api_key_wizard_view_form" model="ir.ui.view">
+        <field name="name">wordpress.api.key.wizard.form</field>
+        <field name="model">wordpress.api.key.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="state" invisible="True"/>
+                <group invisible="state != 'draft'">
+                    <field name="name"/>
+                    <field name="validity_days"/>
+                </group>
+                <div invisible="state != 'done'">
+                    <div class="alert alert-warning" role="alert">
+                        Copy the key now and send it to the developer over a secure channel.
+                        It is <strong>not stored</strong> and will never be shown again.
+                    </div>
+                    <group>
+                        <field name="key" widget="CopyClipboardChar"/>
+                    </group>
+                </div>
+                <footer>
+                    <button string="Generate key" type="object" name="action_generate"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button string="I have copied the key, close" type="object" name="action_close"
+                            class="btn-primary" invisible="state != 'done'"/>
+                    <button string="Cancel" special="cancel" invisible="state != 'draft'"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="wordpress_api_key_wizard_action" model="ir.actions.act_window">
+        <field name="name">Generate WordPress API Key</field>
+        <field name="res_model">wordpress.api.key.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="wordpress_api_key_menu"
+              name="WordPress API Keys"
+              parent="base.menu_custom"
+              action="wordpress_api_key_action"
+              groups="base.group_system"
+              sequence="88"/>
+    <menuitem id="wordpress_api_key_wizard_menu"
+              name="Generate WordPress API Key"
+              parent="base.menu_custom"
+              action="wordpress_api_key_wizard_action"
+              groups="base.group_system"
+              sequence="89"/>
+</odoo>

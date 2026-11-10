@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_icr_register_manager,icr_register_manager,model_icr_register,,1,1,1,1
+access_nscr_register_manager,nscr_register_manager,model_nscr_register,,1,1,1,1
+access_component_existing_nscr_selection,component.existing.nscr.selection,model_component_existing_nscr_selection,,1,1,1,1
+access_nscr_creation_choice,nscr.creation.choice,model_nscr_creation_choice,,1,1,1,1

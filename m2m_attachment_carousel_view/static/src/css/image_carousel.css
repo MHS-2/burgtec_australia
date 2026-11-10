@@ -1,0 +1,118 @@
+.o_field_image_carousel {
+    .carousel-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .carousel-image-wrapper {
+        position: relative;
+        background: #f8f9fa;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+
+    .carousel-main-image {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+        cursor: pointer;
+        display: block;
+    }
+
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 15px 12px;
+        cursor: pointer;
+        transition: background 0.3s;
+        z-index: 10;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .carousel-btn-prev {
+        left: 10px;
+        border-radius: 0 4px 4px 0;
+    }
+
+    .carousel-btn-next {
+        right: 10px;
+        border-radius: 4px 0 0 4px;
+    }
+
+    .carousel-counter {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .carousel-thumbnails {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 10px 0;
+
+        &::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+    }
+
+    .carousel-thumbnail {
+        flex-shrink: 0;
+        width: 80px;
+        height: 80px;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: border-color 0.3s;
+
+        &:hover {
+            border-color: #00a09d;
+        }
+
+        &.active {
+            border-color: #875a7b;
+            box-shadow: 0 0 8px rgba(135, 90, 123, 0.5);
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+     .carousel-empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 2px dashed #dee2e6;
+    }
+}

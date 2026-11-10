@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hubspot_deal_stage_quote_project_lock.planning_screen_view_ext1" model="ir.ui.view">
+        <field name="name">hubspot deal stage quote/project lock planning screen view ext</field>
+        <field name="model">planning.screen</field>
+        <field name="inherit_id" ref="new_delivery_stage_feature.planning_screen_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='stage_count']" position="attributes">
+                <attribute name="readonly" add="freeze_sale_order" separator=" or "/>
+            </xpath>
+
+            <xpath expr="//field[@name='line_ids']" position="attributes">
+                <attribute name="readonly" add="freeze_sale_order" separator=" or "/>
+            </xpath>
+
+
+            <xpath expr="//field[@name='line_ids']/list//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='line_ids']/list//field[@name='product_variant_id']"
+                   position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='line_ids']/list//field[@name='lead_time']"
+                   position="after">
+                <field name="sd_url" width="160px" widget="url" optional="show"/>
+                <field name="internal_sd_url" width="160px" widget="url" optional="show"/>
+                <field name="other_url" readonly="0" width="160px" widget="url" optional="show"/>
+                <field name="has_indented_components" class="text-center" readonly="1" width="180px" force_save="1" optional="show"/>
+
+            </xpath>
+
+            <xpath expr="//field[@name='line_ids']/list//field[@name='approval_status']"
+                   position="after">
+                <field name="requested_delivery_date" width="160px" optional="show"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item']" position="before">
+                <button name="action_view_product_line" class="btn-primary" type="object" string="Product" icon="fa-eye"/>
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>

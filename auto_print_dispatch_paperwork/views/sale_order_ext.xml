@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="auto_print_dispatch_paperwork.view_order_form_ext" model="ir.ui.view">
+            <field name="name">auto_print_dispatch_paperwork.view.order.form.ext</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="auto_print_to_iot" type="object" string="Auto Print Dispatch Paper Work" class="btn-primary" invisible="quote_type != 'delivery_stage' or parent_purchase_order_state != 'purchase'"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

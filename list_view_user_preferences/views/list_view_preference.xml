@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="list_view_user_preferences.user_preference_view_list" model="ir.ui.view">
+        <field name="name">list_view_user_preferences.user.preference.view.list</field>
+        <field name="model">list.view.user.preference</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0">
+                <field name="user_id"/>
+                <field name="view_key"/>
+                <field name="active_fields"/>
+                <field name="column_widths" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="user_preference_view_form" model="ir.ui.view">
+        <field name="name">list_view_user_preferences.user.preference.view.form</field>
+        <field name="model">list.view.user.preference</field>
+        <field name="arch" type="xml">
+            <form create="0" delete="0">
+                <sheet>
+                    <group>
+                        <field name="user_id" readonly="1"/>
+                        <field name="view_key" readonly="1"/>
+                        <field name="active_fields"/>
+                        <field name="column_widths"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_list_view_user_preference" model="ir.actions.act_window">
+        <field name="name">List View User Preference</field>
+        <field name="res_model">list.view.user.preference</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No stored list view preference yet</p>
+            <p>Toggle an optional column or drag a column border in any list view,
+               then come back here. Delete a row to reset that view for that user.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_list_view_user_preference"
+              name="List View User Preferences"
+              action="action_list_view_user_preference"
+               parent="sale.menu_sales_config"
+              sequence="999"/>
+
+</odoo>

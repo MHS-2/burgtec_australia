@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="artwork_url_attachment_for_screens.view_sale_order_bom_components_form_ext" model="ir.ui.view">
+        <field name="name">artwork_url_attachment_for_screens.sale.order.bom.components.form.ext</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="bom_based_floating_table.view_sale_order_bom_components_form_ext"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//button[@name='action_open_add_components_wizard']"
+                   position="before">
+
+                <button width="25" type="object" name="open_record_in_new_window" class="btn btn-link"
+                        invisible="display_type or not(artwork_image_url)"
+                        icon="fa-external-link" title="Open Artwork in New Tab"/>
+                <button name="action_open_add_attachment_artwork_wizard"
+                        string="Artwork"
+                        type="object"
+                        class="btn-primary btn-sm"
+                        icon="fa-plus"
+                        invisible="display_type"
+                        help="Add Artwork Image to this line"/>
+
+                <field name="artwork_image_url" widget="url" readonly="1" optional="show" width="150px"
+                       column_invisible="1"/>
+                <field name="attachment_id" column_invisible="1"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//button[@name='action_open_add_components_wizard']"
+                   position="before">
+
+                <button width="25" type="object" name="open_record_in_new_window" class="btn btn-link"
+                        invisible="display_type or not(artwork_image_url)"
+                        icon="fa-external-link" title="Open Artwork in New Tab"/>
+                <button name="action_open_add_attachment_artwork_wizard"
+                        string="Artwork Image"
+                        type="object"
+                        class="btn-primary btn-sm"
+                        icon="fa-plus"
+                        invisible="display_type"
+                        help="Add Artwork Image to this line"/>
+
+                <field name="artwork_image_url" widget="url" readonly="1" optional="show" width="150px"
+                       column_invisible="1"/>
+                <field name="attachment_id" column_invisible="1"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//button[@name='action_open_add_components_wizard']"
+                   position="before">
+
+                <button width="25" type="object" name="open_record_in_new_window" class="btn btn-link"
+                        invisible="display_type or not(artwork_image_url)"
+                        icon="fa-external-link" title="Open Artwork in New Tab"/>
+                <button name="action_open_add_attachment_artwork_wizard"
+                        string="Artwork Image"
+                        type="object"
+                        class="btn-primary btn-sm"
+                        icon="fa-plus"
+                        invisible="display_type"
+                        help="Add Artwork Image to this line"/>
+
+                <field name="artwork_image_url" widget="url" readonly="1" optional="show" width="150px"
+                       column_invisible="1"/>
+                <field name="attachment_id" column_invisible="1"/>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//button[@name='action_open_add_components_wizard']"
+                   position="before">
+
+                <button width="25" type="object" name="open_record_in_new_window" class="btn btn-link"
+                        invisible="display_type or not(artwork_image_url)"
+                        icon="fa-external-link" title="Open Artwork in New Tab"/>
+                <button name="action_open_add_attachment_artwork_wizard"
+                        string="Artwork Image"
+                        type="object"
+                        class="btn-primary btn-sm"
+                        icon="fa-plus"
+                        invisible="display_type"
+                        help="Add Artwork Image to this line"/>
+
+                <field name="artwork_image_url" widget="url" readonly="1" optional="show" width="150px"
+                       column_invisible="1"/>
+                <field name="attachment_id" column_invisible="1"/>
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

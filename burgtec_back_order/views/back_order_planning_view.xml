@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- View back.planning form -->
+    <record id="view_back_order_planning_allocation_table_form" model="ir.ui.view">
+        <field name="name">view.back.order.planning.allocation.table.form</field>
+        <field name="model">back.order.planning</field>
+        <field name="arch" type="xml">
+            <form string="Back Order Planning">
+                <sheet>
+                    <group>
+                        <widget name="back_order_allocation_matrix" invisible="not id"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="confirm_back_order_pickings" string="Confirm Back Orders" type="object" class="btn-success" confirm="Are You Sure?" invisible="is_process_completed"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

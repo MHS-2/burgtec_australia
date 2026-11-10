@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_list_view_user_preference_user,list.view.user.preference.user,model_list_view_user_preference,base.group_user,1,1,1,1

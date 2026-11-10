@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+      
+    <!-- View planning.screen form -->
+    <record id="burgtec_back_order_view_planning_screen_form" model="ir.ui.view">
+        <field name="name">burgtec_back_order.view.planning.screen.form</field>
+        <field name="model">planning.screen</field>
+        <field name="inherit_id" ref="new_delivery_stage_feature.planning_screen_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='line_item_status_quantity']" position="after">
+                <page name="backorder_screen" string="Backorder Screen">
+                  <group>
+                    <group>
+                      <field name="ds_domain" invisible="1"/>
+                      <field name="delivery_stage_id" options="{'no_open':1,'no_create':1}" domain="ds_domain" context="{'burgtec_ds_reference':1}"/>
+                      <button name="fetch_bo_planning_lines" invisible="not delivery_stage_id" type="object" class="btn-primary" string="Fetch Back Order Planning Lines" confirm="Are you sure?"/>                      
+                    </group>
+                  </group>
+                  <hr class="fw-bold" invisible="not delivery_stage_id"/>
+                  <span class="fw-bold" invisible="not delivery_stage_id">Back Order Planning</span>
+                  <hr class="fw-bold" invisible="not delivery_stage_id"/>
+                  <field name="backorder_planning_line_ids" no_label="1" force_save="1" widget="section_and_note_one2many" invisible="not delivery_stage_id">
+                          <list class="no_reorder" create="false" no_open="True" editable="bottom" delete="false" decoration-info="display_type == 'line_section'">
+                                <field name="name" invisible="not display_type" force_save="1" readonly="1" string="Purchase Order"/>
+                                <field name="display_type" force_save="1" column_invisible="1"/>
+                                <field name="is_no_longer_split" force_save="1" column_invisible="1"/>
+                                <field name="is_check" invisible="display_type" width="80px;" class="text-center" readonly="is_backorder_created"/>
+                                <field name="sale_order_id" width="120px;" force_save="1" context="{'burgtec_ds_reference':1}" readonly="1" options="{'no_open':1}"/>
+                                <!-- <field name="product_id" width="500px;" force_save="1" readonly="1" options="{'no_open':1}"/> -->
+                                <field name="component_id" width="500px;" force_save="1" readonly="1" options="{'no_open':1}"/>
+                                <button name="action_confirm" string="Confirm" type="object" class="btn-primary" invisible="not display_type or is_no_longer_split or back_order_count == 0" confirm="Are you sure? Make sure you have created your desired back orders."/>
+                                <button name="view_back_order_matrix_table" string="View Table" type="object" class="btn btn-primary" invisible="not display_type or not is_no_longer_split"/>
+                                <button name="create_back_order" invisible="not display_type or is_no_longer_split" type="object" class="btn-info" string="Back Order" confirm="Are you sure?"/>                      
+                                <field name="purchase_order_id" width="140px;" string="PO#" force_save="1" readonly="1" options="{'no_open':1}" context="{'burgtec_po_reference':1}" column_invisible="1"/>
+                                <!-- <field name="picking_ids" width="100px;" string="Receipts" force_save="1" widget="many2many_tags" readonly="1"/> -->
+                                 <field name="picking_id" width="100px;" string="Receipt" force_save="1" readonly="1"/>
+                                <field name="product_uom_qty" width="100px;" string="Total Qty" force_save="1" readonly="1" class="text-center"/>
+                                <field name="expected_qty" width="100px;" class="text-center" required="is_check" readonly="is_backorder_created"/>
+                                <field name="date_planned" readonly="1" force_save="1"/>
+                                <field name="back_order_qty" width="100px;" force_save="1" class="text-center"/>
+                                <!-- <field name="back_order_date_planned" placeholder="BO ETA Date" required="is_check"/> -->
+                                <!-- <field name="stock_move_id" column_invisible="1" force_save="1"/> -->
+                                <!-- <field name="planned_backorder_line_id" column_invisible="1" force_save="1"/> -->
+                                <field name="purchase_order_line_id" column_invisible="1" force_save="1"/>
+                                <field name="sequence" widget="handle" column_invisible="1" force_save="1"/>
+                                <field name="is_backorder_created" optional="hide" readonly="1" force_save="1"/>
+                          </list>
+                  </field>
+
+                  <!-- <hr class="fw-bold" invisible="not backorder_planned_line_allocation_ids"/>
+                  <span class="fw-bold" invisible="not backorder_planned_line_allocation_ids">Back Order Planned Lines Allocations</span>
+                  <hr class="fw-bold" invisible="not backorder_planned_line_allocation_ids"/>
+                  <field name="backorder_planned_line_allocation_ids" no_label="1" force_save="1" widget="one2many" invisible="not backorder_planned_line_allocation_ids">
+                          <list class="no_reorder" create="false" no_open="True" editable="bottom" delete="false">
+                                <field name="sale_order_id" width="120px;" context="{'burgtec_ds_reference':1}" readonly="1" options="{'no_open':1}" />
+                                <field name="component_id" width="500px;" readonly="1" options="{'no_open':1}"/>
+                                <field name="purchase_order_id" width="140px;" string="PO#" readonly="1" context="{'burgtec_po_reference':1}"/>
+                                <field name="custom_bo_picking_id" width="100px;" string="Back Order" readonly="1"/>
+                                <field name="allocated_qty" width="100px;"/>
+                          </list>
+                  </field>
+                  <field name="back_order_custom_picking_ids" no_label="1" force_save="1" widget="one2many" invisible="not back_order_custom_picking_ids">
+                      <list class="no_reorder" create="false" no_open="True" editable="bottom" delete="false">
+                          <field name="picking_id"/>
+                          <field name="order_id" context="{'burgtec_ds_reference':1}"/>
+                          <field name="purchase_order_id"/>
+                      </list>
+                  </field> -->
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+  </odoo>

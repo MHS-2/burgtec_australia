@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hubspot_deal_stage_quote_project_lock.view_split_do_form_ext" model="ir.ui.view">
+        <field name="name">hubspot deal stage quote/project lock split do view ext</field>
+        <field name="model">split.do</field>
+        <field name="inherit_id" ref="bom_based_inventory.view_split_do_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='line_ids']" position="attributes">
+                <attribute name="readonly" add="freeze_sale_order" separator=" or "/>
+            </xpath>
+
+            <xpath expr="//field[@name='line_ids']/list//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

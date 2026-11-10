@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- View product.attribute form -->
+    <record id="view_product_attribute_form_website_inherit" model="ir.ui.view">
+        <field name="name">view.product.attribute.form.website.inherit</field>
+        <field name="model">product.attribute</field>
+        <field name="inherit_id" ref="product.product_attribute_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="attribute_website_name"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- View product.attribute list -->
+    <record id="view_product_attribute_list_website_inherit" model="ir.ui.view">
+        <field name="name">view.product.attribute.list.website.inherit</field>
+        <field name="model">product.attribute</field>
+        <field name="inherit_id" ref="product.attribute_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="attribute_website_name"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- View product.attribute search -->
+    <record id="view_product_attribute_search_website_inherit" model="ir.ui.view">
+        <field name="name">view.product.attribute.search.website.inherit</field>
+        <field name="model">product.attribute</field>
+        <field name="inherit_id" ref="product.product_attribute_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="attribute_website_name"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sale Order Series Default Data -->
+        <record id="sale_order_series_1" model="sale.order.series">
+            <field name="sequence">1</field>
+            <field name="starting_value">100000</field>
+            <field name="ending_value">199999</field>
+        </record>
+
+        <record id="sale_order_series_2" model="sale.order.series">
+            <field name="sequence">2</field>
+            <field name="starting_value">205000</field>
+            <field name="ending_value">299999</field>
+        </record>
+
+        <record id="sale_order_series_3" model="sale.order.series">
+            <field name="sequence">3</field>
+            <field name="starting_value">300000</field>
+            <field name="ending_value">399999</field>
+        </record>
+
+        <record id="sale_order_series_4" model="sale.order.series">
+            <field name="sequence">4</field>
+            <field name="starting_value">407000</field>
+            <field name="ending_value">499999</field>
+        </record>
+
+        <record id="sale_order_series_5" model="sale.order.series">
+            <field name="sequence">5</field>
+            <field name="starting_value">501000</field>
+            <field name="ending_value">599999</field>
+        </record>
+
+        <record id="sale_order_series_6" model="sale.order.series">
+            <field name="sequence">6</field>
+            <field name="starting_value">602400</field>
+            <field name="ending_value">699999</field>
+        </record>
+
+        <record id="sale_order_series_7" model="sale.order.series">
+            <field name="sequence">7</field>
+            <field name="starting_value">700500</field>
+            <field name="ending_value">799999</field>
+        </record>
+
+        <record id="sale_order_series_8" model="sale.order.series">
+            <field name="sequence">8</field>
+            <field name="starting_value">800400</field>
+            <field name="ending_value">899999</field>
+        </record>
+
+        <record id="sale_order_series_9" model="sale.order.series">
+            <field name="sequence">9</field>
+            <field name="starting_value">900100</field>
+            <field name="ending_value">999999</field>
+        </record>
+
+    </data>
+</odoo>

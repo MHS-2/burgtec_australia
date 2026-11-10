@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+      
+    <!-- View sale.order.bom.component form -->
+    <record id="list_view_record_limit_view_sale_order_bom_component_form" model="ir.ui.view">
+        <field name="name">list.view.record.limit.view.sale.order.bom.component.form</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="bom_based_inventory.view_sale_order_bom_components_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="after">
+              <div class="d-flex justify-content-end">
+                <button string="Reset Limit" type="object" name="set_reset_true" class="btn-link" icon="fa-undo" title="reset limit"/>
+              </div>
+            </xpath>
+        </field>
+    </record>
+
+  </odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="bom_based_inventory.project_project_ext" model="ir.ui.view">
+        <field name="name">project.project.ext</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_open_share_project_wizard']" position="after">
+                <button name="action_open_bom_report_for_project"
+                        type="object"
+                        string="Show Sale Report"
+                        class="btn-primary"/>
+
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+

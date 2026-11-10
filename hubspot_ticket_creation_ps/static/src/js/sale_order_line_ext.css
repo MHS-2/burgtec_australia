@@ -1,0 +1,37 @@
+.planning-screen-line-table thead th {
+    position: relative;
+}
+
+/* Float date inputs above the header row without affecting row height.
+   left/right match table-sm th padding (0.5rem) so width equals the dropdown below. */
+.ps-date-inputs-above {
+    position: absolute;
+    bottom: 100%;
+    left: 0.5rem;
+    right: 0.5rem;
+}
+
+/* Extra top space for the floating date inputs (220px > 4 × ~48px blocks) */
+.planning-screen-line-table {
+    margin-top: 220px;
+}
+
+/* Center the column label text in do_stage headers */
+.planning-screen-line-table thead th[data-name*="do_stage"] > div.d-flex {
+    justify-content: center;
+}
+
+
+
+.form-select-sm-custom
+ {
+    padding-top: 0.0875rem;
+    padding-bottom: 0.0875rem;
+    padding-left: 1.6rem;
+    font-size: 0.7125rem;
+}
+
+.form-control-sm-custom {
+    padding: 0.1875rem 0.1rem;
+    font-size: 0.6125rem;
+}

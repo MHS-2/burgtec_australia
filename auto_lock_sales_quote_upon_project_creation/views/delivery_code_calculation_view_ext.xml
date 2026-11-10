@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="auto_lock_sales_quote_upon_project_creation.delivery_code_calculation_view_ext_1" model="ir.ui.view">
+        <field name="name">auto.lock.sales.quote.upon.project.creation.delivery.code.calculation.ext</field>
+        <field name="model">delivery.code.calculation</field>
+        <field name="inherit_id" ref="quotation_type_customization.delivery_code_calculation_view_ext"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='delivery_code_calculation_line_ids']" position="attributes">
+                <attribute name="readonly" add="auto_lock_sales_quote_upon_project_creation" separator=" or "/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

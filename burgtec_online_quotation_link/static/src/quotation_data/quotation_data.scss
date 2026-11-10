@@ -1,0 +1,105 @@
+/* Burgtec quotation review page. Plain-CSS syntax (valid SCSS). All rules scoped under .o_bq_review */
+
+.o_bq_review {
+    --bq-accent: #5b3256;        /* Burgtec plum (buttons, badges) */
+    --bq-text: #1d1d1f;
+    --bq-muted: #6b6b76;
+    --bq-border: #e4e4e9;
+    --bq-soft: #f6f4f7;
+    background: #fff;
+    color: var(--bq-text);
+    padding: 32px 0 64px;
+}
+
+.o_bq_review .o_bq_page { max-width: 1360px; margin: 0 auto; padding: 0 16px; }
+.o_bq_review .o_bq_center { min-height: 50vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.o_bq_review .o_bq_muted { color: var(--bq-muted); }
+.o_bq_review .o_bq_accent { color: var(--bq-accent); }
+.o_bq_review .o_bq_prewrap { white-space: pre-line; }
+
+/* ---------- Title ---------- */
+.o_bq_review .o_bq_title { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-bottom: 20px; }
+.o_bq_review .o_bq_title h1 { font-size: 34px; font-weight: 500; margin: 0; letter-spacing: -.01em; }
+.o_bq_review .o_bq_secure { font-size: 15px; font-style: italic; color: var(--bq-muted); }
+.o_bq_review .o_bq_secure .fa { font-style: normal; margin-right: 6px; }
+
+/* ---------- Two-column layout ---------- */
+.o_bq_review .o_bq_layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start; }
+.o_bq_review .o_bq_side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; }
+.o_bq_review .o_bq_main { display: flex; flex-direction: column; gap: 14px; counter-reset: bqitem; }
+
+/* ---------- Cards ---------- */
+.o_bq_review .o_bq_card { background: #fff; border: 1px solid var(--bq-border); border-radius: 8px; padding: 18px 16px; }
+.o_bq_review .o_bq_card_h { font-size: 16px; font-weight: 500; margin: 0 0 16px; }
+
+/* Sidebar facts (icon + label + value) */
+.o_bq_review .o_bq_fact { display: flex; gap: 14px; margin-bottom: 16px; }
+.o_bq_review .o_bq_fact:last-child { margin-bottom: 0; }
+.o_bq_review .o_bq_fact > .fa { width: 18px; text-align: center; color: var(--bq-muted); margin-top: 3px; }
+.o_bq_review .o_bq_fact_label { font-size: 12px; color: var(--bq-muted); }
+.o_bq_review .o_bq_fact_value { font-size: 14px; font-weight: 600; }
+.o_bq_review .o_bq_fact_sub { font-size: 13px; color: var(--bq-muted); }
+.o_bq_review .o_bq_fact_amount { font-size: 22px; font-weight: 600; }
+
+.o_bq_review .o_bq_person { display: flex; align-items: center; gap: 12px; }
+.o_bq_review .o_bq_avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--bq-soft); color: var(--bq-accent); display: inline-flex; align-items: center; justify-content: center; }
+
+/* ---------- Sections / notes ---------- */
+.o_bq_review .o_bq_section { font-size: 15px; font-weight: 600; margin: 8px 0 0; padding: 8px 12px; background: var(--bq-soft); border-left: 3px solid var(--bq-accent); border-radius: 4px; }
+.o_bq_review .o_bq_note { display: flex; gap: 12px; align-items: center; padding: 12px 16px; border: 1px solid var(--bq-border); border-radius: 8px; background: #fafafc; font-size: 13px; color: var(--bq-muted); }
+.o_bq_review .o_bq_note > .fa { width: 26px; height: 26px; border-radius: 50%; background: var(--bq-accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* Info banner */
+.o_bq_review .o_bq_info { display: flex; gap: 14px; align-items: center; padding: 14px 18px; border: 1px solid var(--bq-border); border-radius: 8px; background: #f7f8fb; font-size: 13px; color: #2c4a7a; }
+.o_bq_review .o_bq_info > .fa { width: 28px; height: 28px; border-radius: 50%; background: #2c4a7a; color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* ---------- Product line card ---------- */
+.o_bq_review .o_bq_item { position: relative; display: grid; grid-template-columns: 200px minmax(0, 1fr) 150px; gap: 24px; align-items: center; padding: 20px 20px 20px 16px; counter-increment: bqitem; }
+.o_bq_review .o_bq_num_badge { position: absolute; top: 14px; left: 14px; width: 22px; height: 22px; border-radius: 50%; background: var(--bq-accent); color: #fff; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+.o_bq_review .o_bq_num_badge::before { content: counter(bqitem); }
+.o_bq_review .o_bq_item_img { height: 150px; display: flex; align-items: center; justify-content: center; }
+.o_bq_review .o_bq_item_img img { max-width: 100%; max-height: 150px; object-fit: contain; }
+.o_bq_review .o_bq_item_img .fa { font-size: 56px; color: #c9c6cf; }
+.o_bq_review .o_bq_item_info h2 { font-size: 19px; font-weight: 500; margin: 0 0 8px; }
+.o_bq_review .o_bq_item_desc { font-size: 13px; color: var(--bq-muted); }
+.o_bq_review .o_bq_pill { display: inline-block; margin-top: 10px; padding: 3px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #1e7b3a; background: #eaf6ee; border: 1px solid #bfe3ca; }
+// .o_bq_review .o_bq_item_figs { display: flex; flex-direction: column; gap: 10px; text-align: center; }
+.o_bq_review .o_bq_item_figs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    align-self: start;   /* stick to top of card instead of vertical center */
+    padding-top: 0px;   /* aligns with first dropdown; tweak 0–40px */
+}
+.o_bq_review .o_bq_big { font-size: 20px; font-weight: 600; }
+.o_bq_review .o_bq_big small { font-size: 12px; font-weight: 400; color: var(--bq-muted); margin-left: 2px; }
+
+/* ---------- Totals ---------- */
+.o_bq_review .o_bq_totals_grid { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 16px; align-items: end; }
+.o_bq_review .o_bq_grand { background: var(--bq-accent); color: #fff; border-radius: 6px; padding: 12px 16px; text-align: right; }
+.o_bq_review .o_bq_grand .o_bq_fact_label { color: rgba(255, 255, 255, .8); }
+.o_bq_review .o_bq_grand_amount { font-size: 24px; font-weight: 600; }
+
+
+.o_bq_review .o_bq_submit_wrap { display: inline-flex; flex-direction: column; align-items: stretch; margin-top: 8px; }
+.o_bq_review .o_bq_submit { padding: 10px 25px; background: var(--bq-accent); border-color: var(--bq-accent); }
+.o_bq_review .o_bq_submit:hover { filter: brightness(1.1); }
+.o_bq_review .o_bq_submit_hint { margin-top: 8px; font-size: 12px; color: var(--bq-muted); text-align: center; }
+/* ---------- Tablet ---------- */
+@media (max-width: 991.98px) {
+    .o_bq_review .o_bq_layout { grid-template-columns: minmax(0, 1fr); }
+    .o_bq_review .o_bq_side { position: static; }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 575.98px) {
+    .o_bq_review { padding-top: 20px; }
+    .o_bq_review .o_bq_title h1 { font-size: 26px; }
+    .o_bq_review .o_bq_item { grid-template-columns: minmax(0, 1fr); gap: 12px; padding-top: 40px; }
+    .o_bq_review .o_bq_item_img { height: 140px; }
+    .o_bq_review .o_bq_item_figs { flex-direction: row; justify-content: space-between; text-align: left; border-top: 1px solid var(--bq-border); padding-top: 12px; }
+    .o_bq_review .o_bq_big { font-size: 16px; }
+    .o_bq_review .o_bq_totals_grid { grid-template-columns: 1fr 1fr; }
+    .o_bq_review .o_bq_grand { grid-column: 1 / -1; }
+}

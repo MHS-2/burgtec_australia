@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="freight_out_assembly_install_feature.view_sale_order_bom_components_form_ext6" model="ir.ui.view">
+        <field name="name">view.sale.order.bom.component.form ext5</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="sale_custom_report.view_sale_order_bom_components_form_ext3"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='product_qty']" position="after">
+                <field name="is_freight_or_assembly" column_invisible="1" force_save="1"/>
+            </xpath>
+
+
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='product_qty']" position="after">
+                <field name="is_freight_or_assembly" column_invisible="1" force_save="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='product_qty']" position="after">
+                <field name="is_freight_or_assembly" column_invisible="1" force_save="1"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='product_qty']" position="after">
+                <field name="is_freight_or_assembly" column_invisible="1" force_save="1"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

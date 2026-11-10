@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="delivery_code_calculation_view_form" model="ir.ui.view">
+        <field name="name">delivery.code.calculation.view.form</field>
+        <field name="model">delivery.code.calculation</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <field name="is_individual_products" invisible="1"/>
+
+                    <div class="alert alert-warning" role="alert" invisible="not is_individual_products">
+                        ⚠️ Attention: There are products not inside a Group and Code.
+                    </div>
+
+                    <div class="alert alert-warning" role="alert" invisible="zone_type">
+                        ⚠️ Attention: You need to select a zone to see the data.
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="zone_type" default_focus="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="calculation_lines" string="Lines">
+                            <field name="delivery_code_calculation_line_ids" no_label="True" widget="one2many"
+                                   invisible="not zone_type" readonly="0">
+                                <list class="no_reorder" create="0" delete="0" no_open="True" editable="bottom"
+                                      decoration-danger="display_type == 'line_section'"
+                                      decoration-info="display_type == 'line_note'" decoration-warning="is_manual_edit"
+                                      limit="1000">
+                                    <field name="is_manual_edit"
+                                           column_invisible="1" force_save="1"/>
+                                    <!-- Required for section/group headers -->
+                                    <field name="sequence" widget="handle" column_invisible="1"/>
+                                    <field name="display_type" column_invisible="1" force_save="1"/>
+                                    <field name="name" readonly="1" force_save="1" string="" width="200"
+                                           invisible="not display_type"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="product_id" readonly="1" force_save="1" width="600"
+                                           options="{'no_open':1}" optional="show"/>
+                                    <field name="product_variant_id" readonly="1" force_save="1" width="600"
+                                           options="{'no_open':1}" optional="show"/>
+                                    <field name="sale_order_line_id" column_invisible="1" force_save="1"/>
+                                    <field name="product_group_delivery_code_id" string="Delivery Code"
+                                           options="{'no_open':1}" force_save="1" width="110"/>
+                                    <field name="line_group_name" force_save="1" optional="hide" column_invisible="1"/>
+                                    <field name="line_section_name" force_save="1" optional="hide"
+                                           column_invisible="1"/>
+                                    <field name="line_group_id_value" force_save="1" optional="hide"
+                                           column_invisible="1"/>
+                                    <field name="line_section_id_value" force_save="1" optional="hide"
+                                           column_invisible="1"/>
+
+                                    <field name="quantity" readonly="1" force_save="1" width="60"
+                                           invisible="display_type in ('line_section','line_note')"/>
+                                    <field name="installation_cost" string="Zone 1 Installation Cost" readonly="0"
+                                           width="200" invisible="display_type in ('line_section','line_note')"
+                                           column_invisible="parent.zone_type in ('zone2','zone3')"/>
+                                    <field name="zone2_installation_cost" string="Zone 2 Installation Cost" readonly="0"
+                                           width="200" invisible="display_type in ('line_section','line_note')"
+                                           column_invisible="parent.zone_type in ('zone1','zone3')"/>
+                                    <field name="zone3_installation_cost" string="Zone 3 Installation Cost" readonly="0"
+                                           width="200" invisible="display_type in ('line_section','line_note')"
+                                           column_invisible="parent.zone_type in ('zone1','zone2')"/>
+                                    <field name="total_installation_cost" force_save="1" width="150"
+                                           invisible="display_type in ('line_section','line_note')"/>
+
+                                    <field name="product_delivery_cost" string="Zone 1 Delivery Cost" readonly="0"
+                                           width="200" invisible="display_type in ('line_section','line_note')"
+                                           column_invisible="parent.zone_type in ('zone2','zone3')"/>
+                                    <field name="zone2_delivery_cost" string="Zone 2 Delivery Cost" readonly="0"
+                                           width="200" invisible="display_type in ('line_section','line_note')"
+                                           column_invisible="parent.zone_type in ('zone1','zone3')"/>
+                                    <field name="zone3_delivery_cost" string="Zone 3 Delivery Cost" readonly="0"
+                                           width="200" invisible="display_type in ('line_section','line_note')"
+                                           column_invisible="parent.zone_type in ('zone1','zone2')"/>
+                                    <field name="total_delivery_cost" force_save="1" width="150"
+                                           invisible="display_type in ('line_section','line_note')"/>
+
+                                    <field name="cbm_flatpacked" readonly="0" width="200"
+                                           invisible="display_type in ('line_section','line_note')"/>
+                                    <field name="total_cbm_flatpacked" string="Total CBM Flatpacked" force_save="1"
+                                           width="200" invisible="display_type in ('line_section','line_note')"/>
+                                    <field name="cbm_assembled" readonly="0" width="200"
+                                           invisible="display_type in ('line_section','line_note')"/>
+                                    <field name="total_cbm_assembled" string="Total CBM Assembled" force_save="1"
+                                           width="200" invisible="display_type in ('line_section','line_note')"/>
+                                    <field name="total_cbm_flatpacked_final" string="Final Total CBM Flatpacked"
+                                           force_save="1" width="200" invisible="not display_type"/>
+                                    <field name="total_cbm_assembled_final" string="Final Total CBM Assembled"
+                                           force_save="1" width="200" invisible="not display_type"/>
+                                    <field name="total_cost" string="Final Total" force_save="1" width="100"
+                                           invisible="not display_type"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="calculation_summary_lines" string="Summary">
+                            <button name="action_xlswriter_report" string="Export Excel" type="object"
+                                    class="btn-success"/>
+                            <field name="delivery_code_calculation_summary_line_ids" no_label="True" widget="one2many"
+                                   invisible="not zone_type">
+                                <list class="no_reorder" create="0" delete="0" no_open="True">
+                                    <field name="delivery_code" width="200"/>
+                                    <field name="delivery_code_description" width="200"/>
+                                    <field name="total_quantity" width="200"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+
+
+                    <group invisible="not zone_type" class="oe_subtotal_footer" name="finaly_delivery_total">
+                        <div class="d-flex flex-row-reverse column-gap-3">
+                            <group name="cost_curruncy" class="">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="final_total_delivery_cost" string="Total Delivery Cost" readonly="1"
+                                       force_save="1"/>
+                                <field name="final_total_installation_cost" string="Total Installation Total"
+                                       readonly="1" force_save="1"/>
+                                <field name="final_total_cost" string="Final Total" readonly="1" force_save="1"/>
+                                <field name="final_total_cost_with_markup" string="Final Total With Markup" readonly="1"
+                                       force_save="1"/>
+                            </group>
+                            <group name="finaly_delivery_manual_percentage">
+                                <field name="final_cbm_assembled" string="Final CBM Assembled"/>
+                                <field name="manual_percentage" widget="percentage" tabindex="-1"/>
+                            </group>
+                            <group name="finaly_cbm_fields">
+                                <field name="final_cbm_flatpacked" string="Final CBM Flatpacked"/>
+                            </group>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="delivery_code_calculation_action" model="ir.actions.act_window">
+        <field name="name">Deliver Code Calculation</field>
+        <field name="res_model">delivery.code.calculation</field>
+        <field name="view_mode">form</field>
+    </record>
+
+</odoo>

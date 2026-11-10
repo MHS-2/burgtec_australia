@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_component_lines_by_vendor_manager,component_lines_by_vendor_manager,update_proforma_rfq_screen.model_component_lines_by_vendor,,1,1,1,1

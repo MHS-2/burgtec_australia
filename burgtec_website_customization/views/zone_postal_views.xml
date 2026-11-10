@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View zone.postal View List -->
+    <record id="view_zone_postal_list" model="ir.ui.view">
+        <field name="name">view.zone.postal.list</field>
+        <field name="model">zone.postal</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="zone1_postal_code_ids" widget="many2many_tags" width="90"/>
+<!--                <field name="delivery_cost_zone_1" width="100"/>-->
+<!--                <field name="installation_cost_zone_1" width="100"/>-->
+                <field name="zone2_postal_code_ids" widget="many2many_tags" width="90"/>
+<!--                <field name="delivery_cost_zone_2" width="100"/>-->
+<!--                <field name="installation_cost_zone_2" width="100"/>-->
+                <field name="zone3_postal_code_ids" widget="many2many_tags" width="90"/>
+<!--                <field name="delivery_cost_zone_3" width="100"/>-->
+<!--                <field name="installation_cost_zone_3" width="100"/>-->
+            </list>
+        </field>
+    </record>
+
+    <!-- View zone.postal form -->
+    <record id="view_zone_postal_form" model="ir.ui.view">
+        <field name="name">view.zone.postal.form</field>
+        <field name="model">zone.postal</field>
+        <field name="arch" type="xml">
+            <form string="Zone Postal">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Reference Name" required="1"/>
+                        </h1>
+                    </div>
+                    <group string="Zone 1">
+                        <field name="zone1_postal_code_ids" widget="many2many_tags"/>
+<!--                        <field name="delivery_cost_zone_1"/>-->
+<!--                        <field name="installation_cost_zone_1"/>-->
+                    </group>
+                    <group string="Zone 2">
+                        <field name="zone2_postal_code_ids" widget="many2many_tags"/>
+<!--                        <field name="delivery_cost_zone_2"/>-->
+<!--                        <field name="installation_cost_zone_2"/>-->
+                    </group>
+                    <group string="Zone 3">
+                        <field name="zone3_postal_code_ids" widget="many2many_tags"/>
+<!--                        <field name="delivery_cost_zone_3"/>-->
+<!--                        <field name="installation_cost_zone_3"/>-->
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Action zone.postal -->
+    <record id="action_zone_postal" model="ir.actions.act_window">
+        <field name="name">Zone Postal</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">zone.postal</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no examples click here to add new Zone Postal.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_zone_postal_sale"
+        name="Zone Postal"
+        action="action_zone_postal"
+        parent="sale.prod_config_main"
+        sequence="101"/>
+    
+    <menuitem id="menu_zone_postal_product"
+              name="Zone Postal"
+              action="action_zone_postal"
+              parent="stock.menu_product_in_config_stock"
+              sequence="999"/>
+
+</odoo>

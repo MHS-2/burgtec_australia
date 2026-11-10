@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+      
+    <!-- View xero.account form -->
+    <record id="view_xero_account_form" model="ir.ui.view">
+        <field name="name">view.xero.account.form</field>
+        <field name="model">xero.account</field>
+        <field name="inherit_id" ref="sync_xero_connector.view_xero_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page" position="after">
+              <page name="xero_Second_Account" string="XERO Second Account">
+                <group>
+                  <field name="second_client_id"/>
+                  <field name="second_client_secret"/>
+                  <field name="second_callback_uri"/>
+                  <field name="second_raw_url"/>
+                  <field name="second_raw_uri"/>
+                  <field name="second_state"/>
+                  <field name="second_token"/>
+                  <field name="seccond_xero_org_id"/>
+                </group>
+              </page>
+            </xpath>
+        </field>
+    </record>
+
+  </odoo>

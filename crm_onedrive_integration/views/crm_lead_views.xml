@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_onedrive" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.inherit.onedrive</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_open_onedrive_folder"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-folder-open-o"
+                        invisible="not onedrive_folder_url">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">OneDrive</span>
+                        <span class="o_stat_text">Folder</span>
+                    </div>
+                </button>
+                <button name="action_create_onedrive_folder"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-cloud-upload"
+                        invisible="onedrive_folder_url">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Create</span>
+                        <span class="o_stat_text">OneDrive Folder</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='line_item_status']" position="after">
+                <page name="onedrive_details" string="OneDrive Details">
+                    <group>
+                        <field name="onedrive_folder_url" widget="url" readonly="1"/>
+                        <field name="onedrive_folder_name" invisible="0"/>
+                        <field name="onedrive_folder_id" invisible="0"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

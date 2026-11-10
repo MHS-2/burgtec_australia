@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+
+    <!-- View sale.order.bom.component form -->
+    <record id="update_proforma_rfq_screen_view_sale_order_bom_component_form" model="ir.ui.view">
+        <field name="name">update_proforma_rfq_screen.view.sale.order.bom.component.form</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="filter_one2many_fields.filter_one2many_field_original_bom_components_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='filter_bom_lines']" position="after">
+              <page name="vendor_wise_lines" string="Vendor Wise Lines">
+                <button name="fetch_component_line_by_vendor" string="Fetch Component Lines By Vendor" type="object" class="btn-primary" invisible="vendor_component_line_ids"/>
+                <field name="vendor_component_line_ids" widget="section_and_note_one2many" readonly="1">
+                  <list class="no_reorder" editable="bottom" delete="0" create="0" decoration-danger="display_type == 'line_section'" decoration-warning="is_other_than_bom == True" decoration-info="is_parent == False">
+                    <field name="product_id" force_save="1" width="350px"/>
+                    <field name="parent_product_group" force_save="1" width="150px" class="bright-red" string="Product Group"/>
+                    <field name="parent_product_code" force_save="1" width="150px" class="bright-blue" string="Product Code"/>
+                    <field name="product_qty" force_save="1"/>
+                    <!-- <field name="unit_sale_price" force_save="1"/> -->
+                    <field name="manual_live_unit_cost" force_save="1"/>
+                    <field name="total_live_unit_cost" force_save="1"/>
+                    <field name="note" force_save="1" width="300px;"/>
+                    <field name="supplier_id" force_save="1" width="300px;"/>
+                    <field name="sequence" column_invisible="1" force_save="1"/>
+                    <field name="name" invisible="not display_type" force_save="1" readonly="1"/>
+                    <button name="show_information" type="object" invisible="display_type" string="Show Information" class="btn-primary"/>
+                    <button name="export_vendor_components_csv" type="object" invisible="not display_type" string="Export CSV"/>
+                    <button name="show_report" type="object" invisible="not display_type" string="Preview RFQ"/>
+                    <field name="order_id" column_invisible="1" force_save="1"/>
+                    <field name="partner_shipping_id" column_invisible="1" force_save="1"/>
+                  </list>
+                </field>
+              </page>
+            </xpath>
+        </field>
+    </record>
+
+  </odoo>

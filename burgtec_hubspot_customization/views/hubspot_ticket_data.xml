@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_hubspot_ticket_list" model="ir.ui.view">
+        <field name="name">hubspot.ticket.list</field>
+        <field name="model">hubspot.ticket.data</field>
+        <field name="arch" type="xml">
+            <list string="HubSpot Tickets" create="false">
+                <field name="create_date"/>
+                <field name="hubspot_ticket_id" width="100px"/>
+                <field name="subject" width="300px"/>
+                <field name="hubspot_ticket_url" width="300px"/>
+                <field name="ticket_status" width="100px"/>
+                <field name="delivery_stage_number" width="140px"/>
+                <field name="scheduled_dispatch" width="150px"/>
+                <field name="scheduled_delivers_date" width="150px"/>
+                <field name="scheduled_install_date" width="150px"/>
+                <field name="scheduled_install_complete_date" width="180px"/>
+                <field name="is_backorder_registered" width="150px"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hubspot_ticket_form" model="ir.ui.view">
+        <field name="name">hubspot.ticket.form</field>
+        <field name="model">hubspot.ticket.data</field>
+        <field name="arch" type="xml">
+            <form string="HubSpot Ticket" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group name="basic_info">
+                            <field name="subject" readonly="1"/>
+                            <field name="scheduled_dispatch" readonly="1"/>
+                            <field name="scheduled_install_date" width="100px" readonly="1"/>
+                            <field name="ticket_status" width="100px" readonly="1"/>
+<!--                            <field name="due_date" readonly="1"/>-->
+                            <field name="delivery_stage_number" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="hubspot_ticket_url" readonly="1"/>
+                            <field name="hubspot_ticket_id" readonly="1"/>
+                            <field name="scheduled_delivers_date" width="100px" readonly="1"/>
+                            <field name="scheduled_install_complete_date" width="100px" readonly="1"/>
+                            <field name="is_backorder_registered" width="100px" readonly="1"/>
+
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hubspot_ticket_search" model="ir.ui.view">
+        <field name="name">hubspot.ticket.data.search</field>
+        <field name="model">hubspot.ticket.data</field>
+        <field name="arch" type="xml">
+            <search string="Search HubSpot Tickets">
+                <field name="hubspot_ticket_id"/>
+                <field name="delivery_stage_number"/>
+                <field name="subject"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_hubspot_ticket_data" model="ir.actions.act_window">
+        <field name="name">Hubspot Tickets Data</field>
+        <field name="res_model">hubspot.ticket.data</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_hubspot_ticket_list"/>
+    </record>
+    <!-- Menu Item -->
+    <menuitem id="menu_hubspot_ticket"
+              name="Hubspot Tickets Data"
+              action="action_hubspot_ticket_data"
+              parent="sale.menu_sales_config"
+              sequence="5"/>
+
+</odoo>

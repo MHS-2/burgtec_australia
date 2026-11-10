@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="burgtec_warehouse.Live_warehouse_receiving">
+        <div class="warehouse-container">
+            <!-- Header section -->
+            <!-- <div class="warehouse-header">
+                <h1 class="warehouse-title">burgtec.</h1>
+                <div class="header-indicators"> -->
+                    <!-- QR Code -->
+                    <!-- <div class="qr-code-container">
+                        <img t-attf-src="data:image/png;base64,#{state.warehouse_complete_data.delivery_code}" alt="QR Code"/>
+                    </div> -->
+
+                    <!-- Location Indicator -->
+                    <!-- <div class="location-indicator"
+                            t-attf-style="background-color: #{
+                                'nsw' == (state.warehouse_complete_data.delivery_location or '') and '#6366F1' or
+                                'act' == (state.warehouse_complete_data.delivery_location or '') and '#EAB308' or
+                                'vic' == (state.warehouse_complete_data.delivery_location or '') and '#22C55E' or
+                                'qld' == (state.warehouse_complete_data.delivery_location or '') and '#DC2626' or
+                                'other' == (state.warehouse_complete_data.delivery_location or '') and '#9333EA' or
+                                '#6366F1'
+                            };">
+                        <t t-if="'nsw' == (state.warehouse_complete_data.delivery_location or '')">NSW</t>
+                        <t t-elif="'act' == (state.warehouse_complete_data.delivery_location or '')">ACT</t>
+                        <t t-elif="'vic' == (state.warehouse_complete_data.delivery_location or '')">VIC</t>
+                        <t t-elif="'qld' == (state.warehouse_complete_data.delivery_location or '')">QLD</t>
+                        <t t-elif="'other' == (state.warehouse_complete_data.delivery_location or '')">OTHER</t>
+                        <t t-else=""></t>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Info Fields -->
+             <div class="d-flex justify-content-between form-field1">
+                <div>
+                    <span class="form-label1">Delivery Stage Number: </span>
+                    <span><t t-out="state.warehouse_complete_data.delivery_quote"/></span>
+                </div>
+
+                <div>
+                    <span class="form-label1">Client Name: </span>
+                    <span><t t-out="state.warehouse_complete_data.client_name"/></span>
+                </div>
+
+                <div>
+                    <span class="form-label1">Project Name: </span>
+                    <span><t t-out="state.warehouse_complete_data.project_quote"/></span>
+                </div>
+             </div>
+
+            <!-- Product Sections -->
+            <div>
+                <t t-if="state.warehouse_complete_data.complete_data and state.warehouse_complete_data.complete_data.length">
+                    <t t-foreach="state.warehouse_complete_data.complete_data" t-as="data" t-key="data.purchase_id">
+                        <div class="product-section">
+                            <div class="form-field">
+                                <div class="row">
+                                    <div class="col-8" style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                        <span class="form-label1">PO Number:</span>
+                                        <span><t t-out="data.purchase_order_name"/></span>
+                                        <t t-set="po_id" t-value="data.purchase_id"/>
+                                        <!-- <span><t t-out="data.purchase_id"/></span> -->
+                                        <button id="camera_button" t-att-data-purchase-id="po_id" type="button" t-on-click="onClickCamera" title="Attach Image To The Purchase Order">
+                                            <i class="fa fa-camera-retro text-primary"/>
+                                        </button>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <span t-att-class="'badge rounded-pill ' + data.purchase_order_state_badge_class"
+                                            t-out="data.purchase_order_state"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="custom-modal" t-attf-id="modal-{{data.purchase_id}}" t-attf-data-purchase-id="{{data.purchase_id}}">
+                                    <div class="custom-modal-content">
+                                        <header>
+                                            <video id="videoCam"></video>
+                                        </header>
+                                        <footer>
+                                            <button id="click_photo" t-att-data-purchase-id="po_id" t-att-data-warehouse-id="data.warehouse_id" t-on-click="ImageCapture">
+                                                <i class="fa fa-camera"></i> Capture
+                                            </button>
+                                            <button id="switch-camera" type="button" t-on-click="toggleCamera" title="Switch Camera">
+                                                <i class="fa fa-repeat"></i> Switch Camera
+                                            </button>
+                                            <button id="stop-camera-button" t-on-click="stopVideoStream">
+                                                <i class="fa fa-times"></i> Cancel
+                                            </button>
+                                        </footer>
+                                        <span hidden="hidden">
+                                            <canvas id="canvas" width="1920" height="1440"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <span class="form-label1">PO Supplier:</span>
+                                    <span><t t-out="data.supplier_name"/></span>
+                                </div>
+
+                                <div class="text-start mt-2 mb-2">
+                                    <button class="btn-create-bo" style="margin-top:5px;" t-on-click="createBackOrder" t-attf-data-purchase-order-id="{{data.purchase_id}}" t-att-data-warehouse-id="data.warehouse_id">Create Backorder</button>
+                                </div>
+                            </div>
+
+
+                            <div style="overflow-x: auto;">
+                                <table class="product-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Group Code</th>
+                                            <th>Product Code</th>
+                                            <th>Description</th>
+                                            <th>Receipt Number</th>
+                                            <th>Expected Qty</th>
+                                            <th>Received Qty</th>
+                                            <th>Back Order Qty</th>
+                                            <th>Received</th>
+                                            <!-- <th>Staged</th>
+                                            <th>Dispatched</th>
+                                            <th>Delivered</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="data.purchase_lines" t-as="line" t-key="line.line_id">
+                                            <tr>
+                                                <td data-label="Group Code" style="white-space: break-spaces;"><t t-out="line.group_code"/></td>
+                                                <td data-label="Product Code" style="white-space: break-spaces;"><t t-out="line.product_default_code"/></td>
+                                                <td data-label="Description" style="white-space: break-spaces;"><t t-out="line.product_description"/></td>
+                                                <td data-label="Receipt"><t t-out="line.picking_id"/></td>
+                                                <td data-label="Expected Qty"><t t-out="line.product_qty"/></td>
+                                                <td data-label="Received Qty">
+                                                    <input type="number"
+                                                        class="form-control form-control-sm text-center area-qty-input"
+                                                        t-att-data-line-id="line.line_id"
+                                                        t-att-value="line.received_qty"
+                                                        min="0"
+                                                        step="1"
+                                                        t-on-change="(ev) => this.onReceivedQtyChange(ev,line)"
+                                                        t-att-disabled="line.is_backorder_created or line.is_received"/>
+                                                </td>
+                                                <td data-label="Backorder Qty">
+                                                    <t t-out="line.back_order_qty"/>
+                                                </td>
+                                                <td data-label="Received">
+                                                    <div class="status-checkbox">
+                                                        <input class="form-check-input" type="checkbox" t-attf-id="isReceivedCheck-{{line.line_id}}" t-att-data-line-id="line.line_id" t-model="line.is_received" t-att-disabled="line.is_backorder_created or line.is_received" t-on-change="(ev) => this.onChangeReceive(ev,line)"/>
+                                                    </div>
+                                                </td>
+                                                <!-- <td data-label="Staged">
+                                                    <div class="status-checkbox">
+                                                        <input class="form-check-input" type="checkbox" t-attf-id="isStagedCheck-{{line.line_id}}" t-att-data-line-id="line.line_id" t-model="line.is_staged" t-on-change="onChangeStage"/>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Dispatched">
+                                                    <div class="status-checkbox">
+                                                        <input class="form-check-input" type="checkbox" t-attf-id="isDispatchedCheck-{{line.line_id}}" t-att-data-line-id="line.line_id" t-model="line.is_dispatched" t-on-change="onChangeDispatch"/>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Delivered">
+                                                    <div class="status-checkbox">
+                                                        <input class="form-check-input" type="checkbox" t-attf-id="isDeliveredCheck-{{line.line_id}}" t-att-data-line-id="line.line_id" t-model="line.is_delivered" t-on-change="onChangeDeliver"/>
+                                                    </div>
+                                                </td> -->
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- How it works box -->
+                             <div class="row">
+                                <div class="col-2 oe_inline" style="align-items: center; margin-left:60px;">
+                                    <i class="info-circle">i</i>
+                                    <br/>
+                                    <span class="info-custom-note">How it works</span>
+                                </div>
+                                <div class="col-5 border-right">
+                                    <strong>
+                                        1. Add Quantities in the Received QTY column.
+                                    </strong>
+                                    <br/>
+                                    <span>
+                                        System will automatically set the Remaining quantity in the Back Order Qty column.
+                                    </span>
+                                    <br/>
+                                    <br/>
+                                    <strong>
+                                        2. Make sure to Check the box in Received column for all lines of the Purchase Order.
+                                    </strong>
+                                    <br/>
+                                    <span>
+                                        System will let you create back order.
+                                    </span>
+                                </div>
+                                <div class="col-5">
+                                    <strong>
+                                        3. Click On Create Backorder button.
+                                    </strong>
+                                    <br/>
+                                    <span>
+                                        A new line will be created with the remaining quantities.
+                                    </span>
+                                </div>
+                             </div>
+                        </div>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

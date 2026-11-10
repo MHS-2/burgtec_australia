@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="product_template_attribute_value_view_form_burgtec_website_customization" model="ir.ui.view">
+        <field name="name">product.template.attribute.value.view.form.inherit.burgtec.website.customization</field>
+        <field name="model">product.template.attribute.value</field>
+        <field name="inherit_id" ref="product.product_template_attribute_value_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="material_allocation_id" placeholder="Select Material Allocation" options="{'no_open':1,'no_create':1}"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='price_extra']" position="after">
+                <field name="three_d_attachment_ids" widget="many2many_binary"/>
+                 <field name="sub_attribute_line_ids" widget="one2many">
+                        <list string="Variants" editable="bottom">
+                            <field name="sub_attribute_id" options="{'no_create_edit': True,'no_create':True}"/>
+                            <field name="sub_attribute_value_ids" widget="many2many_tags" domain="[('sub_attribute_id','=', sub_attribute_id)]" options="{'no_create_edit': True,'no_create':True}" context="{'default_sub_attribute_id': sub_attribute_id}"/>
+                        </list>
+                    </field>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

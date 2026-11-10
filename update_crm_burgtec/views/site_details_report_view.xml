@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_site_details">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div class="article" style="padding: 40px 30px 0; font-size: 14px;">
+
+                        <!-- Top bar -->
+                        <table class="table table-borderless"
+                               style="width: 100%; table-layout: fixed; border-collapse: collapse; margin-bottom: 20px;">
+                            <tr>
+                                <td style="width: 60%; vertical-align: top; border:none; padding: 0;">
+                                    <span style="font-size: 40px; font-weight: bold; letter-spacing: 1px; color: #0B1F3A;">
+                                        Burgtec.
+                                    </span>
+                                </td>
+                                <td style="width: 40%; vertical-align: top; border:none; text-align: right; padding: 0; font-size: 17px; line-height: 1.4;">
+                                    <strong>SITE DETAILS</strong>
+                                    <br/>
+                                    <strong>Date:</strong>
+                                    <t t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Site & Contact -->
+                        <div style="page-break-inside: avoid;">
+                            <div style="background-color: #B7DEE8; font-weight: bold; font-size: 15px; padding: 5px 8px; border: 1px solid #A6A6A6; border-bottom: 0; margin-top: 10px;">
+                                SITE &amp; CONTACT
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0;">
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Site Address
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.site_address"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Site Contact - Name
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.site_contact_name"/>
+                                    </td>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Site Contact - Mobile No
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.site_contact_mobile"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Required Installation Date
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.required_installation_date"/>
+                                    </td>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Required Completion Date
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.required_completion_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Access Times
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.access_times"/>
+                                    </td>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Final Furniture Plan
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.final_furniture_plan"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Loading Dock & Vehicle Access -->
+                        <div style="page-break-inside: avoid;">
+                            <div style="background-color: #B7DEE8; font-weight: bold; font-size: 15px; padding: 5px 8px; border: 1px solid #A6A6A6; border-bottom: 0; margin-top: 10px;">
+                                LOADING DOCK &amp; VEHICLE ACCESS
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0;">
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Loading Dock Available
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.loading_dock_available"/>
+                                    </td>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Loading Dock Booking Required
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.loading_dock_booking_required"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Loading Dock Height Clearance
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.loading_dock_height_clearance"/>
+                                    </td>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Forklift Available
+                                    </td>
+                                    <td style="width: 28%; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.forklift_available"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Loading Dock Notes
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.loading_dock_notes"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Semi-trailer Access
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.semi_trailer_access"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Alternate Unloading Area
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.alternate_unloading_area"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Lift / Stairs -->
+                        <div style="page-break-inside: avoid;">
+                            <div style="background-color: #B7DEE8; font-weight: bold; font-size: 15px; padding: 5px 8px; border: 1px solid #A6A6A6; border-bottom: 0; margin-top: 10px;">
+                                LIFT / STAIRS
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0;">
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Lift Available
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.lift_available"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Lift Dimensions
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.lift_dimensions"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        No Lift - Flights of Stairs
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.stairs_flights"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Compliance & Safety -->
+                        <div style="page-break-inside: avoid;">
+                            <div style="background-color: #B7DEE8; font-weight: bold; font-size: 15px; padding: 5px 8px; border: 1px solid #A6A6A6; border-bottom: 0; margin-top: 10px;">
+                                COMPLIANCE &amp; SAFETY
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0;">
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Access Photos Provided
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.access_photos_provided"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Permits/Inductions Required
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.permits_inductions"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        PPE Requirement
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.ppe_requirement"/>
+                                    </td>
+                                </tr>
+                                <!--                                <tr>-->
+                                <!--                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">-->
+                                <!--                                        SWMS, Insurances, O&amp;M Required-->
+                                <!--                                    </td>-->
+                                <!--                                    <td colspan="3"-->
+                                <!--                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">-->
+                                <!--                                        <span t-field="o.swms_insurance_om"/>-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
+                                <tr>
+                                    <td style="width: 22%; background-color: #B7DEE8; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top;">
+                                        Document
+                                    </td>
+                                    <td style="background-color: #B7DEE8; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        Required
+                                    </td>
+                                    <td style="background-color: #B7DEE8; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        Submitted Date
+                                    </td>
+                                    <td style="background-color: #B7DEE8; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        Approved Date
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top;">
+                                        SWMS
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        <span t-field="o.swms_required"/>
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        <span t-field="o.swms_submitted_date"/>
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        <span t-field="o.swms_approved_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top;">
+                                        Insurances
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        <span t-field="o.insurance_required"/>
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        <span t-field="o.insurance_submitted_date"/>
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center; color: #A6A6A6;">
+                                        N/A
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top;">
+                                        O&amp;M
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        <span t-field="o.om_required"/>
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center;">
+                                        <span t-field="o.om_submitted_date"/>
+                                    </td>
+                                    <td style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; text-align: center; color: #A6A6A6;">
+                                        N/A
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Other Instructions / Notes -->
+                        <div style="page-break-inside: avoid;">
+                            <div style="background-color: #B7DEE8; font-weight: bold; font-size: 15px; padding: 5px 8px; border: 1px solid #A6A6A6; border-bottom: 0; margin-top: 10px;">
+                                OTHER INSTRUCTIONS / NOTES
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0;">
+                                <tr>
+                                    <td style="width: 22%; background-color: #D9D9D9; font-weight: bold; border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        Other Instructions/Notes
+                                    </td>
+                                    <td colspan="3"
+                                        style="border: 1px solid #A6A6A6; padding: 5px 7px; vertical-align: top; word-wrap: break-word;">
+                                        <span t-field="o.site_other_notes"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_site_details" model="report.paperformat">
+        <field name="name">Burgtec Site Details A4</field>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_site_details" model="ir.actions.report">
+        <field name="name">Burgtec Site Details</field>
+        <field name="model">crm.lead</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">update_crm_burgtec.report_site_details</field>
+        <field name="report_file">update_crm_burgtec.report_site_details</field>
+        <field name="print_report_name">'Burgtec Site Details - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="update_crm_burgtec.paperformat_site_details"/>
+    </record>
+</odoo>

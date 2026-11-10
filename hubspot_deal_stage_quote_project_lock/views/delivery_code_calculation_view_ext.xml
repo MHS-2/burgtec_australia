@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hubspot_deal_stage_quote_project_lock.delivery_code_calculation_view_ext_1" model="ir.ui.view">
+        <field name="name">hubspot deal stage quote/project lock planning screen view ext</field>
+        <field name="model">delivery.code.calculation</field>
+        <field name="inherit_id" ref="quotation_type_customization.delivery_code_calculation_view_ext"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='delivery_code_calculation_line_ids']" position="attributes">
+                <attribute name="readonly" add="freeze_sale_order and quote_type == 'project_quote'" separator=" or "/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_area_user,sale.order.area.user,model_sale_order_area,sales_team.group_sale_salesman,1,1,1,1
+access_sale_order_area_manager,sale.order.area.manager,model_sale_order_area,sales_team.group_sale_manager,1,1,1,1
+access_sale_order_area_allocation_user,sale.order.area.allocation.user,model_sale_order_area_allocation,sales_team.group_sale_salesman,1,1,1,1
+access_sale_order_area_allocation_manager,sale.order.area.allocation.manager,model_sale_order_area_allocation,sales_team.group_sale_manager,1,1,1,1

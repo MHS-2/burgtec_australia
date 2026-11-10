@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sale_area_allocation.AreaAllocationMatrix">
+        <div class="area-allocation-matrix">
+            <!-- Reactive triggers: OWL only tracks properties read during
+                 template evaluation. Reading write_date here ensures OWL
+                 re-renders this component after every save, which in turn
+                 lets useEffect re-evaluate its deps and call _loadData(). -->
+            <span class="d-none" t-esc="props.record and props.record.data.write_date"/>
+
+            <!-- Loading state -->
+            <div t-if="state.isLoading" class="text-muted p-3">
+                <i class="fa fa-spinner fa-spin me-1"/>Loading...
+            </div>
+
+            <!-- No record saved yet -->
+            <div t-elif="!recordId" class="text-muted p-3">
+                Please save the quotation first to configure area allocations.
+            </div>
+
+            <!-- No areas configured -->
+            <div t-elif="state.areas.length === 0" class="text-muted p-3">
+                Set the <strong>Number of Areas</strong> above and save to start allocating quantities.
+            </div>
+
+            <!-- No products in order lines -->
+            <div t-elif="state.products.length === 0" class="text-muted p-3">
+                No products found in order lines. Add products to the <strong>Order Lines</strong> tab first.
+            </div>
+
+            <!-- Matrix table -->
+            <div t-else="" class="table-responsive">
+                <div t-if="state.isSaving" class="area-saving-indicator">
+                    <i class="fa fa-spinner fa-spin me-1"/>Saving...
+                </div>
+                <table class="table table-sm table-bordered area-matrix-table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="area-col-item text-center">Item</th>
+                            <th class="area-col-code">Code</th>
+                            <th class="area-col-product">Custom Product Name</th>
+                            <th class="area-col-product">Product Full Name</th>
+                            <th class="area-col-qty text-center">Quantity</th>
+                            <th class="area-col-available text-center">Available Qty</th>
+                            <t t-foreach="state.areas" t-as="area" t-key="area.id">
+                                <th class="area-col-area text-center">
+                                    <div class="text-danger fw-bold mb-1">
+                                        Area <t t-esc="area_index + 1"/>
+                                        #
+                                    </div>
+                                    <input type="text"
+                                           class="form-control form-control-sm text-center border-dark area-name-input"
+                                           t-att-value="area.name"
+                                           t-on-change="(ev) => this.onAreaNameChange(area.id, ev)"/>
+                                </th>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="state.products" t-as="product" t-key="product.order_line_id">
+                            <tr>
+                                <td class="area-col-item align-middle text-center">
+                                    <t t-esc="product.product_identifier"/>
+                                </td>
+                                <td class="area-col-code align-middle">
+                                    <t t-esc="product.code"/>
+                                </td>
+                                <td class="area-col-product align-middle">
+                                    <t t-esc="product.product_custom_name"/>
+                                </td>
+                                <td class="area-col-product align-middle">
+                                    <t t-esc="product.display_name"/>
+                                </td>
+                                <td class="area-col-qty text-center align-middle">
+                                    <t t-esc="formatQty(product.total_qty)"/>
+                                </td>
+                                <td class="area-col-available text-center align-middle"
+                                    t-att-class="{'text-danger fw-bold': getAvailableQty(product) &lt; 0, 'text-danger': getAvailableQty(product) !== product.total_qty}">
+                                    <t t-esc="formatQty(getAvailableQty(product))"/>
+                                </td>
+                                <t t-foreach="state.areas" t-as="area" t-key="area.id">
+                                    <td class="area-col-area text-center align-middle">
+                                        <input type="number"
+                                               class="form-control form-control-sm text-center area-qty-input"
+                                               t-att-class="{'text-danger fw-bold': getAllocation(product.order_line_id,product.product_id, area.id) > 0}"
+                                               t-att-value="getAllocation(product.order_line_id,product.product_id, area.id)"
+                                               min="0"
+                                               step="1"
+                                               t-on-change="(ev) => this.onAllocationChange(product.order_line_id,product.product_id, area.id, ev)"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>

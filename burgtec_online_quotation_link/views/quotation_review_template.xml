@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="quotation_review_page" name="Quotation Review Page">
+        <t t-call="portal.frontend_layout">
+            <div id="wrap">
+                <owl-component name="burgtec_online_quotation_link.QuotationReview"
+                               t-att-props="props_json"/>
+            </div>
+        </t>
+    </template>
+</odoo>

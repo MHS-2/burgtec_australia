@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_quote_planning_screen,sale.quote.planning.screen,model_sale_quote_planning_screen,,1,1,1,1
+access_sale_quote_planning_screen_line,sale.quote.planning.screen.line,model_sale_quote_planning_screen_line,,1,1,1,1

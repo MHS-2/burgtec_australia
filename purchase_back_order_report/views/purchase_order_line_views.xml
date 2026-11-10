@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+      
+    <!-- View purchase.order.line list -->
+    <record id="purchase_back_order_report_view_purchase_order_line_list" model="ir.ui.view">
+        <field name="name">view.purchase.order.line.back.order.list</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+          <list create="0" delete="0">
+            <field name="order_id" context="{'burgtec_po_reference':1}" width="200px;"/>
+            <field name="name"/>
+            <field name="product_qty"/>
+            <field name="is_back_order" width="100px;" class="text-center"/>
+            <field name="back_order_qty" required="is_back_order" width="130px;"/>
+            <field name="back_order_date_planned" required="is_back_order"/>
+            <field name="back_order_comments" required="is_back_order" width="170px;"/>
+            <field name="user_id" widget="many2one_avatar" width="150px;"/>
+          </list>
+        </field>
+    </record>
+
+    <record id="action_back_order_child_po_report" model="ir.actions.act_window">
+        <field name="name">Back Order Report</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_id" ref="purchase_back_order_report.purchase_back_order_report_view_purchase_order_line_list"/>
+        <field name="domain">[('is_back_order','=',True)]</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_child_po_report_back_order"
+      parent="purchase_list_report.menu_purchase_report_parent"
+      action="purchase_back_order_report.action_back_order_child_po_report"
+      sequence="107"/>
+
+  </odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="artwork_url_attachment_for_screens.planning_screen_view_ext" model="ir.ui.view">
+        <field name="name">art work attachment for screen planning screen view ext</field>
+        <field name="model">planning.screen</field>
+        <field name="inherit_id" ref="hubspot_deal_stage_quote_project_lock.planning_screen_view_ext1"/>
+        <field name="arch" type="xml">
+
+
+            <xpath expr="//field[@name='line_ids']/list//button[@name='action_view_product_line']"
+                   position="replace">
+                <button name="action_view_product_line" class="btn-primary" type="object" string="Product" icon="fa-eye"/>
+
+                <button type="object" name="open_record_in_new_window" class="btn btn-link"
+                        invisible="not(artwork_image_url)"
+                        icon="fa-external-link" title="Open Artwork in New Tab"/>
+                <button name="action_open_add_attachment_artwork_wizard"
+                        string="Artwork"
+                        type="object"
+                        class="btn-primary btn-sm"
+                        icon="fa-plus"
+                        invisible="display_type"
+                        help="Add Artwork Image to this line"/>
+
+                <field name="artwork_image_url" widget="url" readonly="1" optional="show" width="150px"
+                       column_invisible="1"/>
+                <field name="attachment_id" column_invisible="1"/>
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>

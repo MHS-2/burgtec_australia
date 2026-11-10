@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Dialog Template -->
+    <record id="simple_quote_entry_sale_order_line_wizard_add_product_form_view" model="ir.ui.view">
+        <field name="name">simple.quote.entry.sale.order.line.wizard.add.product.form.view</field>
+        <field name="model">sale.order.line.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="product_variant_selection" widget="selection_badge" nolabel="1" invisible="product_variant_selection == 'product_variant_sel' or product_model_type == 'product_variant'"/>
+                    <field name="product_template_selection" widget="selection_badge" nolabel="1" invisible="product_template_selection == 'product_template_sel' or product_model_type == 'product_template'"/>
+                    <!-- <button name="set_product_model_type_to_variant" string="Product Variant" type="object" class="btn-primary text-end" invisible="product_model_type == 'product_variant'"/> -->
+                </header>
+                <sheet>
+                    <!-- <div class="text-center" invisible="product_model_type">
+                        <div class="d-inline-flex align-items-center alert alert-info" role="alert">
+                            <p class="m-0">
+                                <span><strong class="bold">Choice: </strong>Select what do you want to add.</span>
+                            </p>
+                        </div>
+                    </div> -->
+
+                    <div class="text-center" invisible="is_main_product_added">
+                        <div class="d-inline-flex align-items-center alert alert-info" role="alert">
+                            <p class="m-0">
+                                <!-- <span><strong class="bold">Choice: </strong>Select what do you want to add.</span> -->
+                                    <strong>
+                                    <field name="selection_text"/>
+                                    </strong>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center" invisible="product_model_type">
+                        <field name="product_model_type" widget="selection_badge" nolabel="1"/>
+                    </div>
+                    <group>
+                        <!-- <field name="is_use_pop_up_configurator" string="POP Up Configurator"/> -->
+                        <field name="is_main_product_added" invisible="1"/>
+                        <field name="sale_order_id" invisible="1" force_save="1"/>
+                        <field name="currency_id" invisible="1" force_save="1"/>
+                        <field name="date_order" invisible="1" force_save="1"/>
+                        <field name="company_id" invisible="1" force_save="1"/>
+                        <field name="simple_quote_entry_id" invisible="1" force_save="1"/>
+                        <field name="pricelist_id" invisible="1" force_save="1"/>
+                        <field name="product_sale_type" invisible="1" force_save="1"/>
+                    </group>
+                    <group>
+                        <field name="sale_order_product_line_wizard_ids" nolabel="1" invisible="not product_model_type or is_main_product_added">
+                            <list editable="bottom">
+                                <control>
+                                    <create string="Add a Product"/>
+                                </control>
+                                <field
+                                        name="product_id"
+                                        width="515px;"
+                                        string="Product"
+                                        force_save="1"
+                                        options="{'no_open':True, 'no_create':True}"
+                                        domain="[('sale_ok', '=', True),('product_bom_type', '!=', 'components')]"
+                                        column_invisible="parent.product_model_type == 'product_template'"
+                                />
+                                <!-- widget="sol_product_many2one" -->
+                                <!-- <field name="product_template_id"
+                                    width="515px;"
+                                    string="Product"
+                                    options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                    widget="wizard_product_many2one"
+                                    column_invisible="parent.product_model_type == 'product_variant'"                                        
+                                    placeholder="Type to find a product..."/> -->
+                                
+                                <field name="product_template_id" column_invisible="1" force_save="1"/>
+
+                                
+                                <field name="burgtec_product_template_id"
+                                    width="515px;"
+                                    string="Product"
+                                    options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                    widget="wizard_product_many2one"
+                                    column_invisible="parent.product_model_type == 'product_variant' or parent.product_sale_type != 'burgtec'"                                        
+                                    placeholder="Type to find a product..."/>
+                                
+                                <field name="dpg_product_template_id"
+                                    width="515px;"
+                                    string="Product"
+                                    options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                    widget="wizard_product_many2one"
+                                    column_invisible="parent.product_model_type == 'product_variant' or parent.product_sale_type != 'dpg'"                                        
+                                    placeholder="Type to find a product..."/>
+                            
+
+                                <field name="product_template_attribute_value_ids" column_invisible="1"/>
+                                <!-- <field name="product_template_id" widget="sol_product_many2one" domain="[('product_bom_type', '!=', 'components'),('sale_ok','=',True)]" options="{'no_create':1}" required="1" width="100"/> -->
+                                <field name="product_uom_qty" required="1" width="90px;"/>
+                                <field name="is_select_optional_product" column_invisible="1"/>
+                                <field name="optional_product_widget" widget="wizard_product_variant_many2one" invisible="is_select_optional_product or not product_id" string="Optional Groups Product" width="480px" column_invisible="parent.is_use_pop_up_configurator"/>
+                                <field name="currency_id" column_invisible="True"/>
+                                <field name="company_id" column_invisible="True"/>
+                                <field name="sub_selection_json" column_invisible="True"/>
+                                <field name="sub_selection_display" column_invisible="True"/>
+                            </list>
+                        </field>
+                        <field name="sale_order_product_line_wizard_ids" nolabel="1" invisible="not product_model_type or not is_main_product_added" context="{'product_sale_type':}">
+                            <list editable="bottom" create="0">
+                                <control>
+                                    <create string="Add a Product"/>
+                                </control>
+                                <field
+                                        name="product_id"
+                                        width="515px;"
+                                        string="Product"
+                                        force_save="1"
+                                        options="{'no_open':True, 'no_create':True}"
+                                        domain="[('sale_ok', '=', True),('product_bom_type', '!=', 'components')]"
+                                        column_invisible="parent.product_model_type == 'product_template'"
+                                />
+                                <!-- widget="sol_product_many2one" -->
+                                <!-- <field name="product_template_id"
+                                    width="515px;"
+                                    string="Product"
+                                    options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                    widget="wizard_product_many2one"
+                                    column_invisible="parent.product_model_type == 'product_variant'"                                        
+                                    placeholder="Type to find a product..."/> -->
+                            
+                                <field name="product_template_id" column_invisible="1" force_save="1"/>
+
+                                
+                                <field name="burgtec_product_template_id"
+                                    width="515px;"
+                                    string="Product"
+                                    options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                    widget="wizard_product_many2one"
+                                    column_invisible="parent.product_model_type == 'product_variant' or parent.product_sale_type != 'burgtec'"                                        
+                                    placeholder="Type to find a product..."/>
+                                
+                                <field name="dpg_product_template_id"
+                                    width="515px;"
+                                    string="Product"
+                                    options='{"no_open": True, "no_create": True,"no_create_edit": True,"no_quick_create": True}'
+                                    widget="wizard_product_many2one"
+                                    column_invisible="parent.product_model_type == 'product_variant' or parent.product_sale_type != 'dpg'"                                        
+                                    placeholder="Type to find a product..."/>
+                            
+
+                                <field name="product_template_attribute_value_ids" column_invisible="1"/>
+                                <!-- <field name="product_template_id" widget="sol_product_many2one" domain="[('product_bom_type', '!=', 'components'),('sale_ok','=',True)]" options="{'no_create':1}" required="1" width="100"/> -->
+                                <field name="product_uom_qty" required="1" width="90px;"/>
+                                <field name="is_select_optional_product" column_invisible="1"/>
+                                <field name="optional_product_widget" widget="wizard_product_variant_many2one" invisible="is_select_optional_product or not product_id" string="Optional Groups Product" width="480px" column_invisible="parent.is_use_pop_up_configurator"/>
+                                <field name="currency_id" column_invisible="True"/>
+                                <field name="company_id" column_invisible="True"/>
+                                <field name="sub_selection_json" column_invisible="True"/>
+                                <field name="sub_selection_display" column_invisible="True"/>
+                            </list>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="action_add_simple_product" string="Add" type="object" default_focus="1" class="oe_highlight" invisible="not product_model_type"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View simple.quote.entry.wizard form -->
+    <record id="view_simple_quote_entry_wizard_form" model="ir.ui.view">
+        <field name="name">view.simple.quote.entry.wizard.form</field>
+        <field name="model">simple.quote.entry.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Simple Quote Entry Wizard">
+                <header>
+                    <field name="state" widget="statusbar" invisible="1"/>
+                </header>
+                <sheet invisible="is_draft_available">
+                    <field name="head_title" widget="html"/>
+                    
+                    <field name="title" widget="html"/>
+
+                    <group invisible="state == 'quote'">
+                        <field name="partner_id" options="{'no_open':1,'no_create':1}" required="not is_draft_available"/>
+                        <field name="series_sequence_id" options="{'no_open':1,'no_create':1}" required="not is_draft_available"/>
+                        <field name="project_name" required="not is_draft_available"/>
+                        <field name="location" required="not is_draft_available"/>
+                    </group>
+
+                    <group invisible="state == 'deal'">
+                        <group>
+                            <field name="zone_type"/>
+                        </group>
+                        <group>
+                            <field name="pricelist_id" options="{'no_open':1,'no_create':1}" readonly="1"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert" invisible="state == 'deal'">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        Unit prices are automatically fetched from the selected pricelist and cannot be edited.
+                    </div>
+                    <div style="color:#875A7B;" invisible="state == 'deal'">
+                        <strong>Products</strong>
+                    </div>
+
+                    <field name="simple_quote_entry_order_line_ids" widget="section_and_note_one2many" mode="list" invisible="state == 'deal'">
+                        <list create="0" string="Wizard Sales Order Lines" editable="bottom" limit="200" class="no_reorder" decoration-danger="display_type == 'line_section'" decoration-info="display_type == 'line_note'">
+                            <field name="sequence" column_invisible="1" />
+                            <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
+                            <field name="display_type" column_invisible="True"/>
+                            <field name="product_type" column_invisible="True"/>
+                            <field
+                                    name="product_id"
+                                    string="Product Variant"
+                                    required="not display_type"
+                                    force_save="1"
+                                    context="{
+                                        'partner_id': parent.partner_id,
+                                        'quantity': product_uom_qty,
+                                        'pricelist': parent.pricelist_id,
+                                        'uom':product_uom,
+                                        'company_id': parent.company_id,
+                                        'default_lst_price': price_unit,
+                                        'default_uom_id': product_uom,
+                                    }"
+                                    options="{
+                                        'no_open': True,
+                                    }"
+                                    domain="[('sale_ok', '=', True),('product_bom_type','!=','components')]"
+                                    width="200px;"
+                                    />
+                            <field name="product_template_id"
+                                string="Product"
+                                required="not display_type"
+                                context="{
+                                    'partner_id': parent.partner_id,
+                                    'quantity': product_uom_qty,
+                                    'pricelist': parent.pricelist_id,
+                                    'uom':product_uom,
+                                    'company_id': parent.company_id,
+                                    'default_list_price': price_unit,
+                                    'default_uom_id': product_uom,
+                                }"
+                                options="{
+                                    'no_open': True,
+                                }"
+                                column_invisible="1"
+                                domain="[('sale_ok', '=', True),('product_bom_type','!=','components')]"
+                                placeholder="Type to find a product..."/>
+                            <field name="product_template_attribute_value_ids" column_invisible="1" />
+                            <field name="product_no_variant_attribute_value_ids" column_invisible="1" />
+                            <field name="line_group_id_value" column_invisible="1"/>
+                            <field name="line_code_id_value" column_invisible="1"/>
+                            <field
+                                    name="product_uom_qty"
+                                    decoration-info="(not display_type)" decoration-bf="(not display_type)"
+                                    context="{
+                                        'partner_id': parent.partner_id,
+                                        'quantity': product_uom_qty,
+                                        'pricelist': parent.pricelist_id,
+                                        'uom': product_uom,
+                                        'company_id': parent.company_id
+                                    }"
+                                    />
+                            <field
+                                    name="product_uom"
+                                    force_save="1"
+                                    string="UoM"
+                                    readonly="1"
+                                    required="not display_type"
+                                    context="{'company_id': parent.company_id}"
+                                    options='{"no_open": True}'
+                                    width="60px"
+                                    />
+                            
+                            <field
+                                name="price_unit"
+                                readonly="1"/>
+                            <field name="technical_price_unit" column_invisible="1"/>
+                            <field
+                                name="tax_id"
+                                widget="many2many_tags"
+                                options="{'no_create': True}"
+                                domain="[('type_tax_use', '=', 'sale'), ('company_id', 'parent_of', parent.company_id), ('country_id', '=', parent.tax_country_id)]"
+                                context="{'active_test': True}"
+                                optional="hide"
+                                />
+                            <field name="price_subtotal"
+                                       string="Subtotal"/>
+                            <field name="price_total"
+                                    string="Amount"/>
+
+                            
+                            <field name="name" invisible="not display_type"/>
+                            <button string="Add Code" name="add_code" type="object" class="btn-link" invisible="display_type != 'line_section'"/>
+                            <button string="Add Product" name="action_show_wizard_to_add_product" type="object" class="btn-link" invisible="display_type != 'line_note'"/>
+
+                        </list>
+                    </field>
+                    <button name="action_add_group" type="object" class="btn-add-group-link" string="Add Group" invisible="state == 'deal'"/>
+                    <group name="note_group" col="6" class="mt-2 mt-md-0" invisible="state == 'deal'">
+                        <group colspan="4" class="order-1 order-lg-0">
+                            <field  colspan="2" name="note" nolabel="1" placeholder="Terms and conditions..."/>
+                        </group>
+                        <group class="oe_subtotal_footer d-flex order-0 order-lg-1 flex-column gap-0 gap-sm-3" colspan="2" name="simple_sale_total">
+                            <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <sheet invisible="not is_draft_available">
+                    <div class="d-flex justify-content-center mb-3">
+                        <strong style="font-size:20px;">
+                            Your already saved draft is found!
+                        </strong>
+                    </div>
+                    <div class="d-flex justify-content-center gap-2">
+
+                        <button name="continue_draft" type="object" string="Continue Saved Draft" class="btn-warning" icon="fa-arrow-circle-right"/>
+
+                        <button name="start_fresh" type="object" string="Start Fresh" class="btn-info" icon="fa-refresh"/>
+  
+                    </div>
+
+
+                </sheet>
+                <footer invisible="is_draft_available">
+                        <button special="cancel" string="Cancel" invisible="state == 'quote'"/>
+                        <button name="back" type="object" string="Back" class="btn-secondary" invisible="state == 'deal'" icon="fa-arrow-left"/>
+                        <button name="next" type="object" string="Next" class="btn-info" invisible="state == 'quote'" icon="fa-arrow-right"/>
+                        <button name="save_as_draft" type="object" string="Save As Draft" class="btn-secondary" confirm="Are you sure?"/>
+                        <button name="create_quotation" type="object" string="Create Quotation" class="btn-primary" confirm="Are you sure?" invisible="state == 'deal'"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action simple.quote.entry.wizard -->
+    <record id="action_simple_quote_entry_wizard" model="ir.actions.act_window">
+        <field name="name">Create Quotation Simple Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">simple.quote.entry.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_simple_quote_entry_wizard"
+              name="Simple Quote Wizard"
+              action="action_simple_quote_entry_wizard"
+              parent="burgtec_simple_quote.menu_simple_quote_root"
+              sequence="99"/>
+
+
+</odoo>

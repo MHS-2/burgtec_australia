@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="product_price_list_view_extended" model="ir.ui.view">
+        <field name="name">product.price.list.view.extended</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='item_ids']//field[@name='min_quantity']" position="after">
+                <field name="manual_cost" widget="monetary"/>
+            </xpath>
+
+            <xpath expr="//field[@name='country_group_ids']" position="after">
+                <field name="pricelist_type"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="is_preferred"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="product_price_list_form_view_extended" model="ir.ui.view">
+        <field name="name">product.price.list.form.view.extended</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[hasclass('gap-3')]" position="after">
+                <field name="manual_cost" widget="monetary"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ir_cron_set_since_days_for_email_po_sent" model="ir.cron">
+        <field name="name">Update Since Days PO Email Sent</field>
+        <field name="model_id" ref="model_purchase_order"/>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.set_since_sent_days()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+</odoo>

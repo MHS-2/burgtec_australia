@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Author shown on notes and PDFs posted by the WordPress website. Not a user, cannot log in. -->
+    <record id="partner_wordpress_api" model="res.partner">
+        <field name="name">WordPress Website</field>
+    </record>
+</odoo>

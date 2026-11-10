@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_product_template_form_inherit_burgtec_template" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.burgtec.template</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='sales']/group[@name='sale']" position="before">
+                <group name="optional_groups" string="Optional Groups">
+                    <field name="optional_group_ids" widget="one2many">
+                            <list editable="bottom">
+                                <field name="name" readonly="1" force_save="1"/>
+                                <field name="optional_group_id" options="{'no_create':1,'no_open':1}"/>
+                            </list>
+                    </field>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='optional_product_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='inventory']" position="after">
+                <page string="Website Info" name="burgtec_template_info">
+                    <group>
+                        <group>
+                            <field name="api_website_product_origin" placeholder="Product Origin" string="Product Origin"/>
+                            <field name="api_template_product_name"/>
+                            <field name="api_template_default_code"/>
+                            <field name="api_template_custom_categ_id"/>
+                            <field name="api_template_brand"/>
+                            <field name="api_template_taxes_id"/>
+                            <field name="api_template_list_price"/>
+                            <!-- <field name="api_template_quotation_lead_time"/> -->
+                            <field name="is_product_published" string="Is Published"/>
+                            <field name="is_modular_template_product"/>
+                            <field name="is_purchasable_online_template"/>
+                            <field name="api_template_unit" string="Template Unit"/>
+<!--                            <field name="api_zone_postal_id" string="Zone Postal Code"/>-->
+                            <field name="api_template_delivery_code_selection_id" string="Delivery Code Selection"/>
+                            <!-- <field name="is_published"/> -->
+                        </group>
+                    </group>
+
+                    <group string="Website Attachments">
+                        <group>
+                            <separator string="Image Attachments" colspan="2"/>
+                            <field name="api_template_image_attachment_ids" widget="image_carousel"/>
+                        </group>
+                        <group>
+                            <separator string="Featured Attachments" colspan="2"/>
+                            <field name="api_template_featured_attachment_ids" widget="image_carousel" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <separator string="Docs Attachment" colspan="2"/>
+                            <field name="api_template_docs_attachment_ids" widget="many2many_binary" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+
+                    <group string="Website Description Details">
+                        <group>
+                            <field name="api_website_description" placeholder="Add Description Here."/>
+                            <field name="api_website_dimensions" placeholder="Add Dimensions Here."/>
+                            <field name="api_website_features" placeholder="Add Features Here."/>
+                        </group>
+                        <group>
+                            <field name="api_website_lead_time" placeholder="Add Lead Time Here."/>
+                            <field name="api_website_finishes" placeholder="Add Finishes Here."/>
+                            <field name="api_website_warranty" placeholder="Add Warranty Here."/>
+                        </group>
+                    </group>
+
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="hubspot_ticket_creation_ps.SaleOrderLineExt"
+       t-inherit="account.sectionAndNoteListRenderer"
+       t-inherit-mode="extension">
+
+        <xpath expr="//table" position="replace">
+            <t t-if="state.customButtons">
+                <table t-attf-class="o_list_table table table-sm table-hover position-relative mb-0 {{props.list.isGrouped ? 'o_list_table_grouped' : 'o_list_table_ungrouped table-striped'}}"
+                       t-ref="table">
+                    <thead>
+                        <tr>
+                            <th t-if="hasSelectors"
+                                class="o_list_record_selector o_list_controller align-middle pe-1 cursor-pointer"
+                                tabindex="-1" t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                t-on-click.stop="toggleSelection">
+                                <CheckBox disabled="!_canSelectRecord" value="selectAll" className="'d-flex m-0'"
+                                          onChange.bind="toggleSelection"/>
+                            </th>
+                            <t t-foreach="columns" t-as="column" t-key="column.id">
+                                <th t-if="column.type === 'field'"
+                                    t-att-data-name="column.name"
+                                    t-att-class="getColumnClass(column) + ' opacity-trigger-hover w-print-auto'"
+                                    t-on-pointerup="onColumnTitleMouseUp"
+                                    t-on-click="() => this.onClickSortColumn(column)"
+                                    t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                    data-tooltip-delay="1000"
+                                    tabindex="-1">
+                                    <t t-if="column.hasLabel and column.widget !== 'handle'">
+                                        <t t-set="isNumeric" t-value="isNumericColumn(column)"/>
+                                        <div class="d-flex"
+                                             t-att-data-tooltip-template="isDebugMode ? 'web.FieldTooltip' : 'web.ListHeaderTooltip'"
+                                             t-att-data-tooltip-info="makeTooltip(column)">
+                                            <span class="d-block min-w-0 text-truncate flex-grow-1 flex-shrink-1"
+                                                  t-att-class="isNumeric ? 'o_list_number_th' : ''"
+                                                  t-esc="column.label"/>
+                                            <div class="o_list_header_label_spacer"/>
+                                            <i class="o_list_sortable_caret"
+                                               t-att-class="getSortableIconClass(column)"/>
+                                        </div>
+                                        <span
+                                                class="o_resize position-absolute top-0 end-0 bottom-0 ps-1 bg-black-25 opacity-0 opacity-50-hover z-1"
+                                                t-on-pointerdown.stop.prevent="this.columnWidths.onStartResize"/>
+                                    </t>
+                                </th>
+                                <th t-else="" t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                    t-att-class="{'o_list_button w-print-0 p-print-0': column.type === 'button_group'}"/>
+                            </t>
+                            <th t-if="state.customButtons" class="o_list_open_form_view w-print-0 p-print-0"
+                                style="width:120px;!important;"/>
+                            <th t-if="state.customButtons" class="o_list_open_form_view w-print-0 p-print-0"
+                                style="width:120px;!important;"/>
+                            <th t-if="hasOpenFormViewColumn" t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                class="o_list_open_form_view w-print-0 p-print-0"/>
+                            <th t-if="hasActionsColumn" t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                class="o_list_controller o_list_actions_header w-print-0 p-print-0 position-sticky end-0">
+                                <div t-if="displayOptionalFields or hasOptionalOpenFormViewColumn"
+                                     class="o_optional_columns_dropdown d-print-none text-center border-top-0">
+                                    <Dropdown position="'bottom-end'">
+                                        <button class="btn p-0" tabindex="-1">
+                                            <i class="o_optional_columns_dropdown_toggle oi oi-fw oi-settings-adjust"/>
+                                        </button>
+
+                                        <t t-set-slot="content">
+                                            <t t-foreach="optionalFieldGroups" t-as="group" t-key="group_index">
+                                                <div t-if="!group_first" role="separator" class="dropdown-divider"/>
+                                                <DropdownItem t-if="group.displayName" closingMode="'none'"
+                                                              onSelected="() => this.toggleOptionalFieldGroup(group.id)">
+                                                    <div class="fw-bold" t-esc="group.displayName"/>
+                                                </DropdownItem>
+                                                <t t-foreach="group.optionalFields" t-as="field" t-key="field_index">
+                                                    <DropdownItem closingMode="'none'"
+                                                                  onSelected="() => this.toggleOptionalField(field.name)">
+                                                        <CheckBox
+                                                                onChange="() => this.toggleOptionalField(field.name)"
+                                                                value="field.value"
+                                                                name="field.name"
+                                                        >
+                                                            <span class="d-flex align-items-center">
+                                                                <span class="text-truncate" t-esc="field.label"/>
+                                                                <span class="ps-1" t-if="env.debug"
+                                                                      t-esc="' (' + field.name + ')'"/>
+                                                            </span>
+                                                        </CheckBox>
+                                                    </DropdownItem>
+                                                </t>
+                                            </t>
+                                            <div t-if="hasOptionalOpenFormViewColumn" role="separator"
+                                                 class="dropdown-divider"/>
+                                            <DropdownItem t-if="hasOptionalOpenFormViewColumn" closingMode="'none'"
+                                                          onSelected="() => this.toggleDebugOpenView()">
+                                                <CheckBox
+                                                        onChange="() => this.toggleDebugOpenView()"
+                                                        value="this.debugOpenView"
+                                                        name="'View Button'"
+                                                >
+                                                    <span class="d-flex align-items-center">
+                                                        <span class="text-truncate">View Button</span>
+                                                    </span>
+                                                </CheckBox>
+                                            </DropdownItem>
+                                        </t>
+                                    </Dropdown>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="ui-sortable">
+                        <t t-call="{{ constructor.rowsTemplate }}">
+                            <t t-set="list" t-value="props.list"/>
+                        </t>
+                    </tbody>
+                    <tfoot t-on-click="() => props.list.leaveEditMode()" class="o_list_footer cursor-default"
+                           t-att-class="{o_sample_data_disabled: props.list.model.useSampleModel}">
+                        <tr>
+                            <td t-if="hasSelectors"/>
+                            <t t-foreach="columns" t-as="column" t-key="column.id">
+                                <t t-set="aggregate" t-value="aggregates[column.name]"/>
+                                <td t-if="aggregate" class="o_list_number">
+                                    <span t-esc="aggregate.value" t-att-data-tooltip="aggregate.help"/>
+                                </td>
+                                <td t-elif="column.type != 'field'" class="w-print-auto"/>
+                                <td t-else=""/>
+                            </t>
+                            <td t-if="hasOpenFormViewColumn" class="w-print-0 p-print-0"/>
+                            <td t-if="displayOptionalFields or activeActions.onDelete" class="w-print-0 p-print-0"/>
+                        </tr>
+                    </tfoot>
+                </table>
+            </t>
+            <t t-else="">
+                <table t-attf-class="o_list_table table table-sm table-hover position-relative mb-0 {{props.list.isGrouped ? 'o_list_table_grouped' : 'o_list_table_ungrouped table-striped'}} {{props.list.resModel === 'planning.screen.line' ? 'planning-screen-line-table' : ''}}"
+                       t-ref="table">
+                    <thead>
+                        <tr>
+                            <th t-if="hasSelectors"
+                                class="o_list_record_selector o_list_controller align-middle pe-1 cursor-pointer"
+                                tabindex="-1" t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                t-on-click.stop="toggleSelection">
+                                <CheckBox disabled="!_canSelectRecord" value="selectAll" className="'d-flex m-0'"
+                                          onChange.bind="toggleSelection"/>
+                            </th>
+                            <t t-foreach="columns" t-as="column" t-key="column.id">
+                                <th t-if="column.type === 'field'"
+                                    t-att-data-name="column.name"
+                                    t-att-class="getColumnClass(column) + ' opacity-trigger-hover w-print-auto'"
+                                    t-on-pointerup="onColumnTitleMouseUp"
+                                    t-on-click="() => this.onClickSortColumn(column)"
+                                    t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                    data-tooltip-delay="1000"
+                                    tabindex="-1">
+                                    <t t-if="column.hasLabel and column.widget !== 'handle'">
+                                        <t t-set="isNumeric" t-value="isNumericColumn(column)"/>
+
+                                        <div t-if="column.name.includes('do_stage') and this.props.list.resModel=='planning.screen.line'"
+                                             class="ps-date-inputs-above">
+                                             <div class="d-flex align-items-center gap-1 mb-1"
+                                                  style="border:1.5px solid #000; padding:4px 4px; border-radius:3px;">
+        <span style="font-size:0.55rem; white-space:nowrap; color:#000; font-weight:450;">Dispatch Date:</span>
+                                                 <span style="font-size:0.55rem; color:#000; white-space:nowrap;"
+                                                       t-esc="this.getTicketScheduledDispatchDateForColumn(column.name)"/>
+    </div>
+                                            <div class="d-flex align-items-center gap-1 mb-1"
+                                                 style="border:1.5px solid #000; padding:4px 4px; border-radius:3px;">
+        <span style="font-size:0.55rem; white-space:nowrap; color:#000; font-weight:450;">Delivery Date:</span>
+                                                <span style="font-size:0.55rem; color:#000; white-space:nowrap;"
+                                                      t-esc="this.getTicketScheduledDeliverDateForColumn(column.name)"/>
+    </div>
+                                            <div class="d-flex align-items-center gap-1 mb-1"
+                                                 style="border:1.5px solid #000; padding:4px 4px; border-radius:3px;">
+        <span style="font-size:0.55rem; white-space:nowrap; color:#000; font-weight:450;">Install Start Date:</span>
+                                                <span style="font-size:0.55rem; color:#000; white-space:nowrap;"
+                                                      t-esc="this.getTicketScheduledInstallDateForColumn(column.name)"/>
+    </div>
+                                            <div class="d-flex align-items-center gap-1"
+                                                 style="border:1.5px solid #000; padding:4px 4px; border-radius:3px;">
+        <span style="font-size:0.55rem; white-space:nowrap; color:#000; font-weight:450;">Install Cmp Date:</span>
+                                                <span style="font-size:0.55rem; color:#000; white-space:nowrap;"
+                                                      t-esc="this.getTicketScheduledInstallCompleteDateForColumn(column.name)"/>
+    </div>
+</div>
+
+                                        <div class="d-flex"
+                                             t-att-data-tooltip-template="isDebugMode ? 'web.FieldTooltip' : 'web.ListHeaderTooltip'"
+                                             t-att-data-tooltip-info="makeTooltip(column)">
+                                            <span class="d-block min-w-0 text-center text-truncate flex-shrink-1"
+                                                  style="font-size: 12px;"
+                                                  t-att-class="isNumeric ? 'o_list_number_th' : ''"
+                                                  t-esc="column.label"/>
+                                            <t t-if="(column.name.includes('do_stage') and this.props.list.resModel=='planning.screen.line')">
+                                            <t t-set="status_name"
+                                               t-value="this.getDeliveryStageStatusForColumn(column.name)"/>
+                                                <t t-if="status_name == 'Un-scheduled'">
+                                                    <span class="badge rounded-pill bg-secondary"
+                                                          style="margin-left:4px;">
+                                                      <t t-esc="this.getDeliveryStageStatusForColumn(column.name)"/>
+                                                </span>
+                                            </t>
+                                                <t t-if="status_name == 'On Track'">
+                                            <span class="badge rounded-pill bg-success" style="margin-left:4px;">
+                                                      <t t-esc="this.getDeliveryStageStatusForColumn(column.name)"/>
+                                                </span>
+                                            </t>
+                                                <t t-if="status_name == 'Off Track'">
+                                            <span class="badge rounded-pill bg-danger" style="margin-left:4px;">
+                                                      <t t-esc="this.getDeliveryStageStatusForColumn(column.name)"/>
+                                                </span>
+                                            </t>
+                                                <t t-if="status_name == 'Caution'">
+                                            <span class="badge rounded-pill bg-warning" style="margin-left:4px;">
+                                                      <t t-esc="this.getDeliveryStageStatusForColumn(column.name)"/>
+                                                </span>
+                                            </t>
+                                                <t t-if="status_name == 'Fully Received'">
+                                            <span class="badge rounded-pill bg-info" style="margin-left:1px;">
+                                                      <t t-esc="this.getDeliveryStageStatusForColumn(column.name)"/>
+                                                </span>
+                                            </t>
+                                            </t>
+
+                                            <div class="o_list_header_label_spacer"/>
+                                            <i class="o_list_sortable_caret"
+                                               t-att-class="getSortableIconClass(column)"/>
+                                        </div>
+                                        <!-- Here Goes the code for selection on stage label -->
+                                        <div class="o_custom_header_dropdown mt-1"
+                                             t-if="(column.name.includes('do_stage') and this.props.list.resModel=='planning.screen.line')">
+                                            <select class="form-select form-select-sm-custom draft-planned-dropdown text-center border-dark"
+                                                    t-on-change="onHeaderSelectChange"
+                                                    t-att-data-fieldname="column.name">
+                                                <option value="draft">Draft</option>
+                                                <option value="new">New</option>
+                                                <option value="planned">Planned</option>
+                                            </select>
+                                            <select class="form-select form-select-sm-custom confirmed-dropdown text-center border-dark"
+                                                    disabled="disabled"
+                                                    t-att-data-fieldname="column.name"
+                                                    style="display: none;">
+                                                <option value="confirmed">Confirmed</option>
+                                            </select>
+                                        </div>
+                                        <!--                                        New code for delivery stage number and global icon-->
+                                        <div class="o_custom_header_dropdown mt-1"
+                                             t-if="(column.name.includes('do_stage') and this.props.list.resModel=='planning.screen.line')">
+                                            <div style="display: flex; width: 100%;">
+                                                <input type="text"
+                                                       class="form-control form-control-sm-custom text-center border-dark area-name-input"
+                                                       readonly="readonly"
+                                                       style="color: #000000 !important; background-color: #ffffff; pointer-events: none;"
+                                                       t-att-value="this.getTicketStageForColumn(column.name)"
+                                                       t-att-placeholder="this.getTicketStageForColumn(column.name)"/>
+                                                <a t-if="this.getTicketUrlForColumn(column.name)"
+                                                   t-att-href="this.getTicketUrlForColumn(column.name)"
+                                                   target="_blank"
+                                                   style="display: flex; align-items: center; padding: 0 5px; border: 1px solid #111827; background-color: #ffffff; color: #0d6efd; text-decoration: none; border-radius: 0 4px 4px 0;"
+                                                   title="Open HubSpot Ticket">
+                                                    <i class="fa fa-globe"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <span
+                                                class="o_resize position-absolute top-0 end-0 bottom-0 ps-1 bg-black-25 opacity-0 opacity-50-hover z-1"
+                                                t-on-pointerdown.stop.prevent="this.columnWidths.onStartResize"/>
+                                    </t>
+                                </th>
+                                <th t-else="" t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                    t-att-class="{'o_list_button w-print-0 p-print-0': column.type === 'button_group'}"/>
+                            </t>
+                            <th t-if="hasOpenFormViewColumn" t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                class="o_list_open_form_view w-print-0 p-print-0"/>
+                            <th t-if="hasActionsColumn" t-on-keydown="(ev) => this.onCellKeydown(ev)"
+                                class="o_list_controller o_list_actions_header w-print-0 p-print-0 position-sticky end-0">
+                                <div t-if="displayOptionalFields or hasOptionalOpenFormViewColumn"
+                                     class="o_optional_columns_dropdown d-print-none text-center border-top-0">
+                                    <Dropdown position="'bottom-end'">
+                                        <button class="btn p-0" tabindex="-1">
+                                            <i class="o_optional_columns_dropdown_toggle oi oi-fw oi-settings-adjust"/>
+                                        </button>
+
+                                        <t t-set-slot="content">
+                                            <t t-foreach="optionalFieldGroups" t-as="group" t-key="group_index">
+                                                <div t-if="!group_first" role="separator" class="dropdown-divider"/>
+                                                <DropdownItem t-if="group.displayName" closingMode="'none'"
+                                                              onSelected="() => this.toggleOptionalFieldGroup(group.id)">
+                                                    <div class="fw-bold" t-esc="group.displayName"/>
+                                                </DropdownItem>
+                                                <t t-foreach="group.optionalFields" t-as="field" t-key="field_index">
+                                                    <DropdownItem closingMode="'none'"
+                                                                  onSelected="() => this.toggleOptionalField(field.name)">
+                                                        <CheckBox
+                                                                onChange="() => this.toggleOptionalField(field.name)"
+                                                                value="field.value"
+                                                                name="field.name"
+                                                        >
+                                                            <span class="d-flex align-items-center">
+                                                                <span class="text-truncate" t-esc="field.label"/>
+                                                                <span class="ps-1" t-if="env.debug"
+                                                                      t-esc="' (' + field.name + ')'"/>
+                                                            </span>
+                                                        </CheckBox>
+                                                    </DropdownItem>
+                                                </t>
+                                            </t>
+                                            <div t-if="hasOptionalOpenFormViewColumn" role="separator"
+                                                 class="dropdown-divider"/>
+                                            <DropdownItem t-if="hasOptionalOpenFormViewColumn" closingMode="'none'"
+                                                          onSelected="() => this.toggleDebugOpenView()">
+                                                <CheckBox
+                                                        onChange="() => this.toggleDebugOpenView()"
+                                                        value="this.debugOpenView"
+                                                        name="'View Button'"
+                                                >
+                                                    <span class="d-flex align-items-center">
+                                                        <span class="text-truncate">View Button</span>
+                                                    </span>
+                                                </CheckBox>
+                                            </DropdownItem>
+                                        </t>
+                                    </Dropdown>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="ui-sortable">
+                        <t t-call="{{ constructor.rowsTemplate }}">
+                            <t t-set="list" t-value="props.list"/>
+                        </t>
+                    </tbody>
+                    <tfoot t-on-click="() => props.list.leaveEditMode()" class="o_list_footer cursor-default"
+                           t-att-class="{o_sample_data_disabled: props.list.model.useSampleModel}">
+                        <tr>
+                            <td t-if="hasSelectors"/>
+                            <t t-foreach="columns" t-as="column" t-key="column.id">
+                                <t t-set="aggregate" t-value="aggregates[column.name]"/>
+                                <td t-if="aggregate" class="o_list_number">
+                                    <span t-esc="aggregate.value" t-att-data-tooltip="aggregate.help"/>
+                                </td>
+                                <td t-elif="column.type != 'field'" class="w-print-auto"/>
+                                <td t-else=""/>
+                            </t>
+                            <td t-if="hasOpenFormViewColumn" class="w-print-0 p-print-0"/>
+                            <td t-if="displayOptionalFields or activeActions.onDelete" class="w-print-0 p-print-0"/>
+                        </tr>
+                    </tfoot>
+                </table>
+            </t>
+        </xpath>
+
+    </t>
+</templates>

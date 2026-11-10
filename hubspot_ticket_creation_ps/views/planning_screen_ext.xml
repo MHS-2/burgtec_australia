@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hubspot_ticket_creation_ps.planning_screen_ext1" model="ir.ui.view">
+            <field name="name">quote.type.customization.planning.screen</field>
+            <field name="model">planning.screen</field>
+            <field name="inherit_id" ref="quotation_type_customization.planning_screen_ext"/>
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//field[@name='stage_count']/parent::group" position="after">
+                    <group>
+                        <field name="show_planned_stages" invisible="1"/>
+                        <button name="action_toggle_planned_stages" type="object" string="Show Planned Stages"
+                        invisible="show_planned_stages" class="btn-primary"/>
+                        <button name="action_toggle_planned_stages" type="object" string="Hide Planned Stages"
+                                invisible="not show_planned_stages" class="btn-primary"/>
+                    </group>
+                </xpath>
+
+                <!-- 3. Stage columns 1-50 -->
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_1']" position="attributes">
+                    <attribute name="readonly">parent.do_1_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_1_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_1_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 1 or (parent.do_1_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_2']" position="attributes">
+                    <attribute name="readonly">parent.do_2_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_2_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_2_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 2 or (parent.do_2_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_3']" position="attributes">
+                    <attribute name="readonly">parent.do_3_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_3_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_3_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 3 or (parent.do_3_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_4']" position="attributes">
+                    <attribute name="readonly">parent.do_4_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_4_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_4_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 4 or (parent.do_4_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_5']" position="attributes">
+                    <attribute name="readonly">parent.do_5_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_5_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_5_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 5 or (parent.do_5_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_6']" position="attributes">
+                    <attribute name="readonly">parent.do_6_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_6_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_6_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 6 or (parent.do_6_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_7']" position="attributes">
+                    <attribute name="readonly">parent.do_7_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_7_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_7_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 7 or (parent.do_7_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_8']" position="attributes">
+                    <attribute name="readonly">parent.do_8_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_8_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_8_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 8 or (parent.do_8_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_9']" position="attributes">
+                    <attribute name="readonly">parent.do_9_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_9_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_9_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 9 or (parent.do_9_status == 'planned' and
+                        not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_10']" position="attributes">
+                    <attribute name="readonly">parent.do_10_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_10_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_10_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 10 or (parent.do_10_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_11']" position="attributes">
+                    <attribute name="readonly">parent.do_11_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_11_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_11_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 11 or (parent.do_11_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_12']" position="attributes">
+                    <attribute name="readonly">parent.do_12_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_12_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_12_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 12 or (parent.do_12_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_13']" position="attributes">
+                    <attribute name="readonly">parent.do_13_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_13_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_13_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 13 or (parent.do_13_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_14']" position="attributes">
+                    <attribute name="readonly">parent.do_14_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_14_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_14_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 14 or (parent.do_14_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_15']" position="attributes">
+                    <attribute name="readonly">parent.do_15_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_15_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_15_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 15 or (parent.do_15_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_16']" position="attributes">
+                    <attribute name="readonly">parent.do_16_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_16_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_16_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 16 or (parent.do_16_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_17']" position="attributes">
+                    <attribute name="readonly">parent.do_17_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_17_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_17_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 17 or (parent.do_17_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_18']" position="attributes">
+                    <attribute name="readonly">parent.do_18_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_18_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_18_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 18 or (parent.do_18_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_19']" position="attributes">
+                    <attribute name="readonly">parent.do_19_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_19_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_19_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 19 or (parent.do_19_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_20']" position="attributes">
+                    <attribute name="readonly">parent.do_20_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_20_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_20_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 20 or (parent.do_20_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_21']" position="attributes">
+                    <attribute name="readonly">parent.do_21_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_21_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_21_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 21 or (parent.do_21_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_22']" position="attributes">
+                    <attribute name="readonly">parent.do_22_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_22_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_22_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 22 or (parent.do_22_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_23']" position="attributes">
+                    <attribute name="readonly">parent.do_23_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_23_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_23_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 23 or (parent.do_23_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_24']" position="attributes">
+                    <attribute name="readonly">parent.do_24_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_24_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_24_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 24 or (parent.do_24_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_25']" position="attributes">
+                    <attribute name="readonly">parent.do_25_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_25_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_25_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 25 or (parent.do_25_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_26']" position="attributes">
+                    <attribute name="readonly">parent.do_26_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_26_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_26_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 26 or (parent.do_26_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_27']" position="attributes">
+                    <attribute name="readonly">parent.do_27_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_27_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_27_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 27 or (parent.do_27_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_28']" position="attributes">
+                    <attribute name="readonly">parent.do_28_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_28_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_28_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 28 or (parent.do_28_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_29']" position="attributes">
+                    <attribute name="readonly">parent.do_29_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_29_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_29_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 29 or (parent.do_29_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_30']" position="attributes">
+                    <attribute name="readonly">parent.do_30_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_30_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_30_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 30 or (parent.do_30_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_31']" position="attributes">
+                    <attribute name="readonly">parent.do_31_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_31_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_31_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 31 or (parent.do_31_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_32']" position="attributes">
+                    <attribute name="readonly">parent.do_32_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_32_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_32_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 32 or (parent.do_32_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_33']" position="attributes">
+                    <attribute name="readonly">parent.do_33_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_33_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_33_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 33 or (parent.do_33_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_34']" position="attributes">
+                    <attribute name="readonly">parent.do_34_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_34_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_34_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 34 or (parent.do_34_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_35']" position="attributes">
+                    <attribute name="readonly">parent.do_35_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_35_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_35_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 35 or (parent.do_35_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_36']" position="attributes">
+                    <attribute name="readonly">parent.do_36_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_36_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_36_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 36 or (parent.do_36_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_37']" position="attributes">
+                    <attribute name="readonly">parent.do_37_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_37_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_37_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 37 or (parent.do_37_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_38']" position="attributes">
+                    <attribute name="readonly">parent.do_38_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_38_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_38_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 38 or (parent.do_38_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_39']" position="attributes">
+                    <attribute name="readonly">parent.do_39_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_39_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_39_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 39 or (parent.do_39_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_40']" position="attributes">
+                    <attribute name="readonly">parent.do_40_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_40_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_40_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 40 or (parent.do_40_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_41']" position="attributes">
+                    <attribute name="readonly">parent.do_41_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_41_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_41_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 41 or (parent.do_41_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_42']" position="attributes">
+                    <attribute name="readonly">parent.do_42_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_42_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_42_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 42 or (parent.do_42_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_43']" position="attributes">
+                    <attribute name="readonly">parent.do_43_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_43_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_43_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 43 or (parent.do_43_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_44']" position="attributes">
+                    <attribute name="readonly">parent.do_44_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_44_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_44_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 44 or (parent.do_44_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_45']" position="attributes">
+                    <attribute name="readonly">parent.do_45_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_45_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_45_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 45 or (parent.do_45_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_46']" position="attributes">
+                    <attribute name="readonly">parent.do_46_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_46_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_46_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 46 or (parent.do_46_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_47']" position="attributes">
+                    <attribute name="readonly">parent.do_47_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_47_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_47_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 47 or (parent.do_47_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_48']" position="attributes">
+                    <attribute name="readonly">parent.do_48_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_48_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_48_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 48 or (parent.do_48_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_49']" position="attributes">
+                    <attribute name="readonly">parent.do_49_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_49_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_49_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 49 or (parent.do_49_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']//list/field[@name='do_stage_50']" position="attributes">
+                    <attribute name="readonly">parent.do_50_status in ('planned','confirmed','new')</attribute>
+                    <attribute name="decoration-danger">parent.do_50_status == 'planned'</attribute>
+                    <attribute name="decoration-info">parent.do_50_status != 'planned'</attribute>
+                    <attribute name="column_invisible">parent.stage_count &lt; 50 or (parent.do_50_status == 'planned'
+                        and not parent.show_planned_stages)
+                    </attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

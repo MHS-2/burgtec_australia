@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="m2m_attachment_carousel_view.ImageCarouselWidget">
+        <div class="o_field_image_carousel">
+            <!-- Hidden file input -->
+            <input type="file"
+                   t-ref="fileInput"
+                   accept="image/*"
+                   multiple="multiple"
+                   style="display: none;"
+                   t-on-change="onFileChange"/>
+
+            <t t-if="hasImages">
+                <!-- Main Image Display -->
+                <div class="carousel-container">
+                    <div class="carousel-image-wrapper">
+                        <img t-att-src="currentImage.url"
+                             t-att-alt="currentImage.name"
+                             class="carousel-main-image"
+                             t-on-click="openImageGallery"/>
+
+                        <!-- Navigation Arrows -->
+                        <button t-if="state.currentIndex > 0"
+                                class="carousel-btn carousel-btn-prev"
+                                t-on-click="prevImage">
+                            <i class="fa fa-chevron-left"/>
+                        </button>
+                        <button t-if="state.currentIndex &lt; images.length - 1"
+                                class="carousel-btn carousel-btn-next"
+                                t-on-click="nextImage">
+                            <i class="fa fa-chevron-right"/>
+                        </button>
+
+                        <!-- Action Buttons (Top Right) -->
+                        <div class="carousel-actions" t-if="!isReadonly">
+                            <button class="carousel-action-btn carousel-add-btn"
+                                    t-on-click="onAddImageClick"
+                                    title="Add Image">
+                                <i class="fa fa-plus"/>
+                            </button>
+                            <button class="carousel-action-btn carousel-delete-btn"
+                                    t-on-click="onDeleteImage"
+                                    title="Delete Image">
+                                <i class="fa fa-trash"/>
+                            </button>
+                        </div>
+
+                        <!-- Image Counter -->
+                        <div class="carousel-counter">
+                            <t t-esc="state.currentIndex + 1"/> / <t t-esc="images.length"/>
+                        </div>
+                    </div>
+
+                    <!-- Thumbnail Strip -->
+                    <div class="carousel-thumbnails">
+                        <t t-foreach="images" t-as="img" t-key="img.id">
+                            <div class="carousel-thumbnail"
+                                 t-att-class="{'active': img_index === state.currentIndex}"
+                                 t-on-click="(ev) => this.goToImage(img_index, ev)">
+                                <img t-att-src="img.url" t-att-alt="img.name"/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+            <t t-else="">
+                <div class="carousel-empty-state">
+                    <div class="text-muted mb-2">No images attached</div>
+                    <button t-if="!isReadonly"
+                            class="btn btn-primary btn-sm"
+                            t-on-click="onAddImageClick">
+                        <i class="fa fa-plus"/> Add Image
+                    </button>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

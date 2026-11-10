@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View warehouse.receiving View List -->
+    <record id="view_warehouse_receiving_list" model="ir.ui.view">
+        <field name="name">view.warehouse.receiving.list</field>
+        <field name="model">warehouse.receiving</field>
+        <field name="arch" type="xml">
+            <list duplicate="0">
+                <field name="name"/>
+                <field name="project_quote_id" context="{'burgtec_ds_reference':1}"/>
+                <field name="delivery_quote_id" context="{'burgtec_ds_reference':1}"/>
+                <field name="delivery_quote_location"/>
+                <field name="stock_warehouse_id"/>
+                <field name="date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- View warehouse.receiving form -->
+    <record id="view_warehouse_receiving_form" model="ir.ui.view">
+        <field name="name">view.warehouse.receiving.form</field>
+        <field name="model">warehouse.receiving</field>
+        <field name="arch" type="xml">
+            <form string="Warehouse Receiving" duplicate="0">
+                <header>
+                    <button name="fetch_stage_items" type="object" string="Load Stage Items" class="btn-primary" invisible="warehouse_receiving_line_ids"/>
+                </header>
+                <sheet>
+                    <!-- Smart buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_dispatching"
+                                type="object"
+                                string="Warehouse Dispatching"
+                                class="oe_stat_button"
+                                icon="fa-truck"
+                                invisible="not warehouse_dispatching_id"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" string="Reference" class="fw-bold"/>
+                        <h1>
+                            <field name="name" placeholder="Reference" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="delivery_quote_domain" invisible="1"/>
+                            <field name="project_quote_id" context="{'burgtec_ds_reference':1}" options="{'no_open':1, 'no_create':1}" readonly="warehouse_receiving_line_ids"/>
+                            <field name="delivery_quote_id" domain="delivery_quote_domain" context="{'burgtec_ds_reference':1}" options="{'no_open':1, 'no_create':1}" readonly="warehouse_receiving_line_ids"/>
+                            <field name="delivery_quote_location" invisible="not delivery_quote_id"/>
+                            <div class="d-flex align-items-center" style="gap: 8px;">
+                                <label for="parent_purchase_order_id" string="Parent Purchase Order" class="fw-bold"/>
+                                <field name="parent_purchase_order_id"
+                                    class="oe_inline"
+                                    style="width: 250px;"
+                                    options="{'no_open':1}"
+                                    context="{'burgtec_po_reference':1}"/>
+                                <field name="parent_purchase_order_state"
+                                    class="oe_inline"
+                                    widget="badge"
+                                    decoration-success="parent_purchase_order_state in ('purchase','done')"
+                                    decoration-warning="parent_purchase_order_state == 'to approve'"
+                                    decoration-info="parent_purchase_order_state in ('draft','sent')"/>
+                            </div>
+                            <field name="child_purchase_order_ids" no_label="1">
+                                <list editable="bottom">
+                                    <field name="burgtec_purchase_reference"/>
+                                    <field  name="partner_id"/>
+                                    <field name="picking_ids" widget="many2many_tags" optional="show"/>
+                                    <field name="state" widget="badge"
+                                        decoration-success="state == 'purchase' or state == 'done'"
+                                        decoration-warning="state == 'to approve'"
+                                        decoration-info="state == 'draft' or state == 'sent'"/>
+                                </list>
+                            </field>
+                            <field name="stock_warehouse_id" options="{'no_open':1, 'no_create':1}" readonly="warehouse_receiving_line_ids"/>
+                            <field name="date" readonly="warehouse_receiving_line_ids"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="warehouse_receiving_line_ids" invisible="1">
+                            <list create="0" delete="0" editable="bottom">
+                                <field name="group_code"/>
+                                <field name="product_default_code"/>
+                                <field name="product_description"/>
+                                <field name="product_qty"/>
+                                <field name="received_qty"/>
+                                <field name="is_received"/>
+                                <field name="is_staged"/>
+                                <field name="is_dispatched"/>
+                                <field name="is_delivered"/>
+                                <field name="purchase_id" optional="hide"/>
+                                <field name="supplier_id" optional="hide"/>
+                            </list>
+                        </field>
+                    </group>
+                    <notebook>
+                        <page name="warehouse_receiving_page" string="Warehouse Receiving" invisible="not warehouse_receiving_line_ids">
+                            <widget name="live_warehouse_receiving"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View warehouse.receiving search -->
+    <record id="view_warehouse_receiving_search" model="ir.ui.view">
+        <field name="name">view.warehouse.receiving.search</field>
+        <field name="model">warehouse.receiving</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="1" string="Group By">
+                    <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action warehouse.receiving -->
+    <record id="action_warehouse_receiving" model="ir.actions.act_window">
+        <field name="name">Warehouse Receiving</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">warehouse.receiving</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'burgtec_ds_reference':1, 'burgtec_po_reference':1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no examples click here to add new Warehouse Receiving.
+            </p>
+        </field>
+    </record>
+
+        <!-- Top menu item -->
+    <menuitem name="Burgtec Warehouse" id="burgtec_warehouse_menu_root" web_icon="burgtec_warehouse,static/description/icon.png" groups="burgtec_warehouse.group_warehouse_user,burgtec_warehouse.group_warehouse_manager,burgtec_warehouse.group_warehouse_superuser"/>
+
+    <!-- Menu item -->
+    <menuitem name="Operations" id="warehouse_operations_main_menu_top" parent="burgtec_warehouse_menu_root"/>
+
+    <!-- Sub Menu item -->
+    <menuitem name="Receiving" id="warehouse_receiving_basic_menu_action_window" parent="warehouse_operations_main_menu_top" action="action_warehouse_receiving"/>
+
+</odoo>

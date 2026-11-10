@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_budget_plan_line_list" model="ir.ui.view">
+        <field name="name">budget.plan.line.list</field>
+        <field name="model">budget.plan.line</field>
+        <field name="arch" type="xml">
+            <list string="Budget Lines" editable="bottom">
+                <field name="target_type_id"/>
+                <field name="target_state_id" column_invisible="parent.state == 'closed'"/>
+                <field name="jan_amount" sum="SUM" widget="monetary"/>
+                <field name="feb_amount" sum="SUM" widget="monetary"/>
+                <field name="mar_amount" sum="SUM" widget="monetary"/>
+                <field name="apr_amount" sum="SUM" widget="monetary"/>
+                <field name="may_amount" sum="SUM" widget="monetary" optional="hide"/>
+                <field name="jun_amount" sum="SUM" widget="monetary" optional="hide"/>
+                <field name="jul_amount" sum="SUM" widget="monetary" optional="hide"/>
+                <field name="aug_amount" sum="SUM" widget="monetary" optional="hide"/>
+                <field name="sep_amount" sum="SUM" widget="monetary" optional="hide"/>
+                <field name="oct_amount" sum="SUM" widget="monetary" optional="hide"/>
+                <field name="nov_amount" sum="SUM" widget="monetary" optional="hide"/>
+                <field name="dec_amount" sum="SUM" widget="monetary" optional="hide"/>
+                <field name="line_total" sum="Grand Total" widget="monetary"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_budget_plan_list" model="ir.ui.view">
+        <field name="name">budget.plan.list</field>
+        <field name="model">budget.plan</field>
+        <field name="arch" type="xml">
+            <list string="Budget Plans">
+                <field name="name"/>
+                <field name="year"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="grand_total" widget="monetary" sum="Grand Total"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'confirmed'"
+                       decoration-muted="state == 'closed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_budget_plan_form" model="ir.ui.view">
+        <field name="name">budget.plan.form</field>
+        <field name="model">budget.plan</field>
+        <field name="arch" type="xml">
+            <form string="Budget Plan">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_close" type="object" string="Close"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_reset_to_draft" type="object"
+                            string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Budget Plan 2026"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="year"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="grand_total" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Budget Lines" name="lines">
+                            <field name="line_ids" context="{'default_plan_id': id}">
+                                <list editable="bottom">
+                                    <field name="target_type_id" required="true"
+                                           options="{'no_create': True, 'no_open': True, 'no_edit': True}"/>
+                                    <field name="target_state_id" options='{"no_open": True, "no_create": True}'
+                                           required="true"/>
+                                    <field name="jan_amount" sum="SUM" widget="monetary"/>
+                                    <field name="feb_amount" sum="SUM" widget="monetary"/>
+                                    <field name="mar_amount" sum="SUM" widget="monetary"/>
+                                    <field name="apr_amount" sum="SUM" widget="monetary"/>
+                                    <field name="may_amount" sum="SUM" widget="monetary" optional="hide"/>
+                                    <field name="jun_amount" sum="SUM" widget="monetary" optional="hide"/>
+                                    <field name="jul_amount" sum="SUM" widget="monetary" optional="hide"/>
+                                    <field name="aug_amount" sum="SUM" widget="monetary" optional="hide"/>
+                                    <field name="sep_amount" sum="SUM" widget="monetary" optional="hide"/>
+                                    <field name="oct_amount" sum="SUM" widget="monetary" optional="hide"/>
+                                    <field name="nov_amount" sum="SUM" widget="monetary" optional="hide"/>
+                                    <field name="dec_amount" sum="SUM" widget="monetary" optional="hide"/>
+                                    <field name="line_total" sum="Grand Total" widget="monetary"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_budget_plan_search" model="ir.ui.view">
+        <field name="name">budget.plan.search</field>
+        <field name="model">budget.plan</field>
+        <field name="arch" type="xml">
+            <search string="Budget Plans">
+                <field name="name"/>
+                <field name="year"/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state','=','confirmed')]"/>
+                <filter string="Closed" name="closed" domain="[('state','=','closed')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Year" name="group_year" context="{'group_by': 'year'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_budget_plan" model="ir.actions.act_window">
+        <field name="name">Budget Plans</field>
+        <field name="res_model">budget.plan</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Budget Plan.
+            </p>
+            <p>Define revenue targets by Target Type, State and Month.</p>
+        </field>
+    </record>
+
+    <record id="action_budget_plan_line" model="ir.actions.act_window">
+        <field name="name">Budget Lines</field>
+        <field name="res_model">budget.plan.line</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

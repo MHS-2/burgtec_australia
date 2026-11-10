@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="auto_lock_sales_quote_upon_project_creation.view_bulk_action_operations_form_ext" model="ir.ui.view">
+        <field name="name">view.bulk.action.operations.form.ext</field>
+        <field name="model">bulk.action.operations</field>
+        <field name="inherit_id" ref="freight_out_assembly_install_feature.view_bulk_action_operations_form_ext"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='operation_type']" position="after">
+                <field name="is_parent_sale_order_freeze" invisible="1"/>
+                <field name="duplicate_operation_type" invisible="not is_parent_sale_order_freeze"/>
+            </xpath>
+            <xpath expr="//field[@name='operation_type']" position="attributes">
+                <attribute name="invisible">is_parent_sale_order_freeze</attribute>
+            </xpath>
+            <xpath expr="//field[@name='bulk_lines']" position="attributes">
+            <attribute name="invisible"
+                       add="not duplicate_operation_type"
+                       separator=" and "/>
+            </xpath>
+
+            <xpath expr="//group[2]" position="attributes">
+                <attribute name="invisible">is_parent_sale_order_freeze
+                </attribute>
+            </xpath>
+            <xpath expr="//group[2]" position="after">
+                <group invisible="not is_parent_sale_order_freeze">
+                    <field name="is_admin" invisible="1"/>
+                    <field name="is_no_admin_right" invisible="1"/>
+                    <field name="quote_type"
+                           invisible="duplicate_operation_type not in ['duplicate','duplicate_with_group_and_code'] or is_no_admin_right"/>
+                    <field name="target_sale_order_id" string="Quote"
+                           invisible="duplicate_operation_type not in ['duplicate','duplicate_with_group_and_code'] or quote_type or is_no_admin_right"
+                           context="{'group_swap':1}"
+                            domain="[('freeze_sale_order','=',False),('is_frozen_due_to_project_creation', '=', False)]"
+                           options="{'no_open':1,'no_create':1,'search_view_ref': 'sale_custom_report.sale_custom_report_inherit_view_search'}"/>
+                    <field name="target_sale_order_id" string="Quote"
+                           invisible="duplicate_operation_type not in ['duplicate','duplicate_with_group_and_code'] or not quote_type or quote_type == 'project_quote' or is_no_admin_right"
+                           domain="[('quote_type','=','sales_quote'),('is_frozen_due_to_project_creation', '=', False)]" context="{'group_swap':1}"
+                           options="{'no_open':1,'no_create':1,'search_view_ref': 'sale_custom_report.sale_custom_report_inherit_view_search'}"/>
+                    <field name="target_sale_order_id" string="Quote"
+                           invisible="duplicate_operation_type not in ['duplicate','duplicate_with_group_and_code'] or not quote_type or quote_type == 'sales_quote' or is_no_admin_right"
+                           domain="[('quote_type','=','project_quote'),('freeze_sale_order', '=', False)]" context="{'group_swap':1}"
+                           options="{'no_open':1,'no_create':1,'search_view_ref': 'sale_custom_report.sale_custom_report_inherit_view_search'}"/>
+                    <field name="group_id" context="{'group_swap':1}"
+                           invisible="duplicate_operation_type != 'duplicate' or is_no_admin_right"
+                           options="{'no_open':1,'no_create':1,'list_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_list_view','search_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_search_view'}"/>
+                    <field name="section_id" context="{'group_swap':1}"
+                           invisible="duplicate_operation_type != 'duplicate' or is_no_admin_right"
+                           options="{'no_open':1,'no_create':1,'list_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_list_view','search_view_ref': 'sale_order_customisation.sale_order_customisation_sale_order_search_view'}"/>
+                </group>
+            </xpath>
+            <xpath expr="//footer/button[@special='cancel']" position="before">
+                    <button name="action_duplicate" type="object" string="Duplicate" class="oe_highlight"
+                            icon="fa-clone" title="duplicate"
+                            invisible="duplicate_operation_type not in ['duplicate','duplicate_with_group_and_code']"
+                            confirm="Are You Sure You Want to Duplicate the Selected Line(s)?"/>
+            </xpath>
+        </field>
+
+    </record>
+</odoo>

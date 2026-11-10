@@ -1,0 +1,20 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_bom_component,sale.order.bom.component,model_sale_order_bom_component,,1,1,1,0
+access_sale_order_bom_component_line,sale.order.bom.component.line,model_sale_order_bom_component_line,,1,1,1,1
+access_sale_report_bom_component_line,sale.report.bom,model_sale_report_bom,,1,1,1,0
+access_components_on_report,components.on.report,model_components_on_report,,1,1,1,0
+access_components_on_report_line,components.on.report.line,model_components_on_report_line,,1,1,1,0
+access_split_delivery_order,split.do,model_split_do,,1,1,1,0
+access_split_do_line,split.do.line,model_split_do_line,,1,1,1,0
+access_product_certification,product.certification,model_product_certification,,1,1,1,1
+access_bom_component_wizard,bom.component.wizard,model_bom_component_wizard,,1,1,1,0
+access_bom_component_wizard_line,bom.component.wizard.line,model_bom_component_wizard_line,,1,1,1,0
+access_bom_component_state_manager,bom_component_state_manager,model_bom_component_state,,1,1,1,0
+
+purchase.access_res_partner_purchase_manager,res.partner.purchase.manager,base.model_res_partner,purchase.group_purchase_manager,1,0,0,0
+sale.access_res_partner_sale_manager,res.partner.sale.manager,base.model_res_partner,sales_team.group_sale_manager,1,0,0,0
+mrp.access_product_group_res_partner_mrp_manager,res_partner group_mrp_manager,base.model_res_partner,mrp.group_mrp_manager,1,0,0,0
+stock.access_product_group_res_partner_stock_manager,res_partner group_stock_manager,base.model_res_partner,stock.group_stock_manager,1,0,0,0
+
+
+

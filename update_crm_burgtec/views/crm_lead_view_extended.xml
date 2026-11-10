@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="update_crm_burgtec_crm_from_view" model="ir.ui.view">
+        <field name="name">update.crm.burgtec.form.view</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header/button[@name='action_sale_quotations_new']" position="after">
+
+                <button name="import_deal_from_hubspot"
+                        type="object"
+                        invisible="not id_of_hubspot_deal"
+                        string="Import From HubSpot"
+                        class="oe_highlight"/>
+            </xpath>
+
+            <xpath expr="//form" position="inside">
+                <field name="probability" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@id='probability']" position="replace">
+                <div id="probability" class="d-flex align-items-baseline">
+                    <field name="is_automated_probability" invisible="1"/>
+                    <field name="deal_probability" class="oe_inline o_input_6ch p-2" readonly="1" widget="percentage"/>
+                </div>
+            </xpath>
+
+
+            <xpath expr="//group[@name='opportunity_partner']" position="attributes">
+                <attribute name="string">Customer Details</attribute>
+            </xpath>
+
+            <xpath expr="//group[4]" position="attributes">
+                <attribute name="string">Lead Information</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                <attribute name="string">Total Amount</attribute>
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='opportunity_partner']/field[@name='partner_id']" position="attributes">
+                <attribute name="readonly">id_of_hubspot_deal</attribute>
+                <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                <!--                <attribute name="domain">-->
+                <!--                    (company_id and ['|', ('company_id', '=', False), ('company_id', 'parent_of', [company_id])] or-->
+                <!--                    ['|',-->
+                <!--                    ('company_id', '=', False), ('company_id', 'parent_of', '')]) + [('id_of_hubspot_company', '!=',-->
+                <!--                    False)]-->
+                <!--                </attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='email_from']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="odoo_deal_owner_id" readonly="0"/>
+                <field name="deal_owner" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='date_deadline']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="company_currency" invisible="1"/>
+                <field name="latest_quote_sent_amount" widget="monetary"
+                       options="{'currency_field': 'company_currency'}"/>
+                <field name="latest_odoo_quote_gp_amount" widget="monetary"
+                       options="{'currency_field': 'company_currency'}"/>
+                <field name="latest_odoo_quote_gp_percentage" widget="percentage"/>
+                <field name="latest_odoo_quote_number_of_item_lines" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//form//group[6]" position="after">
+                <group name="deal_main_group" string="Deal Details" colspan="2">
+                    <group name="deal_group_1">
+                        <field name="deal_create_date" readonly="1"/>
+                        <field name="quoted_by" readonly="1"/>
+                        <field name="deal_score" readonly="1" widget="percentage"/>
+                        <field name="deal_stage_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="deal_territory_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="deal_type_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="hubspot_deal_url" widget="url"/>
+
+                    </group>
+                    <group name="deal_group_2">
+                        <field name="deal_close_date" readonly="1"/>
+                        <field name="deal_date_quoted" readonly="1"/>
+                        <field name="weighted_amount" readonly="1"/>
+                        <field name="deal_pipeline" readonly="1"/>
+                        <field name="deal_quoted_gp_value" readonly="1"/>
+                        <field name="deal_quoted_gp_percentage" widget="percentage" readonly="1"/>
+                        <!--                        <field name="deal_owner" readonly="1"/>-->
+
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='opportunity_partner']" position="before">
+                <group string="Deal Number and Sequence">
+                    <div class="o_row">
+                        <label for="series_sequence_id"/>
+                        <field name="series_sequence_id" class="oe_inline ps-5" required="not is_old_deal"
+                               readonly="odoo_deal_number_6digit"
+                               options="{'no_open':True,'no_create':True}"/>
+                        <button name="action_generate_deal_number"
+                                type="object"
+                                string="Generate"
+                                class="btn-primary me-5 inline-block"
+                                invisible="odoo_deal_number_6digit"
+                                style="margin-right: 100px;"
+                                confirm="Are you sure"/>
+                    </div>
+                    <field name="id_of_hubspot_deal" readonly="1"/>
+                    <field name="odoo_deal_number_6digit" required="0" readonly="1"/>
+                    <field name="project_name" placeholder="Project Name Here." required="1"/>
+                    <field name="location" string="Location"/>
+                </group>
+                <group>
+
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='lead']" position="after">
+                <page name="checks" string="Checks">
+                    <group name="deal_check_group" string="Checks" colspan="2">
+                        <group>
+                            <field name="is_deal_imported" readonly="1"/>
+                            <field name="is_deal_exported" readonly="1"/>
+                            <field name="is_old_deal" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="is_closed_won" readonly="1"/>
+                            <field name="is_closed_lost" readonly="1"/>
+                        </group>
+                    </group>
+
+
+                </page>
+
+            </xpath>
+
+            <xpath expr="//page[@name='lead']" position="after">
+                <page name="line_item_status" string="Line Item Status">
+                    <field name="line_item_status_ids">
+                        <list no_label="true" create="false" no_open="True" no_edit="true" delete="false">
+                            <field name="status_name"/>
+                            <field name="status_quantity"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+            <xpath expr="//form//field[@name='tag_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Site Details" name="site_details">
+                    <div class="d-flex gap-2 mb-3">
+                        <button name="action_site_details_xlsx" type="object" string="Download Excel"
+                                class="btn btn-primary" icon="fa-file-excel-o"/>
+                        <button name="action_site_details_pdf" type="object" string="Download PDF"
+                                class="btn btn-primary" icon="fa-file-pdf-o"/>
+                    </div>
+                    <group>
+                        <group string="Site Address &amp; Contact" name="site_address">
+                            <field name="site_address" readonly="1"/>
+                            <field name="site_contact_name" readonly="1"/>
+                            <field name="site_contact_mobile" widget="phone" readonly="1"/>
+                        </group>
+                        <group string="Schedule &amp; Plan" name="site_schedule">
+                            <field name="required_installation_date" readonly="1"/>
+                            <field name="required_completion_date" readonly="1"/>
+                            <field name="access_times"/>
+                            <field name="final_furniture_plan"/>
+                        </group>
+                        <group string="Loading Dock" name="site_loading_dock">
+                            <field name="loading_dock_available" widget="radio" options="{'horizontal': true}"/>
+                            <field name="loading_dock_booking_required" widget="radio" options="{'horizontal': true}"
+                                   invisible="loading_dock_available != 'yes'"/>
+                            <field name="loading_dock_notes" invisible="loading_dock_available != 'yes'"/>
+                            <field name="loading_dock_height_clearance"
+                                   invisible="loading_dock_available != 'yes'"/>
+                            <field name="alternate_unloading_area"
+                                   invisible="loading_dock_available != 'no'"/>
+                        </group>
+                        <group string="Vehicle &amp; Equipment Access" name="site_vehicle_access">
+                            <field name="forklift_available" widget="radio" options="{'horizontal': true}"/>
+                            <field name="semi_trailer_access" widget="radio" options="{'horizontal': true}"/>
+                        </group>
+                        <group string="Lift / Stairs" name="site_lift">
+                            <field name="lift_available"/>
+                            <field name="lift_dimensions"/>
+                            <field name="stairs_flights"/>
+                        </group>
+                        <group string="Compliance &amp; Safety" name="site_compliance">
+                            <field name="permits_inductions"/>
+                            <field name="ppe_requirement"/>
+                            <field name="swms_required" widget="radio" options="{'horizontal': true}"/>
+                            <field name="swms_submitted_date" invisible="swms_required != 'yes'"/>
+                            <field name="swms_approved_date" invisible="swms_required != 'yes'"/>
+                            <field name="insurance_required" widget="radio" options="{'horizontal': true}"/>
+                            <field name="insurance_submitted_date" invisible="insurance_required != 'yes'"/>
+                            <field name="om_required" widget="radio" options="{'horizontal': true}"/>
+                            <field name="om_submitted_date" invisible="om_required != 'yes'"/>
+                        </group>
+                    </group>
+                    <group string="Photos &amp; Notes" name="site_notes">
+                        <field name="access_photos_provided" widget="radio" options="{'horizontal': true}"/>
+                        <field name="site_other_notes"
+                               placeholder="Distance from unloading area to install area, storage/staging area, noise restrictions..."/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="update_crm_burgtec_crm_case_form_view_oppor_inherit" model="ir.ui.view">
+        <field name="name">update.crm.burgtec.crm.lead.oppor.inherited.crm.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_sale_quotations_new']" position="replace">
+                <button string="New Sale Quotation" name="action_sale_quotations_new" type="object" class="oe_highlight"
+                        data-hotkey="q"
+                        title="Create new sale quotation"
+                        invisible="type == 'lead' or probability == 0 and not active or quotation_count >= 1 or not is_deal_imported"/>
+            </xpath>
+            <xpath expr="//field[@name='quotation_count']" position="attributes">
+                <attribute name="string">Sale Quote</attribute>
+            </xpath>
+
+
+            <xpath expr="//button[@name='action_view_sale_quotation']" position="after">
+                <button class="oe_stat_button" type="object"
+                        name="action_view_project_quotation" icon="fa-usd"
+                        invisible="project_quotation_count == 0 or type == 'lead'">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="sale_amount_total" widget="monetary"
+                                   options="{'currency_field': 'company_currency'}"/>
+                        </span>
+                        <span class="o_stat_text">Project Quote</span>
+                        <field name="project_quotation_count" invisible="1"/>
+                    </div>
+                </button>
+            </xpath>
+
+
+            <xpath expr="//button[@name='action_view_sale_order']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_view_project_quotation']" position="after">
+                <button class="oe_stat_button" type="object"
+                        name="action_view_delivery_stages" icon="fa-solid fa-truck"
+                        invisible="delivery_stage_count == 0">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="delivery_stage_count"/>
+                        </span>
+                        <span class="o_stat_text">Delivery Stages</span>
+                    </div>
+                </button>
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+    <record id="update_crm_burgtec_crm_tree_view_ext" model="ir.ui.view">
+        <field name="name">update.crm.burgtec.tree.view</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//list" position="replace">
+                <list string="Opportunities" sample="1" multi_edit="1">
+
+                    <field name="company_id" column_invisible="True"/>
+                    <field name="user_company_ids" column_invisible="True"/>
+                    <field name="date_deadline" column_invisible="True"/>
+                    <field name="is_old_deal" readonly="1" optional="hide" widget="boolean_toggle"/>
+                    <field name="create_date" optional="hide" width="80px"/>
+                    <field name="odoo_deal_number_6digit" optional="show" width="150px"/>
+                    <field name="project_name" optional="show" width="500px"/>
+                    <field name="name" string="Deal Name" readonly="1" width="600px"/>
+                    <field name="partner_id" optional="show" width="600px"/>
+                    <field name="contact_name" optional="hide"/>
+                    <field name="email_from" optional="hide"/>
+                    <field name="phone" optional="hide" class="o_force_ltr"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                    <field name="city" optional="hide"/>
+                    <field name="state_id" optional="hide"/>
+                    <field name="country_id" optional="hide" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="location" optional="show" width="550px"/>
+                    <!-- Explicit domain due to multi edit -> real company domain would be complicated -->
+                    <field name="user_id" widget="many2one_avatar_user" optional="show"
+                           domain="[('share', '=', False)]" width="200px"/>
+                    <field name="odoo_deal_owner_id" string="Deal Owner" widget="many2one_avatar_user" optional="show"
+                           width="200px"/>
+                    <!-- <field name="team_id" optional="hide"/> -->
+                    <field name="priority" optional="hide" widget="priority" width="200px"/>
+                    <field name="deal_create_date" optional="show" width="200px"/>
+                    <field name="deal_close_date" optional="show" width="200px"/>
+                    <field name="deal_date_quoted" optional="show" width="140px"/>
+                    <field name="quoted_by" optional="show" width="140px"/>
+
+                    <field name="deal_pipeline" optional="show" width="230px"/>
+                    <field name="deal_stage_id" optional="show" width="230px"/>
+                    <field name="deal_type_id" optional="show" width="310px"/>
+                    <field name="deal_territory_id" optional="show" width="300px"/>
+                    <field name="weighted_amount" optional="show" width="140px" readonly="1"/>
+                    <field name="deal_score" optional="show" width="140px" readonly="1" widget="percentage"/>
+                    <field name="deal_probability" optional="show" width="140px" widget="percentage"/>
+                    <!-- <field name="activity_ids" optional="hide" widget="list_activity"/> -->
+                    <!-- <field name="activity_user_id" optional="hide" string="Activity by" widget="many2one_avatar_user"/> -->
+                    <!-- <field name="my_activity_date_deadline" optional="hide" string="My Deadline" widget="remaining_days" options="{'allow_order': '1'}"/> -->
+                    <!-- <field name="campaign_id" optional="hide"/> -->
+                    <!-- <field name="medium_id" optional="hide"/> -->
+                    <!-- <field name="source_id" optional="hide"/> -->
+                    <field name="company_currency" column_invisible="True"/>
+                    <field name="latest_odoo_quote_number_of_item_lines" width="100px" string="Items Count" readonly="1"
+                           optional="hide"/>
+                    <field name="expected_revenue" width="140px" sum="Expected Revenues" optional="show"
+                           widget="monetary" options="{'currency_field': 'company_currency'}"/>
+
+                    <field name="deal_quoted_gp_value" optional="show" width="150px"/>
+                    <field name="deal_quoted_gp_percentage" optional="show" width="140px" widget="percentage"/>
+
+                    <field name="latest_quote_sent_amount" sum="Latest Quote Sent Amount" optional="show"
+                           string="Latest Quote Sent Amount" width="150px" widget="monetary"
+                           options="{'currency_field': 'company_currency'}"/>
+                    <field name="latest_odoo_quote_gp_amount" sum="Latest Quote GP Amount" widget="monetary"
+                           string="Latest Quote GP Amount"
+                           options="{'currency_field': 'company_currency'}" optional="show" width="200px"/>
+                    <field name="latest_odoo_quote_gp_percentage" widget="percentage" optional="show" width="200px"
+                           string="Latest Quote GP %"/>
+                    <field name="id_of_hubspot_deal" width="200px" optional="hide"/>
+                    <field name="hubspot_deal_url" optional="hide" width="200px"/>
+                    <field name="active" column_invisible="True"/>
+                    <field name="referred" column_invisible="True"/>
+                    <field name="message_needaction" column_invisible="True"/>
+
+                </list>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="crm.crm_lead_action_pipeline">
+        <field name="name">Pipeline</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,form,kanban,graph,pivot,calendar,activity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'list', 'view_id': ref('crm.crm_case_tree_view_oppor')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('crm.crm_lead_view_form')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('crm.crm_case_kanban_view_leads')}),
+                (0, 0, {'view_mode': 'calendar', 'view_id': ref('crm.crm_case_calendar_view_leads')}),
+                (0, 0, {'view_mode': 'pivot', 'view_id': ref('crm.crm_lead_view_pivot')}),
+                (0, 0, {'view_mode': 'graph', 'view_id': ref('crm.crm_lead_view_graph')}),]"/>
+        <field name="domain">[('type','=','opportunity')]</field>
+        <field name="context">{ 'default_type': 'opportunity', 'search_default_assigned_to_me': 1 }
+        </field>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+</odoo>

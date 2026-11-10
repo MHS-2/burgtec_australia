@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record forcecreate="True" id="ir_cron_automatic_assign_hubspot_ticket" model="ir.cron">
+        <field name="name">Automatic Assign Hubspot Ticket &amp; Dispatch Date</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.action_attach_hubspot_ticket_and_dispatch_date_cron()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+
+    <record id="ir_cron_update_delivery_status_tracking_on_hubspot_ticket" model="ir.cron">
+        <field name="name">Update Delivery Status Tracking On HubSpot Ticket</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.action_update_hubspot_ticket()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+
+    </record>
+
+
+</odoo>

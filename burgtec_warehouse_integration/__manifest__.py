@@ -1,0 +1,20 @@
+{
+    "name": "Burgtec Warehouse Integration",
+    "version": "18.0.1.1.0",
+    "summary": "Cron flags Burgtec component variants that exist in the Warehouse (Odoo 19) instance as product.Create the Warehouse Quotation from Child PO.",
+    "author": "Byte Legions",
+    "license": "LGPL-3",
+    "depends": ["product", "sale", "artwork_url_attachment_for_screens", 'update_proforma_rfq_screen',
+                "purchase_back_order_report", 'burgtec_hubspot_customization'],
+    "external_dependencies": {"python": ["requests"]},
+    "data": [
+        "security/ir.model.access.csv",
+        "data/ir_cron.xml",
+        "views/product_product_views.xml",
+        "views/res_config_settings_views.xml",
+        "views/sale_order_bom_component_view_ext.xml",
+        "views/purchase_order_view_ext.xml",
+    ],
+    "installable": True,
+    "auto_install": False,
+}

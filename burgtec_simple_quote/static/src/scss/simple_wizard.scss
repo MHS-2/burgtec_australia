@@ -1,0 +1,47 @@
+.stepper {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    width: 600px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #e9e9e9;
+    color: #777;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.step.active .circle {
+    background: #77568c;
+    color: #fff;
+}
+
+.label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #999;
+}
+
+.step.active .label {
+    color: #222;
+}
+
+.line {
+    flex: 1;
+    height: 2px;
+    background: #ddd;
+    margin: 0 20px;
+}

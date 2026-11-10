@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- View purchase.order form -->
+    <record id="purchase_back_order_report.view_purchase_order_form_group_ext" model="ir.ui.view">
+        <field name="name">purchase_back_order_report.view.purchase.order.form.grup.ext</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[hasclass('oe_title')]" position="replace">
+                <div class="oe_title">
+                    <span class="o_form_label" invisible="state not in ('draft', 'sent')">Request for Quotation
+                    </span>
+                    <span class="o_form_label" invisible="state in ('draft', 'sent')">Purchase Order</span>
+                    <h1 class="d-flex">
+                        <field name="priority" widget="priority" class="me-3"/>
+                        <field name="burgtec_purchase_reference" readonly="1"/>
+                    </h1>
+                </div>
+            </xpath>
+
+            <xpath expr="//group" position="replace">
+                <group>
+                    <group name="basic_info" string="Basic Information">
+                        <field name="partner_id" widget="res_partner_many2one"
+                               context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"
+                               placeholder="Name, TIN, Email, or Reference"
+                               readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <field name="partner_ref"/>
+                        <field name="currency_id" groups="base.group_multi_currency" force_save="1"
+                               readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <field name="id" invisible="1"/>
+                        <field name="company_id" invisible="1" readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <field name="currency_id" invisible="1" readonly="state in ['cancel', 'done', 'purchase']"
+                               groups="!base.group_multi_currency"/>
+                        <field name="tax_calculation_rounding_method" invisible="1"/>
+                        <field name="name" readonly="1"/>
+                        <field name="tag" readonly="1" widget="badge" decoration-success="tag == 'child'"
+                               decoration-primary="tag == 'parent'"/>
+
+                    </group>
+
+                    <group name="date_group" string="Date Group">
+                        <!--                            <field name="date_order" invisible="state in ('purchase', 'done')" readonly="state in ['cancel', 'done', 'purchase']"/>-->
+                        <label for="date_approve" invisible="state not in ('purchase', 'done')"/>
+                        <div name="date_approve" invisible="state not in ('purchase', 'done')" class="o_row">
+                            <field name="date_approve"/>
+                        </div>
+                        <label for="required_arrival_date"/>
+                        <div name="required_arrival_date_div" class="o_row">
+                            <field name="required_arrival_date" placeholder="Choose Required Arrival Date"
+                                   readonly="0" required="1"/>
+                        </div>
+                        <field name="hubspot_dispatch_date" string="Dispatch Date" readonly="1"/>
+                        <label for="date_planned"/>
+                        <div name="date_planned_div" class="o_row">
+                            <field name="date_planned"
+                                   readonly="state not in ('draft', 'sent', 'to approve', 'purchase') or not is_manual_expected_arrival"/>
+                            <field name="mail_reminder_confirmed" invisible="1"/>
+                            <span class="text-muted" invisible="not mail_reminder_confirmed">(confirmed by vendor)
+                            </span>
+                        </div>
+                        <field name="is_manual_expected_arrival" string="Manual ETA"/>
+                        <field name="last_po_weekly_update_date" string="Last Weekly Update"/>
+
+                    </group>
+
+                    <group name="status" string="Order Details">
+                        <field name="burgtec_po_status" placeholder="Select PO Status"/>
+                        <field name="wh_rack_location" placeholder="WH Rack Location"/>
+                        <field name="delivery_stage_link" placeholder="Type URL here" widget="url"/>
+                        <field name="onedrive_po_folder_link" string="Onedrive Folder Link"
+                               placeholder="Type URL here" widget="url"/>
+                        <field name="is_po_not_going_to_bv" invisible="tag != 'child'"/>
+                        <field name="bo_number" string="BO Number#" invisible="tag != 'child'" placeholder="Type BO Number# Here"/>
+                        <field name="bo_notes" invisible="tag != 'child'" placeholder="Type BO Notes Here"/>
+                        <field name="bo_dispatch_date" invisible="tag != 'child'" placeholder="Set BO Dispatch Date"/>
+
+
+                    </group>
+
+                    <group name="computed_data" string="Computed Data">
+                        <field name="latest_back_order_date_planned" invisible="tag == 'parent'"/>
+                        <field name="po_sent_date" string="PO Sent Date" readonly="1"/>
+                        <field name="since_sent_days" string="Since Sent Days" readonly="1"/>
+                        <field name="po_weekly_update_date_tracking" invisible="1"/>
+                        <field name="overdue_po_weekly_update" string="Is Weekly Overdue" readonly="1"/>
+                        <field name="po_due_in_two_days" string="Due in Two Days" readonly="1"/>
+                        <field name="po_due_after_dispatch" string="Due After Dispatch" readonly="1"/>
+                        <field name="is_burgtec_vendor"/>
+
+                    </group>
+
+                    <group name="address_group" string="Address Details">
+                        <field name="picking_type_id"
+                               domain="[('code','=','incoming'), '|', ('warehouse_id', '=', False), ('warehouse_id.company_id', '=', company_id)]"
+                               options="{'no_create': True}" groups="stock.group_stock_multi_locations"
+                               readonly="state in ['cancel', 'done', 'purchase']"/>
+
+                        <field name="dest_address_id"
+                               invisible="default_location_dest_id_usage != 'customer' and not default_location_dest_id_is_subcontracting_loc"
+                               readonly="state in ['cancel', 'done', 'purchase']"
+                               required="default_location_dest_id_usage == 'customer' or default_location_dest_id_is_subcontracting_loc"
+                               can_create="True" can_write="True"/>
+                        <field name="shipping_address_type" string="Ship Address type" required="1" on_change="1"/>
+                        <field name="manual_shipping_address" string="Address" placeholder="Manual Shipping Address"
+                               invisible="shipping_address_type not in 'manual'"
+                               required="shipping_address_type == 'manual'"/>
+
+                    </group>
+                    <group name="comment" string="Order Comment">
+                        <field name="purchase_comments" placeholder="Write Additional Comments"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

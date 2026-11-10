@@ -1,0 +1,211 @@
+// $sticky-head-bg: #f1f3f5;
+// $sticky-body-bg: #ffffff;
+// $sticky-hover-bg: #f2f2f2;
+// $sticky-edge: 2px 0 3px -1px rgba(0, 0, 0, .2);
+// $sticky-head-edge: inset 0 -1px 0 rgba(0, 0, 0, .18);
+// $sticky-max-h: 70vh; // keep in sync with SCROLL_MAX_H in the JS
+//
+// // ===== the inner scroll box — without this the header cannot float =====
+// .sticky_list .o_list_renderer,
+// .sticky_list .o_list_renderer.o_sticky_scroll {
+//     max-height: $sticky-max-h !important;
+//     overflow: auto !important;
+// }
+//
+// // some themes kill overflow on x2many tables — undo it
+// .sticky_list .table-responsive {
+//     overflow: auto !important;
+// }
+//
+// .sticky_list .o_list_renderer .o_list_table {
+//     border-collapse: separate !important; // required for sticky cells
+//     border-spacing: 0;
+//
+//     // ---------- floating header row: EVERY column ----------
+//     thead,
+//     thead tr {
+//         position: relative;
+//         z-index: 4;
+//     }
+//
+//     thead th {
+//         position: sticky !important;
+//         top: 0 !important;
+//         z-index: 4 !important;
+//         --bs-table-bg: #{$sticky-head-bg};
+//         --bs-table-bg-state: #{$sticky-head-bg};
+//         background: $sticky-head-bg !important;
+//         background-clip: padding-box;
+//         box-shadow: inset 0 0 0 9999px $sticky-head-bg, $sticky-head-edge !important;
+//
+//         .o_resize { z-index: 1; }
+//     }
+//
+//     // ---------- frozen cells (body) ----------
+//     .o_sticky_col {
+//         position: sticky !important;
+//         z-index: 2 !important;
+//         --bs-table-bg: #{$sticky-body-bg};
+//         --bs-table-bg-state: #{$sticky-body-bg};
+//         background: $sticky-body-bg !important;
+//         box-shadow: inset 0 0 0 9999px $sticky-body-bg !important;
+//         &.o_sticky_last {
+//             box-shadow: inset 0 0 0 9999px $sticky-body-bg, $sticky-edge !important;
+//         }
+//     }
+//
+//     // ---------- frozen header cells (pinned on both axes) ----------
+//     thead th.o_sticky_col {
+//         z-index: 5 !important;
+//         --bs-table-bg: #{$sticky-head-bg};
+//         --bs-table-bg-state: #{$sticky-head-bg};
+//         background: $sticky-head-bg !important;
+//         box-shadow: inset 0 0 0 9999px $sticky-head-bg, $sticky-head-edge !important;
+//         &.o_sticky_last {
+//             box-shadow: inset 0 0 0 9999px $sticky-head-bg, $sticky-head-edge, $sticky-edge !important;
+//         }
+//     }
+//
+//     thead tr > th.o_list_button.o_sticky_col {
+//         z-index: 6 !important;
+//     }
+//
+//     // ---------- hover / selected rows ----------
+//     tbody tr.o_data_row:hover > td.o_sticky_col,
+//     tbody tr.o_data_row.o_data_row_selected > td.o_sticky_col {
+//         background: $sticky-hover-bg !important;
+//         box-shadow: inset 0 0 0 9999px $sticky-hover-bg !important;
+//         &.o_sticky_last {
+//             box-shadow: inset 0 0 0 9999px $sticky-hover-bg, $sticky-edge !important;
+//         }
+//     }
+//
+//     // ---------- button column (Product / Artwork), body ----------
+//     tbody tr.o_data_row > td.o_list_button.o_sticky_col {
+//         position: sticky !important;
+//         z-index: 3 !important;
+//         --bs-table-bg: #{$sticky-body-bg};
+//         --bs-table-bg-state: #{$sticky-body-bg};
+//         background: $sticky-body-bg !important;
+//         box-shadow: inset 0 0 0 9999px $sticky-body-bg !important;
+//     }
+//
+//     tbody tr.o_data_row:hover > td.o_list_button.o_sticky_col,
+//     tbody tr.o_data_row.o_data_row_selected > td.o_list_button.o_sticky_col {
+//         background: $sticky-hover-bg !important;
+//         box-shadow: inset 0 0 0 9999px $sticky-hover-bg !important;
+//     }
+//
+//     // ---------- optional: pin the totals row ----------
+//     tfoot td {
+//         position: sticky;
+//         bottom: 0;
+//         z-index: 4;
+//         background: $sticky-head-bg !important;
+//         box-shadow: inset 0 0 0 9999px $sticky-head-bg !important;
+//     }
+// }
+// Assuming Odoo v18/v19. Every rule scoped to .o_sticky_scroll (prep_view only).
+$sticky-head-bg: #f1f3f5;
+$sticky-body-bg: #ffffff;
+$sticky-hover-bg: #f2f2f2;
+$sticky-edge: 2px 0 3px -1px rgba(0, 0, 0, .2);
+$sticky-head-edge: inset 0 -1px 0 rgba(0, 0, 0, .18);
+$sticky-max-h: 70vh; // keep in sync with SCROLL_MAX_H in the JS
+
+// ===== inner scroll box — the anchor the floating header sticks to =====
+// ⚠️ never widen this selector to bare .o_list_renderer: it leaks into
+// default / approval_view and boxes those lists too.
+.sticky_list .o_list_renderer.o_sticky_scroll {
+    max-height: $sticky-max-h !important;
+    overflow: auto !important;
+
+    .o_list_table {
+        border-collapse: separate !important; // required for sticky cells
+        border-spacing: 0;
+
+        // ---------- floating header row: EVERY column ----------
+        thead,
+        thead tr {
+            position: relative;
+            z-index: 4;
+        }
+
+        thead th {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 4 !important;
+            --bs-table-bg: #{$sticky-head-bg};
+            --bs-table-bg-state: #{$sticky-head-bg};
+            background: $sticky-head-bg !important;
+            background-clip: padding-box;
+            box-shadow: inset 0 0 0 9999px $sticky-head-bg, $sticky-head-edge !important;
+
+            .o_resize { z-index: 1; }
+        }
+
+        // ---------- frozen cells (body) ----------
+        .o_sticky_col {
+            position: sticky !important;
+            z-index: 2 !important;
+            --bs-table-bg: #{$sticky-body-bg};
+            --bs-table-bg-state: #{$sticky-body-bg};
+            background: $sticky-body-bg !important;
+            box-shadow: inset 0 0 0 9999px $sticky-body-bg !important;
+            &.o_sticky_last {
+                box-shadow: inset 0 0 0 9999px $sticky-body-bg, $sticky-edge !important;
+            }
+        }
+
+        // ---------- frozen header cells (pinned on both axes) ----------
+        thead th.o_sticky_col {
+            z-index: 5 !important;
+            --bs-table-bg: #{$sticky-head-bg};
+            --bs-table-bg-state: #{$sticky-head-bg};
+            background: $sticky-head-bg !important;
+            box-shadow: inset 0 0 0 9999px $sticky-head-bg, $sticky-head-edge !important;
+            &.o_sticky_last {
+                box-shadow: inset 0 0 0 9999px $sticky-head-bg, $sticky-head-edge, $sticky-edge !important;
+            }
+        }
+
+        thead tr > th.o_list_button.o_sticky_col {
+            z-index: 6 !important;
+        }
+
+        // ---------- hover / selected rows ----------
+        tbody tr.o_data_row:hover > td.o_sticky_col,
+        tbody tr.o_data_row.o_data_row_selected > td.o_sticky_col {
+            background: $sticky-hover-bg !important;
+            box-shadow: inset 0 0 0 9999px $sticky-hover-bg !important;
+            &.o_sticky_last {
+                box-shadow: inset 0 0 0 9999px $sticky-hover-bg, $sticky-edge !important;
+            }
+        }
+
+        // ---------- button column (Product / Artwork), body ----------
+        tbody tr.o_data_row > td.o_list_button.o_sticky_col {
+            position: sticky !important;
+            z-index: 3 !important;
+            --bs-table-bg: #{$sticky-body-bg};
+            --bs-table-bg-state: #{$sticky-body-bg};
+            background: $sticky-body-bg !important;
+            box-shadow: inset 0 0 0 9999px $sticky-body-bg !important;
+        }
+
+        tbody tr.o_data_row:hover > td.o_list_button.o_sticky_col,
+        tbody tr.o_data_row.o_data_row_selected > td.o_list_button.o_sticky_col {
+            background: $sticky-hover-bg !important;
+            box-shadow: inset 0 0 0 9999px $sticky-hover-bg !important;
+        }
+
+        // ---------- optional: pin the totals row ----------
+        tfoot td {
+            position: sticky;
+            bottom: 0;
+            z-index: 4;
+            background: $sticky-head-bg !important;
+            box-shadow: inset 0 0 0 9999px $sticky-head-bg !important;
+        }
+    }
+}

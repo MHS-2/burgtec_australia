@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ZPL Label for Zebra ZT421 — A5 Landscape at 203dpi (1654 x 1169 dots) -->
+    <!--    <template id="burgtec_delivery_label_zpl">-->
+    <!--        <t t-foreach="docs" t-as="o">-->
+    <!--            <t t-translation="off">-->
+    <!--                ^XA^CI28-->
+    <!--                ^PW1169-->
+    <!--                ^LL1654-->
+    <!--                ^FO100,60^A0N,70,60^FDburgtec.^FS-->
+    <!--                ^FO100,180^GB1069,5,5^FS-->
+    <!--                ^FO100,210^A0N,45,35^FDPO #^FS-->
+    <!--                ^FO100,275^A0N,170,120^FD<t t-out="purchase_ref"/>^FS-->
+    <!--                ^FO100,528^GB1069,5,5^FS-->
+    <!--                ^FO100,558^A0N,45,35^FDProject^FS-->
+    <!--                ^FO100,623^A0N,70,55^FB1069,2,0,L^FD<t t-out="sale_order.project_name or ''"/>^FS-->
+    <!--                ^FO100,876^GB1069,5,5^FS-->
+    <!--                ^FO100,906^A0N,45,35^FDProject Location^FS-->
+    <!--                ^FO100,971^A0N,120,75^FB1069,2,0,L^FD<t t-out="location_label"/>^FS-->
+    <!--                ^FO100,1224^GB1069,5,5^FS-->
+    <!--                ^FO100,1254^A0N,45,35^FDPackage^FS-->
+    <!--                ^FO100,1319^A0N,150,120^FB1069,1,0,C^FD/^FS-->
+    <!--                ^FO100,1572^GB1069,5,5^FS-->
+    <!--                ^XZ-->
+    <!--            </t>-->
+    <!--        </t>-->
+    <!--    </template>-->
+
+    <!--    <template id="burgtec_delivery_label_zpl">-->
+    <!--        <t t-foreach="docs" t-as="o">-->
+    <!--            <t t-translation="off">-->
+    <!--                ^XA^CI28-->
+    <!--                ^PW1654-->
+    <!--                ^LL1169-->
+    <!--                ^FO100,70^A0N,45,35^FDPO #^FS-->
+    <!--                ^FO100,135^A0N,300,200^FD<t t-out="purchase_ref"/>^FS-->
+    <!--                ^FO100,400^GB1454,5,5^FS-->
+    <!--                ^FO100,430^A0N,45,35^FDProject^FS-->
+    <!--                ^FO100,490^A0N,70,55^FB1454,2,0,L^FD<t t-out="sale_order.project_name or ''"/>^FS-->
+    <!--                ^FO100,630^GB1454,5,5^FS-->
+    <!--                ^FO100,660^A0N,45,35^FDProject Location^FS-->
+    <!--                ^FO100,720^A0N,70,55^FB1454^FD<t t-out="location_label"/>^FS-->
+    <!--                ^FO100,800^GB1454,5,5^FS-->
+    <!--                ^FO100,830^A0N,45,35^FDPackage^FS-->
+    <!--                ^FO100,900^A0N,130,90^FB1454,1,0,C^FD/^FS-->
+    <!--                ^XZ-->
+    <!--            </t>-->
+    <!--        </t>-->
+    <!--    </template>-->
+    <template id="burgtec_delivery_label_zpl">
+        <t t-foreach="docs" t-as="o">
+            <t t-translation="off">
+                ^XA^CI28
+                ^PW1654
+                ^LL1169
+                ^FO100,100^A0N,45,35^FDPO #^FS
+                ^FO100,165^A0N,360,195^FD<t t-out="purchase_ref"/>^FS
+                ^FO100,455^GB1454,5,5^FS
+                ^FO100,490^A0N,45,35^FDProject^FS
+                ^FO100,555^A0N,90,70^FB1454,2,0,L^FD<t t-out="sale_order.project_name or ''"/>^FS
+                ^FO100,760^GB1454,5,5^FS
+                ^FO100,790^A0N,45,35^FDProject Location^FS
+                ^FO100,850^A0N,120,100^FB1454^FD<t t-out="location_label"/>^FS
+                ^FO100,970^GB1454,5,5^FS
+                ^FO100,1000^A0N,45,35^FDPackage^FS
+                ^FO100,1070^A0N,100,70^FB1454,1,0,C^FD/^FS
+                ^FO100,1170^A0N,102,82^FB300,1,0,C^FDburgtec.^FS
+                ^FO1250,1050^A0N,270,170^FB330,1,0,C^FD<t t-out="vendor_short_name or ''"/>^FS
+                ^XZ
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action for ZPL -->
+    <record id="action_burgtec_delivery_label_zpl" model="ir.actions.report">
+        <field name="name">Burgtec Delivery Label (ZPL)</field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-text</field>
+        <field name="report_name">burgtec_delivery_report.burgtec_delivery_label_zpl</field>
+        <field name="report_file">burgtec_delivery_report.burgtec_delivery_label_zpl</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

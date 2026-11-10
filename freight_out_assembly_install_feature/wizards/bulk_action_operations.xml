@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="freight_out_assembly_install_feature.view_bulk_action_operations_form_ext" model="ir.ui.view">
+        <field name="name">view.bulk.action.operations.form.ext</field>
+        <field name="model">bulk.action.operations</field>
+        <field name="inherit_id" ref="filter_one2many_fields.view_bulk_action_operations_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='operation_type']" position="after">
+                <field name="zone_type"
+                       invisible="operation_type not in ['modify_zone_for_delivery_component','modify_zone_for_install_component']"
+                       required="operation_type in ['modify_zone_for_delivery_component','modify_zone_for_install_component']"/>
+            </xpath>
+            <xpath expr="//button[@name='action_add_bulk_margin']" position="after">
+                <button name="action_modify_zone_for_delivery_component" type="object"
+                        string="Modify Zone For Delivery Component" class="oe_highlight"
+                        icon="fa-pencil-square-o" title="modify zone for delivery component"
+                        invisible="operation_type != 'modify_zone_for_delivery_component'"
+                        confirm="Are You Sure You Want to Modify Zone of the Selected Lines?"/>
+            </xpath>
+            <xpath expr="//button[@name='action_modify_zone_for_delivery_component']" position="after">
+                <button name="action_modify_zone_for_install_component" type="object"
+                        string="Modify Zone For Install Component" class="oe_highlight"
+                        icon="fa-pencil-square-o" title="modify zone for install component"
+                        invisible="operation_type != 'modify_zone_for_install_component'"
+                        confirm="Are You Sure You Want to Modify Zone of the Selected Lines?"/>
+            </xpath>
+            <xpath expr="//button[@name='action_modify_zone_for_install_component']" position="after">
+                <button name="action_add_delivery_component" type="object"
+                        string="Add Delivery Component" class="oe_highlight"
+                        icon="fa-plus" title="add delivery component"
+                        invisible="operation_type != 'add_delivery_component'"
+                        confirm="Are You Sure You Want to Add Delivery Component of the Selected Lines?"/>
+            </xpath>
+            <xpath expr="//button[@name='action_add_delivery_component']" position="after">
+                <button name="action_add_install_component" type="object"
+                        string="Add Install Component" class="oe_highlight"
+                        icon="fa-plus" title="add install component"
+                        invisible="operation_type != 'add_install_component'"
+                        confirm="Are You Sure You Want to Add Install Component of the Selected Lines?"/>
+            </xpath>
+            <xpath expr="//button[@name='action_add_delivery_component']" position="after">
+                <button name="action_reset_sale_price_to_pricelist_price" type="object"
+                        string="Reset Sale Price to Pricelist Price" class="oe_highlight"
+                        icon="fa-arrow-left" title="reset pricelist"
+                        invisible="operation_type != 'reset_sale_price_to_pricelist_price'"
+                        confirm="Are You Sure You Want to Reset Sale Price of Selected Lines to the Pricelist Price?"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

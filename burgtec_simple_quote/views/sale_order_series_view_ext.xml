@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="burgtec_simple_quote.view_sale_order_series_list_ext" model="ir.ui.view">
+        <field name="name">burgtec_simple_quote.sale.order.series.list.ext</field>
+        <field name="model">sale.order.series</field>
+        <field name="inherit_id" ref="quotation_type_customization.view_sale_order_series_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sequence']" position="before">
+               <field name="name"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="burgtec_simple_quote.view_sale_order_series_form_ext" model="ir.ui.view">
+        <field name="name">burgtec_simple_quote.sale.order.series.form.ext</field>
+        <field name="model">sale.order.series</field>
+        <field name="inherit_id" ref="quotation_type_customization.view_sale_order_series_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sequence']" position="before">
+               <field name="name"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

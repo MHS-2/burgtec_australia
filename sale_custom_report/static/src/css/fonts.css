@@ -1,0 +1,27 @@
+/* @font-face {
+    font-family: 'Graphik-Regular';
+    src: local('Graphik-Regular'), local('Graphik-Regular'), url(/sale_custom_report/static/fonts/Graphik-Regular.otf) format('opentype');
+}
+@font-face {
+    font-family: 'Graphik-Semibold';
+    src: local('Graphik-Semibold'), local('Graphik-Semibold'), url(/sale_custom_report/static/fonts/Graphik-Semibold.otf) format('opentype');
+} */
+
+@font-face {
+    font-family: 'Fonetika-Regular';
+    src: local('Fonetika-Regular'), local('Fonetika-Regular'), url(/sale_custom_report/static/fonts/Fonetika-Regular.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Fonetika-SemiBold';
+    src: local('Fonetika-SemiBold'), local('Fonetika-SemiBold'), url(/sale_custom_report/static/fonts/Fonetika-SemiBold.ttf) format('truetype');
+}
+.h2-regular {
+    font-family: Fonetika-Regular;
+    color: #000000;
+}
+
+.h2-semibold {
+    font-family: Fonetika-Semibold;
+    color: #000000;
+}
+

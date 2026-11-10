@@ -1,0 +1,100 @@
+.o_sale_product_configurator_dialog .modal-dialog,
+.o_dialog .o_sale_product_configurator_dialog .modal-dialog,
+.o_dialog .modal-dialog.o_sale_product_configurator_dialog,
+.o_dialog .modal-dialog {
+  /* keep dialog within the viewport width */
+  max-width: 1000px !important;
+  width: 90% !important;
+  margin: 1.5vh auto !important;
+}
+
+/* make modal content constrained and allow body scrolling */
+/* The content class `o_sale_product_configurator_dialog` is applied on the .modal-content
+   element by the Dialog component. Target the modal-content directly to ensure styles apply
+   even if the modal-dialog parent doesn't have our class. */
+.modal-content.o_sale_product_configurator_dialog {
+  max-height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  /* Constrain width via the content element since parent modal-dialog may not carry our class */
+  max-width: 1000px !important;
+  width: 90vw !important;
+  margin: 1.5vh auto !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  position: fixed !important;
+}
+
+.modal-content.o_sale_product_configurator_dialog .modal-body,
+.o_dialog .modal-content.o_sale_product_configurator_dialog .modal-body,
+.o_dialog .modal-content .modal-body {
+  overflow: auto !important;
+  /* leave room for header/footer (approx 120px) */
+  max-height: calc(90vh - 120px) !important;
+  flex: 1 1 auto !important;
+}
+
+/* Ensure the footer stays visible */
+.o_sale_product_configurator_dialog .modal-footer,
+.o_dialog .o_sale_product_configurator_dialog .modal-footer,
+.o_dialog .modal-footer {
+  z-index: 2 !important;
+}
+
+/* If other styles still override, force a fixed positioning as a last resort */
+@media (max-height: 700px) {
+  .o_sale_product_configurator_dialog .modal-dialog,
+  .o_dialog .modal-dialog {
+    top: 2vh !important;
+    position: fixed !important;
+    transform: none !important;
+    margin: 0 auto !important;
+    left: 50% !important;
+    right: auto !important;
+    -webkit-transform: translateX(-50%) !important;
+    transform: translateX(-50%) !important;
+    width: 95% !important;
+    max-width: 1000px !important;
+  }
+}
+
+/* Ensure color swatches align horizontally even when sub-attributes are shown.
+   We scope to the configurator dialog to avoid impacting other dialogs. */
+.o_sale_product_configurator_dialog {
+  /* Target the inline list used for color values */
+  ul.list-inline > li.list-inline-item {
+    display: inline-flex !important;
+    flex-direction: column !important; /* stack swatch above its sub-attributes */
+    align-items: center !important;
+    vertical-align: top !important;
+    /* prevent individual items from growing unevenly */
+    min-width: 48px !important;
+  }
+
+  /* Make the color label (the swatch) stay centered and not collapse */
+  .o_sale_product_configurator_ptav_color {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 48px !important;
+    height: 36px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Sub-attribute container inside the li should not affect sibling layout */
+  ul.list-inline > li.list-inline-item > .mt-2,
+  ul.list-inline > li.list-inline-item > div.mt-2 {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 6px !important;
+    text-align: center !important;
+  }
+
+  /* For small radio swatches inside sub-attributes, ensure they don't overflow */
+  ul.list-inline > li.list-inline-item .o_sale_product_configurator_ptav_color label {
+    width: 36px !important;
+    height: 24px !important;
+    padding: 2px !important;
+  }
+}

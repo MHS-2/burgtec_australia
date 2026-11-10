@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_components_on_report_form" model="ir.ui.view">
+        <field name="name">components.on.report.form</field>
+        <field name="model">components.on.report</field>
+        <field name="arch" type="xml">
+            <form string="Component Report">
+                <sheet>
+                    <field name="component_line_ids" readonly="1" no_label="True" options="{'no_edit': True, 'no_create': True, 'no_open': True}">
+                        <list string="Components" options="{'no_edit': True, 'no_create': True, 'no_open': True}" multi_edit="0" create="false" delete="false" >
+                            <field name="product_reference" force_save="1" readonly="1"/>
+                            <field name="product_id" force_save="1" readonly="1"/>
+                            <!--                <field name="parent_product_id"/>-->
+
+                            <!--                <field name="parent_product_reference"/>-->
+                            <field name="product_qty" force_save="1" readonly="1"/>
+                            <!--                            <field name="unit_sale_price" force_save="1"/>-->
+                            <!--                            <field name="total_sale_price" force_save="1"/>-->
+                            <field name="live_unit_cost" force_save="1" readonly="1"/>
+                            <field name="system_cost_per_unit" force_save="1" readonly="1"/>
+                            <field name="quoted_cost_per_unit" force_save="1" readonly="1"/>
+                            <field name="pre_project_cost_per_unit" force_save="1" readonly="1"/>
+                            <field name="supplier_id" force_save="1" readonly="1"/>
+                            <field name="delivery_date" force_save="1" readonly="1"/>
+                            <field name="purchase_order_id" force_save="1" readonly="1"/>
+                            <control></control>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_components_on_report" model="ir.actions.act_window">
+        <field name="name">Component Report</field>
+        <field name="res_model">components.on.report</field>
+        <field name="view_mode">form</field>
+    </record>
+
+</odoo>
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Simple Quote list view. -->
+    <record id="dpg_sale_custom_report_simple_quote_view_sale_order_list_inherit" model="ir.ui.view">
+        <field name="name">dpg.sale.custom.report.simple.quote.view.sale.order.list.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="burgtec_simple_quote.simple_quote_view_sale_order_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='sale_custom_report.action_burgtec_sale_quote_v2']" position="after">
+                <button name="dpg_sale_custom_report.action_dpg_sale_quote" type="action" string="Download DPG PDF"
+                        icon="fa-file-pdf-o" class="btn-danger"
+                        invisible="not order_line or product_sale_type == 'burgtec'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Simple Quote form view. -->
+    <record id="dpg_sale_custom_report_simple_quote_view_sale_order_form_new_inherit" model="ir.ui.view">
+        <field name="name">dpg.sale.custom.report.simple.quote.view.sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="burgtec_simple_quote.simple_quote_view_sale_order_form_new"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='sale_custom_report.action_burgtec_sale_quote_v2']" position="after">
+                <button name="dpg_sale_custom_report.action_dpg_sale_quote" type="action" string="Download DPG PDF"
+                        icon="fa-file-pdf-o" class="btn-danger"
+                        invisible="not order_line or product_sale_type == 'burgtec'"/>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="custom_po_no" placeholder="Custom PO Number" invisible="product_sale_type != 'dpg'"/>
+
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="customer_address" invisible="product_sale_type != 'dpg'"/>
+
+            </xpath>
+        </field>
+    </record>
+
+    <!-- OG Form View -->
+    <record id="dpg_sale_custom_report_simple_quote_view_sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">dpg.sale.custom.report.simple.quote.view.sale.order.form_inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="custom_po_no" placeholder="Custom PO Number" invisible="product_sale_type != 'dpg'"/>
+            </xpath>
+            <xpath expr="//group[@name='partner_details']" position="inside">
+                <field name="customer_address" invisible="product_sale_type != 'dpg'"/>
+
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

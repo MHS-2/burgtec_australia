@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="burgtec_chatter_customization.sale_quote_planning_screen_chatter_enable_view_ext" model="ir.ui.view">
+        <field name="name">burgtec_chatter_customization.sale_quote_planning_screen.chatter.enable.view.ext</field>
+        <field name="model">sale.quote.planning.screen</field>
+        <field name="inherit_id" ref="auto_lock_sales_quote_upon_project_creation.sale_quote_planning_screen_view_ext"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="after">
+                <chatter/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

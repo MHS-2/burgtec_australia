@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="burgtec_delivery_report.res_partner_short_name_view_ext" model="ir.ui.view">
+        <field name="name">burgtec_delivery_report.res.partner.short.name.view.ext</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']//group[2]" position="inside">
+                <field name="short_name"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

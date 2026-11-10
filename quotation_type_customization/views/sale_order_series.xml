@@ -1,0 +1,50 @@
+<odoo>
+    <!-- List View -->
+    <record id="view_sale_order_series_list" model="ir.ui.view">
+        <field name="name">sale.order.series.list</field>
+        <field name="model">sale.order.series</field>
+        <field name="arch" type="xml">
+            <list string="Sale Order Series" duplicate="false" create="false" delete="false">
+                <field name="sequence"/>
+                <field name="starting_value"/>
+                <field name="ending_value"/>
+            </list>
+        </field>
+    </record>
+    <!-- Form View -->
+    <record id="view_sale_order_series_form" model="ir.ui.view">
+        <field name="name">sale.order.series.form</field>
+        <field name="model">sale.order.series</field>
+        <field name="arch" type="xml">
+            <form string="Sale Order Series" create="false" duplicate="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="sequence" readonly="1"/>
+                            <field name="starting_value" readonly="1"/>
+                            <field name="ending_value" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="pricelist_ids" widget="many2many_tags" options="{'no_create':1}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Action -->
+    <record id="action_sale_order_series" model="ir.actions.act_window">
+        <field name="name">Sale Order Series</field>
+        <field name="res_model">sale.order.series</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_sale_order_series_list"/>
+    </record>
+    <!-- Menu Item -->
+    <menuitem id="menu_sale_order_series"
+              name="Sale Order Series"
+              action="action_sale_order_series"
+              parent="sale.menu_sales_config"
+              sequence="5"
+    />
+</odoo>

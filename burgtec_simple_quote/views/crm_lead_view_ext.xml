@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="burgtec_simple_quote.crm_lead_tree_view_no_create" model="ir.ui.view">
+        <field name="name">burgtec_simple_quote.crm.lead.tree.no.create</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="burgtec_simple_quote.simple_quote_from_view" model="ir.ui.view">
+        <field name="name">burgtec_simple_quote.simple.quote.form.view</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="update_crm_burgtec.update_crm_burgtec_crm_from_view"/>
+        <field name="arch" type="xml">
+
+             <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_schedule_meeting']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_show_potential_duplicates']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_view_sale_quotation']" position="before">
+                <button name="action_view_simple_sale_quote"
+                        type="object"
+                        string="Simple Sales Quote"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+                        invisible="not source_simple_quote_id"
+                />
+            </xpath>
+
+
+              <xpath expr="//page[@name='internal_notes']" position="before">
+                <page name="custom_general_page" string="General">
+                    <notebook name="custom_notebook">
+
+                    </notebook>
+                </page>
+            </xpath>
+            <xpath expr="//notebook[@name='custom_notebook']" position="inside">
+                <page name="internal_notes" position="move"/>
+                <page name="extra" position="move"/>
+                <page name="lead" position="move"/>
+                <page name="line_item_status" position="move"/>
+<!--                <page name="onedrive_details" position="move"/>-->
+                <page name="checks" position="move"/>
+<!--                <page name="site_details"  position="move"/>-->
+            </xpath>
+
+            <xpath expr="//page[@name='custom_general_page']" position="after">
+                <page name="customer_service" string="Customer Service"></page>
+                <page name="cfc" string="Cross Functional Checklist (CFC)"></page>
+                <page name="sales" string="Sales"></page>
+                <page name="technical" string="Technical"></page>
+                <page name="sales" string="Sales"></page>
+                <page name="finance_accounting" string="Finance - Accounting"></page>
+                <page name="finance_claims_forcast" string="Finance - Claims Forecast"></page>
+            </xpath>
+
+            <xpath expr="//page[@name='site_details']" position="attributes">
+                <attribute name="string">Delivery &amp; Install</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

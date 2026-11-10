@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_update_cost_of_product_template" model="ir.actions.server">
+            <field name="name">Update Product Template Cost With Bom Cost</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="binding_model_id" ref="product.model_product_template"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_update_product_template_cost()
+            </field>
+        </record>
+        <record id="action_update_cost_of_product_variant" model="ir.actions.server">
+            <field name="name">Update Product Variant Cost with BoM Cost</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_update_product_product_cost()
+            </field>
+        </record>
+
+    </data>
+</odoo>

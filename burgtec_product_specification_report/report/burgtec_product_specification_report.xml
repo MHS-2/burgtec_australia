@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="product_specification_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page"
+                     style="font-family: 'Graphik', Arial, width: 794px !important;
+                sans-serif; background-color: #E9E2CD !important; min-height: 1000px; width: 102% !important; max-width: 102% !important; margin-left: -6px !important; padding-left: 0mm !important; position: relative; overflow: hidden; box-sizing: border-box;">
+
+                    <!-- Div 1: Top spacing and logo section -->
+                    <div class="logo-section"
+                         style="padding-top: 50px; margin-left: 28px; margin-right: 30px; position: relative; z-index: 1;">
+                        <h1 class="logo-text"
+                            style="font-size: 50px; font-weight: bold; color: #2c2c2c; transform: scaleX(1.4); transform-origin: left; margin: 0; font-family: 'Graphik', Arial, sans-serif;">
+                            burgtec.
+                        </h1>
+                    </div>
+
+                    <!-- Div 2: Main spacing between logo and content -->
+                    <div class="main-spacing" style="height: 100px; clear: both; position: relative; z-index: 1;">
+                    </div>
+
+                    <!-- Div 3: Product Specifications heading -->
+                    <div class="heading-section"
+                         style="margin-left: 28px; margin-right: 30px; margin-bottom: 40px; position: relative; z-index: 1;">
+                        <h2 class="main-heading"
+                            style="font-size: 50px; font-weight: 300; color: #2c2c2c; margin: 0; font-family: 'Graphik', Arial, sans-serif; line-height: 1.2;">
+                            Product Specifications
+                        </h2>
+                    </div>
+
+                    <!-- Div 4: Project information -->
+                    <div class="project-info"
+                         style="margin-left: 28px; margin-right: 30px; margin-bottom: 12px; position: relative; z-index: 1;">
+                        <div class="project-label"
+                             style="font-size: 30px; font-weight: 500; color: #2c2c2c; margin-bottom: 4px; font-family: 'Graphik', Arial, sans-serif;">
+                            Project:
+                        </div>
+                        <div class="project-number"
+                             style="font-size: 30px; font-weight: 400; color: #2c2c2c; margin-bottom: 4px; font-family: 'Graphik', Arial, sans-serif;">
+                            <t t-if="o.project_name">
+                                <t t-out="o.project_name"/>
+                            </t>
+                        </div>
+                        <!-- <div class="project-name"
+                             style="font-size: 30px; font-weight: 400; color: #2c2c2c; font-family: 'Graphik', Arial, sans-serif;">
+                            Fraser Coast Library and Administration Centre
+                        </div> -->
+                    </div>
+
+                    <!-- Div 5: Package information -->
+                    <div class="package-info mt-5"
+                         style=" margin-left: 28px; margin-right: 30px; margin-bottom: 40px; position: relative; z-index: 1;">
+                        <div class="package-label"
+                             style="font-size: 30px; font-weight: 500; color: #2c2c2c; margin-bottom: 4px; font-family: 'Graphik', Arial, sans-serif;">
+                            Package:
+                        </div>
+                        <div class="package-name"
+                             style="font-size: 30px; font-weight: 400; color: #2c2c2c; font-family: 'Graphik', Arial, sans-serif;">
+                            Workstations and Furniture
+                        </div>
+                    </div>
+
+                    <!-- Div 6: Image section -->
+                    <div class="image-section"
+                         style="margin-left: 28px; margin-right: 30px; margin-bottom: 0px; margin-top: 30px;">
+                        <img class="img-fluid"
+                             style="width: 100%; height: 820px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: block;"
+                             t-attf-src="data:image/png;base64,{{ o.get_office_interior_image() }}"
+                             alt="Office Interior"/>
+
+
+                    </div>
+
+                    <!-- Div 7: Bottom spacing -->
+                    <div class="bottom-spacing" style="height: 20px; clear: both; position: relative; z-index: 1;">
+                    </div>
+                    <!--                        Page Break-->
+                    <!-- <div style="page-break-before: always; break-before: page;"/> -->
+                </div>
+
+
+                <!--                Second page starts from here -->
+                <!--                <t t-set="allowed_products_ids"-->
+                <!--                   t-value="o.product_specification_report_line_ids.filtered(lambda s: s.is_show).mapped('product_template_id').ids"/>-->
+                <!--                <t t-foreach="o.order_line.filtered(lambda l: not l.display_type and l.product_template_id.id in allowed_products_ids)"-->
+                <!--                   t-as="line">-->
+
+                <t t-set="allowed_products_ids"
+                   t-value="o.product_specification_report_line_ids.filtered(lambda s: s.is_show).mapped('product_template_id').ids"/>
+                <t t-set="spec_lines_dict"
+                   t-value="{spec.product_template_id.id: spec for spec in o.product_specification_report_line_ids.filtered(lambda s: s.is_show)}"/>
+
+                <t t-foreach="o.order_line.filtered(lambda l: not l.display_type and l.product_template_id.id in allowed_products_ids)"
+                   t-as="line">
+                   <div style="page-break-before: always; break-before: page;"></div>
+                    <div class="product_page"
+                         style="font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            min-height: 1380px;
+            width: 100%;
+            margin: 0px;
+            padding:0 40px 120px;
+            box-sizing: border-box;
+            position:relative;
+
+            ">
+
+
+                        <!-- Header Section -->
+                        <div style="display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                position:relative;
+                margin-bottom: 60px;">
+
+
+                            <div style="text-align: right;">
+                                <!-- <div style="font-size: 28px; margin-bottom: 2px;">
+                                    <t t-if="o.project_name">
+                                        <t t-out="o.project_name"/>
+                                    </t>
+                                </div> -->
+                                <div style="font-size: 30px;">
+                                    <t t-if="line.line_section_name">
+                                        <t t-out="line.line_section_name"/>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <div>
+                                <t t-set="spec_line" t-value="spec_lines_dict.get(line.product_template_id.id)"/>
+
+                                <div style="width:80%; font-size: 36px;
+                        font-weight: bold;
+                        color: #000000;
+                        margin-bottom: 8px;
+                        line-height: 1;">
+                                    <span t-if="spec_line.custom_product_name"
+                                            t-esc="spec_line.custom_product_name"/>
+                                    <span t-else=""
+                                            t-esc="spec_line.product_template_id.name"/>
+                                </div>
+                                <div style="font-size: 24px;
+                        font-weight: normal;
+                        color: #000000;
+                        line-height: 1.2;">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Product Image Section -->
+                        <div style="display: flex;
+                justify-content: center;
+                margin-bottom: 80px;">
+                            <img t-if="line.image_128"
+                                 t-att-src="image_data_uri(line.image_128)"
+                                 alt="JADA Task Chair"
+                                 style="width: 350px;
+                    height: 300px;
+                    object-fit: contain;"/>
+                            <img t-elif="line.product_template_id.image_1920"
+                                 t-att-src="image_data_uri(line.product_template_id.image_1920)"
+                                 alt="JADA Task Chair"
+                                 style="width: 350px;
+                    height: 300px;
+                    object-fit: contain;"/>
+                            <t t-else="">
+                                <div style="width: 350px; height: 300px;"/>
+                            </t>
+
+                        </div>
+                        <!-- Details and Dimensions Section -->
+                        <div style="margin-bottom: 20px;">
+                            <div>
+                                <h2 style="font-size: 26px;
+                                    font-weight: normal;
+                                    margin-bottom: 25px;
+                                    margin-top: 0;">
+                                    Details &amp; Dimensions
+                                </h2>
+                                <div>
+                                    <span style="font-weight: 600; font-size:18px;">Burgtec Code:</span>
+                                    <span style="padding-left:5px;">
+                                        <span t-if="spec_line.product_template_id.default_code"
+                                              t-esc="spec_line.product_template_id.default_code"/>
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <!-- Specifications Table - Borderless -->
+                            <!--                                                        <table style="width: 100%;-->
+                            <!--                                              border-collapse: collapse;-->
+                            <!--                                              margin-bottom: 40px;-->
+                            <!--                                              font-size: 14px;">-->
+
+                            <!--                                                            <thead>-->
+                            <!--                                                                <tr style="border-bottom: 1px solid black;">-->
+                            <!--                                                                    <th style="text-align: left;-->
+                            <!--                                                       padding: 12px 8px;-->
+                            <!--                                                       font-weight: bold;-->
+                            <!--                                                       color: #000000;">-->
+
+                            <!--                                                                    </th>-->
+                            <!--                                                                    <th colspan="3"-->
+                            <!--                                                                        style="text-align: center;-->
+                            <!--                                                       padding: 12px 8px;-->
+                            <!--                                                       font-weight: bold;-->
+                            <!--                                                       color: #000000;">-->
+                            <!--                                                                        Overall (mm)-->
+                            <!--                                                                    </th>-->
+                            <!--                                                                    <th style="text-align: center;-->
+                            <!--                                                       padding: 12px 8px;-->
+                            <!--                                                       font-weight: bold;-->
+                            <!--                                                       color: #000000;">-->
+                            <!--                                                                        <span t-if="spec_line.product_seat_height">-->
+                            <!--                                                                            Seat Height (mm)-->
+                            <!--                                                                        </span>-->
+                            <!--                                                                        <span t-else="" style="padding-left: 110px;">-->
+                            <!--                                                                        </span>-->
+                            <!--                                                                    </th>-->
+                            <!--                                                                </tr>-->
+                            <!--                                                                <tr style="border-bottom: 1px solid black;">-->
+                            <!--                                                                    <th style="text-align: left;-->
+                            <!--                                                       padding: 8px;-->
+                            <!--                                                       font-weight: normal;-->
+                            <!--                                                       color: #666666;">-->
+                            <!--                                                                        Burgtec Code-->
+                            <!--                                                                    </th>-->
+                            <!--                                                                    <th style="text-align: center;-->
+                            <!--                                                       padding: 8px;-->
+                            <!--                                                       font-weight: normal;-->
+                            <!--                                                       color: #666666;">-->
+                            <!--                                                                        Width-->
+                            <!--                                                                    </th>-->
+                            <!--                                                                    <th style="text-align: center;-->
+                            <!--                                                       padding: 8px;-->
+                            <!--                                                       font-weight: normal;-->
+                            <!--                                                       color: #666666;">-->
+                            <!--                                                                        Depth-->
+                            <!--                                                                    </th>-->
+                            <!--                                                                    <th style="text-align: center;-->
+                            <!--                                                       padding: 8px;-->
+                            <!--                                                       font-weight: normal;-->
+                            <!--                                                       color: #666666;">-->
+                            <!--                                                                        Height-->
+                            <!--                                                                    </th>-->
+                            <!--                                                                    <th style="text-align: center;-->
+                            <!--                                                       padding: 8px;-->
+                            <!--                                                       font-weight: normal;-->
+                            <!--                                                       color: #666666;">-->
+
+                            <!--                                                                        <span t-if="spec_line.product_seat_height">-->
+                            <!--                                                                            Height-->
+                            <!--                                                                        </span>-->
+                            <!--                                                                        <span t-else="" style="padding-left: 60px;">-->
+                            <!--                                                                        </span>-->
+
+                            <!--                                                                    </th>-->
+                            <!--                                                                </tr>-->
+                            <!--                                                            </thead>-->
+                            <!--                                                            <tbody>-->
+
+
+                            <!--                                                                <t t-if="spec_line">-->
+                            <!--                                                                    <tr style="border-bottom: 1px solid black;">-->
+                            <!--                                                                        <td style="padding: 12px 8px;-->
+                            <!--                                                       font-weight: bold;-->
+                            <!--                                                       color: #000000;">-->
+                            <!--                                                                            <span t-esc="spec_line.product_template_id.name or ''"/>-->
+                            <!--                                                                        </td>-->
+                            <!--                                                                        <td style="text-align: center;-->
+                            <!--                                                       padding: 12px 8px;-->
+                            <!--                                                       color: #000000;">-->
+                            <!--                                                                            <span t-esc="spec_line.product_width or ''"/>-->
+                            <!--                                                                        </td>-->
+                            <!--                                                                        <td style="text-align: center;-->
+                            <!--                                                       padding: 12px 8px;-->
+                            <!--                                                       color: #000000;">-->
+                            <!--                                                                            <span t-esc="spec_line.product_depth or ''"/>-->
+                            <!--                                                                        </td>-->
+                            <!--                                                                        <td style="text-align: center;-->
+                            <!--                                                       padding: 12px 8px;-->
+                            <!--                                                       color: #000000;">-->
+                            <!--                                                                            <span t-esc="spec_line.product_height or ''"/>-->
+                            <!--                                                                        </td>-->
+                            <!--                                                                        <td style="text-align: center;-->
+                            <!--                                                       padding: 12px 8px;-->
+                            <!--                                                       color: #000000;">-->
+                            <!--                                                                            <span t-esc="spec_line.product_seat_height or ''"/>-->
+                            <!--                                                                        </td>-->
+                            <!--                                                                    </tr>-->
+                            <!--                                                                </t>-->
+                            <!--                                                            </tbody>-->
+                            <!--                                                        </table>-->
+                        </div>
+
+                        <!-- Project Quantity -->
+                        <div style="font-size: 18px; color: #000000; margin-bottom: 20px;">
+                            Product QTY:
+                            <span t-esc="line.product_uom_qty"/>
+                        </div>
+
+                        <!-- Features and Finishes Section -->
+                        <div style="margin-bottom: 50px;">
+                            <t t-set="description_parts" t-value="spec_line.name.split('\n', 1)"/>
+                            <t t-set="description"
+                               t-value="description_parts[1] if len(description_parts) > 1 else line.name"/>
+
+                            <!-- Extract Dimensions -->
+                            <t t-set="dimensions_start" t-value="description.find('Dimensions:')"/>
+                            <t t-set="dimensions_end"
+                               t-value="description.find('Features:') if description.find('Features:') > dimensions_start else (description.find('Finishes:') if description.find('Finishes:') > dimensions_start else (description.find('Warranty:') if description.find('Warranty:') > dimensions_start else len(description)))"/>
+                            <t t-set="dimensions_text"
+                               t-value="description[dimensions_start + 11:dimensions_end].strip() if dimensions_start >= 0 else ''"/>
+
+                            <!-- Extract Features -->
+                            <t t-set="features_start" t-value="description.find('Features:')"/>
+                            <t t-set="features_end"
+                               t-value="description.find('Finishes:') if description.find('Finishes:') > features_start else (description.find('Warranty:') if description.find('Warranty:') > features_start else len(description))"/>
+                            <t t-set="features_text"
+                               t-value="description[features_start + 9:features_end].strip() if features_start >= 0 else ''"/>
+
+                            <!-- Extract Finishes -->
+                            <t t-set="finishes_start" t-value="description.find('Finishes:')"/>
+                            <t t-set="finishes_end"
+                               t-value="description.find('Warranty:') if description.find('Warranty:') > finishes_start else (description.find('Lead Time:') if description.find('Lead Time:') > finishes_start else len(description))"/>
+                            <t t-set="finishes_text"
+                               t-value="description[finishes_start + 9:finishes_end].strip() if finishes_start >= 0 else ''"/>
+
+                            <!-- Display Dimensions -->
+                            <div t-if="dimensions_text" style="margin-bottom: 20px;">
+                                <h3 style="font-size:18px; font-weight:bold; color:#000000; margin:0 0 10px 0;">
+                                    Dimensions
+                                </h3>
+                                <p style="font-size:18px; margin:0;">
+                                    <ul style="list-style-type: disc; padding-left:18px; margin: 0; font-size:18px; line-height:1.6;">
+                                        <li style="margin-bottom:4px;">
+                                            <span t-esc="dimensions_text"/>
+                                        </li>
+                                    </ul>
+                                </p>
+                            </div>
+
+                            <!-- Features and Finishes Table -->
+                            <table style="width:100%; border-collapse: collapse;" t-if="features_text or finishes_text">
+                                <tr>
+                                    <!-- Features column -->
+                                    <td style="width:50%; vertical-align: top; padding-right: 30px;"
+                                        t-if="features_text">
+                                        <h3 style="font-size:18px; font-weight:bold; color:#000000; margin:0 0 15px 0;">
+                                            Features
+                                        </h3>
+                                        <ul style="list-style-type: disc; padding-left:18px; margin: 0; font-size:18px; line-height:1.6;">
+                                            <!-- Split features by common patterns and create list items -->
+                                            <t t-set="feature_items"
+                                               t-value="[item.strip() for item in features_text.replace(' Mid Back ', '\nMid Back ').replace(' Gas-lift ', '\nGas-lift ').replace(' Adjustable ', '\nAdjustable ').replace(' Synchronized ', '\nSynchronized ').replace(' Fixed ', '\nFixed ').replace(' 5 star ', '\n5 star ').split('\n') if item.strip() and len(item.strip()) > 3]"/>
+                                            <t t-foreach="feature_items" t-as="feature">
+                                                <li style="margin-bottom:4px;">
+                                                    <span t-esc="feature"/>
+                                                </li>
+                                            </t>
+                                        </ul>
+                                    </td>
+
+                                    <!-- Finishes column -->
+                                    <td style="width:50%; vertical-align: top;"
+                                        t-if="finishes_text">
+                                        <h3 style="font-size:18px; font-weight:bold; color:#000000; margin:0 0 15px 0;">
+                                            Finishes
+                                        </h3>
+                                        <ul style="list-style-type: disc; padding-left:18px; margin: 0; font-size:18px; line-height:1.6;">
+                                            <!-- Split finishes and create list items -->
+                                            <t t-set="finish_items"
+                                               t-value="[item.strip() for item in finishes_text.replace('Upholstery: ', '\nUpholstery: ').replace(' base', '\nbase').split('\n') if item.strip() and len(item.strip()) > 3]"/>
+                                            <t t-foreach="finish_items" t-as="finish">
+                                                <li style="margin-bottom:4px;">
+                                                    <span t-esc="finish"/>
+                                                </li>
+                                            </t>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                        <!-- Footer Section -->
+                        <div style="position: absolute; bottom: 40px; left: 40px; right: 40px;">
+                            <table style="border-collapse: collapse; border: none; width: 100%;">
+                                <tr>
+                                    <td style="vertical-align: middle; padding: 0;">
+                                        <div style="font-size: 36px; font-weight: bold; color: #000000; line-height: 1;">
+                                            burgtec.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle; padding: 0; width: 80px; text-align: right;">
+                                        <img t-attf-src="data:image/png;base64,{{ o.get_footer_logo_image() }}"
+                                             alt="AFRDI Logo"
+                                             style="width: 100px; height: auto; display: inline-block;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- <t t-if="line.id != line[-1].id">
+                        <div style="page-break-before: always; break-before: page;"/>
+                    </t> -->
+                </t>
+
+                <!-- <div class="footer" style="font-family: 'Graphik-Semibold'; font-weight: 600; font-size:13px;">
+                    <div class="col-12">
+                        <div name="pager" t-if="report_type == 'pdf'" style="width: 100%; overflow: hidden;">
+                            <span style="float: left;">burgtec.</span>
+                            <div>
+                                <img t-attf-src="data:image/png;base64,{{ o.get_footer_logo_image() }}"
+                                             alt="AFRDI Logo"
+                                             style="width: 100px; height: auto; display: inline-block;"/>
+                            </div>
+                            <span style="float: right;">Quote: <span t-out="o.burgtec_quote_reference"/> | 
+                                <span><t t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/> |  </span>
+                                <span><t t-out="context_timestamp(datetime.datetime.now()).strftime('%I:%M %p')"/></span>
+                            </span>
+                        </div>
+                    </div>
+                </div> -->
+
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paperformat_product_specification_report" model="report.paperformat">
+        <field name="name">Burgtec Delivery Report Paperformat</field>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="action_product_specification_report" model="ir.actions.report">
+        <field name="name">Burgtec Product Specification Report</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">burgtec_product_specification_report.product_specification_report</field>
+        <field name="report_file">burgtec_product_specification_report.product_specification_report</field>
+        <!--        <field name="print_report_name">'Burgtec - %s' % (object.burgtec_quote_reference)</field> -->
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <!--        <field name="domain">[('quote_type','=','delivery_stage')]</field>-->
+        <field name="paperformat_id"
+               ref="burgtec_product_specification_report.paperformat_product_specification_report"/>
+    </record>
+</odoo>

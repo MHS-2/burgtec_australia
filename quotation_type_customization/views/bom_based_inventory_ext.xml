@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="quotation_type_customization.view_sale_order_bom_components_form_ext1" model="ir.ui.view">
+        <field name="name">view.sale.order.bom.component.form</field>
+        <field name="model">sale.order.bom.component</field>
+        <field name="inherit_id" ref="filter_one2many_fields.filter_one2many_field_original_bom_components_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='component_line_ids'][1]"
+                   position="attributes">
+                <attribute name="readonly">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+                <attribute name="decoration-danger">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]"
+                   position="attributes">
+                <attribute name="readonly">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+                <attribute name="decoration-danger">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]"
+                   position="attributes">
+                <attribute name="readonly">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+                <attribute name="decoration-danger">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]"
+                   position="attributes">
+                <attribute name="readonly">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+                <attribute name="decoration-danger">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='parent_product_code']"
+                   position="after">
+                <field name="is_product_fully_approved" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='parent_product_code']"
+                   position="after">
+                <field name="is_product_fully_approved" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='parent_product_code']"
+                   position="after">
+                <field name="is_product_fully_approved" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='parent_product_code']"
+                   position="after">
+                <field name="is_product_fully_approved" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list" position="attributes">
+                <attribute name="decoration-danger">is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list" position="attributes">
+                <attribute name="decoration-danger">is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list" position="attributes">
+                <attribute name="decoration-danger">is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list" position="attributes">
+                <attribute name="decoration-danger">is_product_fully_approved</attribute>
+            </xpath>
+            <!-- ===== For [1] ===== -->
+            <!-- Making product_id field readonly as changing component directly messes with bom components -->
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='product_id']"
+                   position="attributes">
+                   <attribute name="readonly">1</attribute>
+                <!-- <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='supplier_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_parent or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='note']" position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][1]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+
+            <!-- ===== For [2] ===== -->
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='product_id']"
+                   position="attributes">
+                    <attribute name="readonly">1</attribute>
+                <!-- <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='supplier_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_parent or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='note']" position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][2]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+
+            <!-- ===== For [3] ===== -->
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="readonly">1</attribute>
+                <!-- <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='supplier_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_parent or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='note']" position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][3]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+
+            <!-- ===== For [4] ===== -->
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="readonly">1</attribute>
+                <!-- <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='supplier_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_parent or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='note']" position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='component_line_ids'][4]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+
+            <!--            Now for the filtered view -->
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]"
+                   position="attributes">
+                <attribute name="readonly">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+                <attribute name="decoration-danger">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]"
+                   position="attributes">
+                <attribute name="readonly">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+                <attribute name="decoration-danger">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]"
+                   position="attributes">
+                <attribute name="readonly">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+                <attribute name="decoration-danger">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]"
+                   position="attributes">
+                <attribute name="readonly">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+                <attribute name="decoration-danger">state == 'sale' or (quote_type == 'delivery_stage' and not is_old_data)
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='parent_product_code']"
+                   position="after">
+                <field name="is_product_fully_approved" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='parent_product_code']"
+                   position="after">
+                <field name="is_product_fully_approved" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='parent_product_code']"
+                   position="after">
+                <field name="is_product_fully_approved" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='parent_product_code']"
+                   position="after">
+                <field name="is_product_fully_approved" column_invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list" position="attributes">
+                <attribute name="decoration-danger">is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list" position="attributes">
+                <attribute name="decoration-danger">is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list" position="attributes">
+                <attribute name="decoration-danger">is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list" position="attributes">
+                <attribute name="decoration-danger">is_product_fully_approved</attribute>
+            </xpath>
+
+            <!-- ===== For [1] ===== -->
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="readonly">1</attribute>
+                <!-- <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='supplier_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_parent or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='note']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][1]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <!-- ===== For [2] ===== -->
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="readonly">1</attribute>
+                <!-- <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='supplier_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_parent or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='note']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][2]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <!-- ===== For [3] ===== -->
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="readonly">1</attribute>
+                <!-- <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='supplier_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_parent or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='note']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][3]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <!-- ===== For [4] ===== -->
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='supplier_id']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='product_qty']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='unit_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='total_sale_price']"
+                   position="attributes">
+                <attribute name="readonly">parent.state == 'sale' or is_parent or is_product_fully_approved or not is_parent</attribute>
+            </xpath>
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='note']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='filtered_component_line_ids'][4]//list//field[@name='manual_live_unit_cost']"
+                   position="attributes">
+                <attribute name="readonly">is_parent or is_product_fully_approved</attribute>
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>

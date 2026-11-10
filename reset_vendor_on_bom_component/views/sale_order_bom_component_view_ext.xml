@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="reset_vendor_on_bom_component.sale_order_bom_components_form_view_ext" model="ir.ui.view">
+        <field name="name">reset_vendor_on_bom_component.sale.order.bom.component.form.view.ext</field>
+        <field name="model">sale.order.bom.component</field>
+        <field eval="10" name="priority"/>
+        <field name="inherit_id" ref="bom_based_inventory.view_sale_order_bom_components_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_sale_order']" position="after">
+                  <button string="Reset Component Vendors"
+                            class="btn oe_stat_button"
+                            type="object"
+                            name="action_reset_bom_component_vendors"
+                    />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

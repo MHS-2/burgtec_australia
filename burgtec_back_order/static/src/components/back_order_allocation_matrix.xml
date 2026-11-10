@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="burgtec_back_order.BackOrderAllocationMatrix">
+        <div class="back-order-allocation-matrix">
+            <!-- Reactive triggers: OWL only tracks properties read during
+                 template evaluation. Reading write_date here ensures OWL
+                 re-renders this component after every save, which in turn
+                 lets useEffect re-evaluate its deps and call _loadData(). -->
+            <!-- <span class="d-none" t-esc="props.record and props.record.data.write_date"/> -->
+
+            <!-- Loading state -->
+            <!-- <div t-if="state.isLoading" class="text-muted p-3">
+                <i class="fa fa-spinner fa-spin me-1"/>Loading...
+            </div> -->
+
+            <!-- No record saved yet -->
+            <!-- <div t-elif="!recordId" class="text-muted p-3">
+                Please save the quotation first to configure area allocations.
+            </div> -->
+
+            <!-- No areas configured -->
+            <!-- <div t-elif="state.areas.length === 0" class="text-muted p-3">
+                Set the <strong>Number of Areas</strong> above and save to start allocating quantities.
+            </div> -->
+
+            <!-- No products in order lines -->
+            <!-- <div t-elif="state.products.length === 0" class="text-muted p-3">
+                No products found in order lines. Add products to the <strong>Order Lines</strong> tab first.
+            </div> -->
+
+            <!-- Matrix table -->
+            <div class="table-responsive">
+                <!-- <div t-if="state.isSaving" class="area-saving-indicator">
+                    <i class="fa fa-spinner fa-spin me-1"/>Saving...
+                </div> -->
+                <table class="table table-sm table-bordered bo-matrix-table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="bo-col-product">Component</th>
+                            <th class="bo-col-supplier">Supplier</th>
+                            <th class="bo-col-qty text-center">Quantity</th>
+                            <th class="bo-col-available text-center">Available Qty</th>
+                            <t t-foreach="state.back_orders" t-as="bo" t-key="bo.id">
+                                <th class="bo-col-bo text-center">
+                                    <div class="text-danger fw-bold mb-1">
+                                        Back Order <t t-esc="bo_index + 1"/>
+                                        #
+                                    </div>
+                                    <strong>
+                                        <t t-out="bo.name"/>
+                                    </strong>
+                                    <t t-if="bo.state == 'assigned'">
+                                        <span class="badge rounded-pill bg-info">
+                                            Ready
+                                        </span>
+                                    </t>
+                                    <t t-elif="bo.state == 'done'">
+                                        <span class="badge rounded-pill bg-success">
+                                            Done
+                                        </span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="badge rounded-pill bg-secondary">
+                                            <t t-out="bo.state"/>
+                                        </span>
+                                    </t>
+                                </th>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="state.products" t-as="product" t-key="product.order_line_id">
+                            <tr>
+                                <td class="bo-col-product align-middle">
+                                    <t t-esc="product.display_name"/>
+                                </td>
+                                <td class="bo-col-supplier align-middle">
+                                    <t t-esc="product.supplier"/>
+                                </td>
+                                <t t-if="!state.process_completed">
+                                    <td class="bo-col-qty text-center align-middle">
+                                        <t t-esc="formatQty(product.total_qty)"/>
+                                    </td>
+                                </t>
+                                <t t-elif="state.process_completed">
+                                    <td class="bo-col-qty text-center align-middle">
+                                        <t t-esc="formatQty(getTotalQty(product))"/>
+                                    </td>
+                                </t>
+                                <td class="bo-col-available text-center align-middle"
+                                    t-att-class="{'text-danger fw-bold': getAvailableQty(product) &lt; 0, 'text-danger': getAvailableQty(product) !== product.total_qty}">
+                                    <t t-esc="formatQty(getAvailableQty(product))"/>
+                                </td>
+                                <t t-foreach="state.back_orders" t-as="bo" t-key="bo.id">
+                                    <td class="bo-col-bo text-center align-middle">
+                                        <!-- Back Order Coloumns can be more. Not every product can come under all back orders so we need empty box -->
+                                        <t t-if="getAllocation(product.order_line_id,product.product_id, bo.id) == 'not-exist'">
+                                        </t>
+                                        <t t-elif="getAllocation(product.order_line_id,product.product_id, bo.id) >= 0">
+                                             <input type="number"
+                                                   t-att-disabled = "bo.state == 'done'"
+                                                   class="form-control form-control-sm text-center bo-qty-input"
+                                                   t-att-class="{'text-danger fw-bold': getAllocation(product.order_line_id,product.product_id, bo.id) == 0}"
+                                                   t-att-value="getAllocation(product.order_line_id,product.product_id, bo.id)"
+                                                   min="0"
+                                                   step="1"
+                                                   t-on-change="(ev) => this.onAllocationChange(product.order_line_id,product.product_id, bo.id, ev)"/>
+                                        
+                                        </t>
+
+                                        
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>

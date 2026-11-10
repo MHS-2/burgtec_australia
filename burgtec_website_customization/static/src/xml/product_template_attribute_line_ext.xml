@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- Extend select template -->
+    <t t-inherit="sale.ptav_select" t-inherit-mode="extension">
+        <!-- Insert sub-attribute renderers after the select element. We iterate
+             `this.props.attribute_values` here (instead of relying on `ptav` from
+             the original option loop) so the variable is defined and we don't
+             hit 'ptav is undefined' when display_type is select. -->
+        <xpath expr="/t/select" position="after">
+            <t t-if="this.props.attribute_values &amp;&amp; this.props.attribute_values.length">
+                <div class="mt-2 ms-2">
+                    <t t-foreach="this.props.attribute_values" t-as="ptav" t-key="ptav.id">
+                        <t t-if="ptav.sub_attributes &amp;&amp; ptav.sub_attributes.length &amp;&amp; this.props.selected_attribute_value_ids.includes(ptav.id)">
+                            <t t-foreach="ptav.sub_attributes" t-as="sub_attr" t-key="sub_attr.id">
+                                <!-- If the nested sub-attribute has multiple values, delegate to PTAL
+                                     so it renders according to its display_type. If it has only one
+                                     value, PTAL hides it, so render a small manual control so the
+                                     user can still select it. -->
+                                <t t-if="sub_attr.attribute_values &amp;&amp; sub_attr.attribute_values.length &gt; 1">
+                                    <PTAL t-props="sub_attr" productTmplId="this.props.productTmplId"/>
+                                </t>
+                                <t t-else="">
+                                    <!-- Single-value sub-attribute: render minimal control depending on display_type -->
+                                    <t t-if="sub_attr.attribute.display_type === 'select'">
+                                        <select class="o_input w-auto" t-att-name="'sub-ptal-' + sub_attr.id"
+                                            t-on-change="evt => this.env.updateSubAttributeSelection(this.props.productTmplId, ptav.id, sub_attr.id, evt.target.value)">
+                                            <option t-foreach="sub_attr.attribute_values" t-as="sv" t-key="sv.id"
+                                                t-att-value="sv.id"
+                                                t-att-selected="sub_attr.selected_attribute_value_ids &amp;&amp; sub_attr.selected_attribute_value_ids.includes(sv.id)"
+                                                t-out="sv.name"/>
+                                        </select>
+                                    </t>
+                                    <t t-elif="sub_attr.attribute.display_type === 'color'">
+                                        <ul class="list-inline flex-grow-1 mb-0">
+                                            <li class="list-inline-item me-2">
+                                                <t t-foreach="sub_attr.attribute_values" t-as="sv" t-key="sv.id">
+                                                    <t t-set="img_style" t-value="sv.image ? 'background:url(/web/image/product.template.attribute.value/'+sv.id+'/image); background-size:cover;' : ''"/>
+                                                    <t t-set="color_style" t-value="sv.is_custom ? '' : 'background-color:' + sv.html_color"/>
+                                                    <label class="position-relative d-inline-block rounded-pill text-center"
+                                                        t-att-title="sv.name"
+                                                        t-attf-style="#{$img_style or $color_style}"
+                                                        t-att-class="{'o_sale_product_configurator_ptav_color': true,
+                                                                     'active': sub_attr.selected_attribute_value_ids &amp;&amp; sub_attr.selected_attribute_value_ids.includes(sv.id),
+                                                                     'custom_value': sv.is_custom,
+                                                                     'transparent': !sv.is_custom and !sv.html_color,
+                                                                     'css_not_available': sv.excluded }">
+                                                        <input type="radio"
+                                                            t-att-value="sv.id"
+                                                            t-att-checked="sub_attr.selected_attribute_value_ids &amp;&amp; sub_attr.selected_attribute_value_ids.includes(sv.id)"
+                                                            t-on-change="evt => this.env.updateSubAttributeSelection(this.props.productTmplId, ptav.id, sub_attr.id, evt.target.value)"/>
+                                                    </label>
+                                                </t>
+                                            </li>
+                                        </ul>
+                                    </t>
+                                    <t t-else="">
+                                        <!-- Fallback: use PTAL for unknown display types -->
+                                        <PTAL t-props="sub_attr" productTmplId="this.props.productTmplId"/>
+                                    </t>
+                                </t>
+                            </t>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+    <!-- Extend radio template -->
+    <t t-inherit="sale.ptav_radio" t-inherit-mode="extension">
+        <xpath expr="/t/ul/li" position="inside">
+            <t t-if="ptav.sub_attributes &amp;&amp; ptav.sub_attributes.length">
+                <div class="mt-2 ms-3">
+                    <t t-foreach="ptav.sub_attributes" t-as="sub_attr" t-key="sub_attr.id">
+                        <t t-if="this.props.selected_attribute_value_ids.includes(ptav.id)">
+                            <PTAL t-props="sub_attr" productTmplId="this.props.productTmplId"/>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+    <!-- Extend pills template -->
+    <t t-inherit="sale.ptav_pills" t-inherit-mode="extension">
+        <xpath expr="/t/ul/li" position="inside">
+            <t t-if="ptav.sub_attributes &amp;&amp; ptav.sub_attributes.length">
+                <div class="mt-2 ms-2">
+                    <t t-foreach="ptav.sub_attributes" t-as="sub_attr" t-key="sub_attr.id">
+                        <t t-if="this.props.selected_attribute_value_ids.includes(ptav.id)">
+                            <PTAL t-props="sub_attr" productTmplId="this.props.productTmplId"/>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+    <!-- Extend color template -->
+    <t t-inherit="sale.ptav_color" t-inherit-mode="extension">
+        <xpath expr="/t/ul/li" position="inside">
+            <t t-if="ptav.sub_attributes &amp;&amp; ptav.sub_attributes.length">
+                <div class="mt-2 ms-2">
+                    <t t-foreach="ptav.sub_attributes" t-as="sub_attr" t-key="sub_attr.id">
+                        <t t-if="this.props.selected_attribute_value_ids.includes(ptav.id)">
+                            <PTAL t-props="sub_attr" productTmplId="this.props.productTmplId"/>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+    <!-- Extend multi template -->
+    <t t-inherit="sale.ptav_multi" t-inherit-mode="extension">
+        <xpath expr="/t/ul/li" position="inside">
+            <t t-if="ptav.sub_attributes &amp;&amp; ptav.sub_attributes.length">
+                <div class="mt-2 ms-3">
+                    <t t-foreach="ptav.sub_attributes" t-as="sub_attr" t-key="sub_attr.id">
+                        <t t-if="this.props.selected_attribute_value_ids.includes(ptav.id)">
+                            <PTAL t-props="sub_attr" productTmplId="this.props.productTmplId"/>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="burgtec_purchase_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                <div class="page">
+                    <div class="article">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 class="text-start"
+                                    style="font-size: 38px; transform: scaleX(1.4); transform-origin: left;">
+                                    <strong>
+                                        burgtec.
+                                    </strong>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <!-- Clear separation between divs -->
+                        <div style="clear: both; height: 30px;"></div>
+
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: block; margin-bottom: 5px; line-height: 1.0; font-size: 16px; color: grey;">
+                                    <span>10A Corella Close, Berkeley Vale NSW 2261</span>
+                                </div>
+                                <div style="display: block; margin-bottom: 5px; line-height: 1.0; font-size: 16px; color: grey;">
+                                    <span>
+                                        estimating@burgtec.com
+                                    </span>
+                                </div>
+                                <div style="display: block; margin-bottom: 5px; line-height: 1.0; font-size: 16px; color: grey;">
+                                    <span>
+                                        1800 287 483
+                                    </span>
+                                </div>
+                                <div style="display: block; line-height: 1.0; font-size: 16px; color: grey;">
+                                    <span>
+                                        ABN:95 639 808 754
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 75px;">
+>
+                            <div class="col">
+                                <strong>Shipping address</strong>
+
+                                <div style="margin-top: 4px;">
+
+                                    <t t-if="o.shipping_address_type == 'manual'">
+                                        <div t-esc="o.manual_shipping_address"/>
+                                    </t>
+
+                                    <t t-elif="o.shipping_address_type == 'pickup'">
+                                        <div>Pick Up</div>
+                                    </t>
+
+                                    <t t-elif="o.shipping_address_type == 'burgtec_vendor'">
+                                        <div>
+                                            Burgtec Berkeley Vale - 10A Corella Close,
+                                            <br/>
+                                            Berkeley Vale NSW 2261 -
+                                            Contact Ben Froome 0401630398
+                                        </div>
+                                    </t>
+
+                                </div>
+                            </div>
+                            <div class="col">
+                                <strong>Vendor</strong>
+                                <t t-if="o.partner_id">
+
+                                    <span t-field="o.partner_id"
+                                          t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 30px;">
+                            <div class="col">
+                                <t t-if="o.state in ['draft', 'sent', 'to approve']">
+                                    <h2>Request for Quotation #
+                                        <span t-field="o.burgtec_purchase_reference"/>
+                                    </h2>
+                                </t>
+                                <t t-if="o.state in ['purchase', 'done']">
+                                    <h2>Purchase Order #
+                                        <span t-field="o.burgtec_purchase_reference"/>
+                                    </h2>
+                                </t>
+                                <t t-if="o.state == 'cancel'">
+                                    <h2>Cancelled Purchase Order #
+                                        <span t-field="o.burgtec_purchase_reference"/>
+                                    </h2>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Clear separation between divs -->
+                        <div style="clear: both; height: 30px;"></div>
+
+                        <div id="informations" class="row mb-4">
+                            <div t-if="o.user_id" class="col">
+                                <strong>Buyer</strong>
+                                <div t-field="o.user_id"/>
+                            </div>
+                            <div t-if="o.partner_ref" class="col">
+                                <strong>Your Order Reference</strong>
+                                <div t-field="o.partner_ref"/>
+                            </div>
+
+                            <div t-if="o.create_date" class="col-3 bm-2">
+                                <strong>Create Date:</strong>
+                                <p t-out="context_timestamp(o.create_date).strftime('%d %b %Y')" class="m-0"/>
+                            </div>
+                            <div t-if="o.required_arrival_date" class="col-2 bm-2">
+                                <strong>Required Arrival:</strong>
+                                <p t-out="o.required_arrival_date and o.required_arrival_date.strftime('%d %b %Y') or ''" class="m-0"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="o_has_total_table table o_main_table table-borderless">
+                                    <thead class="border-bottom">
+                                        <tr>
+                                            <th name="th_code" class="text-start">
+                                                <strong>G.Code</strong>
+                                            </th>
+                                            <th name="th_code" class="text-start">
+                                                <strong>Code</strong>
+                                            </th>
+                                            <th name="th_product_name" class="text-start" width="20%;">
+                                                <strong>Product Name</strong>
+                                            </th>
+                                            <th name="th_note" class="text-start" width="60%;">
+                                                <strong>Note</strong>
+                                            </th>
+                                            <th name="th_quantity" class="text-end">
+                                                <strong>Qty</strong>
+                                            </th>
+                                            <th name="th_price_unit" class="text-end">
+                                                <strong>Unit Cost</strong>
+                                            </th>
+
+                                            <th name="th_subtotal" class="text-end">
+                                                <strong>Amount</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                        <t t-foreach="o.order_line" t-as="line">
+                                            <t t-set="current_subtotal"
+                                               t-value="current_subtotal + line.price_subtotal"/>
+
+                                            <tr t-att-class="'fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                                <t t-if="not line.display_type">
+                                                    <td id="group_code" class="text-start">
+                                                        <!--                                                        <span t-esc="line.line_section_name_child"/>-->
+                                                        <span t-esc="line.line_section_name or line.line_section_name_child"/>
+                                                    </td>
+                                                    <td id="product_code" class="text-start">
+                                                        <span t-field="line.product_id.default_code"/>
+                                                    </td>
+                                                    <td id="product_name" class="text-start">
+                                                        <span t-field="line.product_id.name"/>
+                                                    </td>
+                                                    <td id="product_note" class="text-start">
+                                                        <span t-field="line.note"/>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <span t-field="line.product_qty"/>
+                                                        <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                                                        <span t-if="line.product_packaging_id">
+                                                            (
+                                                            <span t-field="line.product_packaging_qty"
+                                                                  t-options='{"widget": "integer"}'/>
+                                                            <span t-field="line.product_packaging_id"/>)
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <span t-field="line.price_unit"/>
+                                                    </td>
+
+                                                    <td class="text-end">
+                                                        <span t-field="line.price_subtotal"
+                                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                    </td>
+                                                </t>
+                                                <t t-if="line.display_type == 'line_section'">
+                                                    <td colspan="99" id="section">
+                                                        <span t-field="line.name"/>
+                                                    </td>
+                                                    <t t-set="current_section" t-value="line"/>
+                                                    <t t-set="current_subtotal" t-value="0"/>
+                                                </t>
+                                                <t t-if="line.display_type == 'line_note'">
+                                                    <td colspan="99" id="note">
+                                                        <span t-field="line.name"/>
+                                                    </td>
+                                                </t>
+                                            </tr>
+                                            <t t-if="current_section and (line_last or o.order_line[line_index+1].display_type == 'line_section')">
+                                                <tr class="is-subtotal text-end">
+                                                    <td colspan="99" id="subtotal">
+                                                        <strong class="mr16">Subtotal</strong>
+                                                        <span
+                                                                t-out="current_subtotal"
+                                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Clear separation between divs -->
+                        <div style="clear: both; height: 20px;"></div>
+
+                        <div id="total" class="row justify-content-end mt-n3">
+                            <div class="col-4">
+                                <table class="o_total_table table table-borderless border-top border-bottom">
+                                    <tr>
+                                        <td>
+                                            <strong>Excluding GST</strong>
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-field="o.amount_untaxed"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td>
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-field="o.amount_total"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_burgtec_purchase_report" model="report.paperformat">
+        <field name="name">Burgtec Purchase Report Paperformat</field>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="action_burgtec_purchase_report" model="ir.actions.report">
+        <field name="name">Purchase Order Report</field> <!-- Name -->
+        <field name="model">purchase.order</field> <!-- Model to be used for this action/template -->
+        <field name="report_type">qweb-pdf</field> <!-- report type  -->
+        <field name="report_name">purchase_order_custom_report.burgtec_purchase_report</field> <!-- Model name . id of the above template external id-->
+        <field name="report_file">purchase_order_custom_report.burgtec_purchase_report</field> <!-- Model name . id of the above template external id-->
+        <field name="print_report_name">(object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.burgtec_purchase_reference) or 'Purchase Order - %s' % (object.burgtec_purchase_reference))</field> <!-- PDF name when downloaded -->
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/> <!-- Bind so that we can use the print functionality to download and see the report. -->
+        <field name="binding_type">report</field>  <!-- Bind so that we can use the print functionality to download and see the report. -->
+        <field name="paperformat_id" ref="purchase_order_custom_report.paperformat_burgtec_purchase_report"/>
+    </record>
+
+
+</odoo>

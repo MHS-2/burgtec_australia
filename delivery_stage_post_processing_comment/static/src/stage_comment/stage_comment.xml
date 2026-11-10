@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Comment button above "Dispatch Date" box.
+         Applies after hubspot_ticket_creation_ps.SaleOrderLineExt (module dependency => asset order). -->
+    <t t-name="delivery_stage_post_processing_comment.StageCommentButton"
+       t-inherit="account.sectionAndNoteListRenderer"
+       t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('ps-date-inputs-above')]/div[1]" position="before">
+            <div class="d-flex justify-content-center mb-1">
+                <button type="button"
+                        class="btn btn-sm ps-stage-comment-btn w-100"
+                        t-att-class="getStageComment(column.name) ? 'btn-primary' : 'btn-outline-dark'"
+                        t-att-title="getStageComment(column.name) or 'Add comment'"
+                        t-on-click.stop="() => this.openStageComment(column)"
+                        t-on-pointerup.stop="">
+                    <i class="fa fa-comment me-1"/>Comments
+                </button>
+            </div>
+        </xpath>
+    </t>
+
+    <t t-name="delivery_stage_post_processing_comment.StageCommentDialog">
+        <Dialog title="props.title" size="'md'">
+            <textarea t-if="state.editing" class="form-control" rows="6"
+                      placeholder="Post Processing Comments..."
+                      t-model="state.value"/>
+            <div t-else="" class="text-break" style="white-space: pre-wrap;" t-esc="state.value"/>
+            <t t-set-slot="footer">
+                <t t-if="state.editing">
+                    <button class="btn btn-primary" t-att-disabled="state.saving" t-on-click="save">Save</button>
+                    <button class="btn btn-secondary" t-on-click="props.close">Discard</button>
+                </t>
+                <t t-else="">
+                    <button class="btn btn-primary" t-on-click="() => this.state.editing = true">Edit</button>
+                    <button class="btn btn-secondary" t-on-click="props.close">Close</button>
+                </t>
+            </t>
+        </Dialog>
+    </t>
+</templates>

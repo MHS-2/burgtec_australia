@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="sale_quote_planning_screen.UrlFieldWarning"
+       t-inherit="web.UrlField"
+       t-inherit-mode="extension">
+
+        <xpath expr="//input" position="attributes">
+            <attribute name="t-on-keydown">onKeyDown</attribute>
+        </xpath>
+
+    </t>
+
+</templates>

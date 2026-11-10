@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_simple_quote_entry_wizard_manager,simple_quote_entry_wizard_manager,model_simple_quote_entry_wizard,,1,1,1,1
+access_simple_quote_entry_order_line_manager,simple_quote_entry_order_line_manager,model_simple_quote_entry_order_line,,1,1,1,1
+access_simple_quote_draft_manager,simple_quote_draft_manager,model_simple_quote_draft,,1,1,1,1

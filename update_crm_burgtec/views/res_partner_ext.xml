@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_form_view_ext" model="ir.ui.view">
+        <field name="name">res.partner.form.view.ext</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title','mb24')]//div" position="replace"/>
+
+            <xpath expr="//group[1]" position="before">
+<!--                <label for="parent_id" string="Company Name" invisible="is_company"/>-->
+                <label for="parent_id"
+                       string="Company Name"
+                       invisible="is_company"
+                       style="margin-right: 20px;"/>
+                <field name="parent_id"
+                       widget="res_partner_many2one"
+                       string="Company Name"
+                       required="not is_company"
+                       domain="[('is_company', '=', True)]"
+                       context="{'default_is_company': True, 'show_vat': True, 'default_user_id': user_id}"
+                       invisible="is_company"/>
+            </xpath>
+
+             <xpath expr="//button[@name='schedule_meeting']" position="before">
+                <button name="action_open_hubspot_contact"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-address-book"
+                        invisible="not hubspot_contact_url">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Open HubSpot Contact</span>
+                    </div>
+                </button>
+             </xpath>
+
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="invisible">is_company</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="id_of_hubspot_company" readonly="1"/>
+                <field name="hubspot_contact_url" widget="url" readonly="1" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='website']" position="attributes">
+                <attribute name="required">is_company</attribute>
+            </xpath>
+            <xpath expr="//field[@name='email']" position="attributes">
+                <attribute name="required">not is_company</attribute>
+            </xpath>
+
+<!--            <xpath expr="//sheet" position="before">-->
+<!--                <header>-->
+<!--                    <button name="export_company_to_hubspot" type="object" class="btn btn-primary"-->
+<!--                            invisible="not is_company or id_of_hubspot_company"-->
+<!--                            string="Export To HubSpot"/>-->
+<!--                    <button name="export_contact_to_hubspot" type="object" class="btn btn-primary"-->
+<!--                            invisible="is_company or id_of_hubspot_company"-->
+<!--                            string="Export To HubSpot"/>-->
+<!--                </header>-->
+<!--            </xpath>-->
+
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="business_name" help="Add Business Name if it is not same as Company Name"
+                       placeholder="Add Business Name if it is not same as Company Name"/>
+            </xpath>
+
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="readonly">False</attribute>
+                <attribute name="required">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="update_crm_burgtec_res_partner_search_view_ext" model="ir.ui.view">
+        <field name="name">update.crm.burgtec.res.partner.search.view.ext</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="business_name"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
